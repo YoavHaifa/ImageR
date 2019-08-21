@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugVR|Win32">
+      <Configuration>DebugVR</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugVR|x64">
+      <Configuration>DebugVR</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|x64">
+      <Configuration>Template</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2338F08C-9628-43F4-8873-72C8460C47C5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>ImageR</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugVR|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugVR|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugVR|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugVR|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ImageR$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ImageR\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ImageR$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ImageR\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugVR|Win32'">ImageR$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugVR|x64'">ImageR\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugVR|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugVR|x64'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugVR|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugVR|x64'">true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
+    <OutDir>ImageR\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\yUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy ..\MyUtils\$(Configuration)\MyUtils.dll $(OutDir)
+copy ..\MyImage\$(Configuration)\MyImageDll.dll $(OutDir)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>yUtils.lib;ImageRLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\yUtils\$(Platform)\$(Configuration)\;..\ImageRLib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy ..\yUtils\$(Platform)\$(Configuration)\yUtils.dll $(OutDir)
+copy ..\ImageRLib\$(Platform)\$(Configuration)\ImageRLib.dll $(OutDir)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy ..\MyUtils\$(Configuration)\MyUtils.dll $(OutDir)
+copy ..\MyImage\$(Configuration)\MyImageDll.dll $(OutDir)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalDependencies>yUtils.lib;ImageRLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\yUtils\$(Platform)\$(Configuration)\;..\ImageRLib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy ..\yUtils\$(Platform)\$(Configuration)\yUtils.dll $(OutDir)
+copy ..\ImageRLib\$(Platform)\$(Configuration)\ImageRLib.dll $(OutDir)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugVR|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__VR__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy ..\MyUtils\Debug\MyUtils.dll $(OutDir)
+copy ..\MyImage\Debug\MyImageDll.dll $(OutDir)
+copy D:\Views\GRAD\ViewingInfra\Src\VR2Solution\vr2.dll $(OutDir)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugVR|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__VR__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy ..\MyUtils\Debug\MyUtils.dll $(OutDir)
+copy ..\MyImage\Debug\MyImageDll.dll $(OutDir)
+copy D:\Views\GRAD\ViewingInfra\Src\VR2Solution\vr2.dll $(OutDir)
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <Link>
+      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
+    <Link>
+      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="ImageR\ArchivesFile.h" />
+    <ClInclude Include="ImageR\BmpFile.h" />
+    <ClInclude Include="ImageR\ContextMenu.h" />
+    <ClInclude Include="ImageR\DataArea.h" />
+    <ClInclude Include="ImageR\DataTypeDialog.h" />
+    <ClInclude Include="ImageR\DicomContours.h" />
+    <ClInclude Include="ImageR\DiffData.h" />
+    <ClInclude Include="ImageR\DisplayCoordinates.h" />
+    <ClInclude Include="ImageR\DisplayGE.h" />
+    <ClInclude Include="ImageR\DisplayRectangle.h" />
+    <ClInclude Include="ImageR\DRText.h" />
+    <ClInclude Include="ImageR\DVResource.h" />
+    <ClInclude Include="ImageR\FileFactory.h" />
+    <ClInclude Include="ImageR\FloatPrep.h" />
+    <ClInclude Include="ImageR\GContour.h" />
+    <ClInclude Include="ImageR\GCursor.h" />
+    <ClInclude Include="ImageR\GEllipse.h" />
+    <ClInclude Include="ImageR\GGraph.h" />
+    <ClInclude Include="ImageR\GLine.h" />
+    <ClInclude Include="ImageR\GoTo.h" />
+    <ClInclude Include="ImageR\GoToPage.h" />
+    <ClInclude Include="ImageR\GPoint.h" />
+    <ClInclude Include="ImageR\GraphicElementOnDR.h" />
+    <ClInclude Include="ImageR\GRoi.h" />
+    <ClInclude Include="ImageR\GVolume.h" />
+    <ClInclude Include="ImageR\HybridFile.h" />
+    <ClInclude Include="ImageR\ImageParams.h" />
+    <ClInclude Include="ImageR\ImageView.h" />
+    <ClInclude Include="ImageR\ImageViewDefs.h" />
+    <ClInclude Include="ImageR\MenuController.h" />
+    <ClInclude Include="ImageR\MetaData.h" />
+    <ClInclude Include="ImageR\MetaFile.h" />
+    <ClInclude Include="ImageR\Mip.h" />
+    <ClInclude Include="ImageR\MipShared.h" />
+    <ClInclude Include="ImageR\MipVolume.h" />
+    <ClInclude Include="ImageR\MultiDataFile.h" />
+    <ClInclude Include="ImageR\MultiFile.h" />
+    <ClInclude Include="ImageR\MultiPageLoader.h" />
+    <ClInclude Include="ImageR\MyImage.h" />
+    <ClInclude Include="ImageR\ImageRApp.h" />
+    <ClInclude Include="ImageR\Oblique.h" />
+    <ClInclude Include="ImageR\ObliquePosition.h" />
+    <ClInclude Include="ImageR\ObliqueRef.h" />
+    <ClInclude Include="ImageR\PflhDicomFile.h" />
+    <ClInclude Include="ImageR\PipeBufReadings.h" />
+    <ClInclude Include="ImageR\PipeIF.h" />
+    <ClInclude Include="ImageR\PrintExcel.h" />
+    <ClInclude Include="ImageR\PrintStat.h" />
+    <ClInclude Include="ImageR\ProcImage.h" />
+    <ClInclude Include="ImageR\ReadingPosition.h" />
+    <ClInclude Include="ImageR\ReadingsFile.h" />
+    <ClInclude Include="ImageR\RecentFiles.h" />
+    <ClInclude Include="ImageR\Resource.h" />
+    <ClInclude Include="ImageR\RingID.h" />
+    <ClInclude Include="ImageR\RotationMatrix.h" />
+    <ClInclude Include="ImageR\Screens.h" />
+    <ClInclude Include="ImageR\SelectParamsDialog.h" />
+    <ClInclude Include="ImageR\SharedMemFile.h" />
+    <ClInclude Include="ImageR\Sinograms.h" />
+    <ClInclude Include="ImageR\SlicesDialog.h" />
+    <ClInclude Include="ImageR\stdafx.h" />
+    <ClInclude Include="ImageR\TextController.h" />
+    <ClInclude Include="ImageR\Tissue.h" />
+    <ClInclude Include="ImageR\TypedData.h" />
+    <ClInclude Include="ImageR\ViewParams.h" />
+    <ClInclude Include="ImageR\VolTissue.h" />
+    <ClInclude Include="ImageR\VolumeRenderingIF.h" />
+    <ClInclude Include="ImageR\Volumetric.h" />
+    <ClInclude Include="ImageR\WindowDlg.h" />
+    <ClInclude Include="ImageR\WindowParams.h" />
+    <ClInclude Include="ImageR\ZoomParamsDlg.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ImageR\res\icon1.ico" />
+    <None Include="ImageR\res\ImageR.ico" />
+    <None Include="ImageR\res\ImageRApp.rc2" />
+    <None Include="ImageR\res\ImageRDCP.ico" />
+    <None Include="debug\BuildLog.htm" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ImageRDebug\vc60.idb" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ImageR\ImageR.rc" />
+    <ResourceCompile Include="ImageR\ImageRApp.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ImageR\ArchivesFile.cpp" />
+    <ClCompile Include="ImageR\BmpFile.cpp" />
+    <ClCompile Include="ImageR\ContextMenu.cpp" />
+    <ClCompile Include="ImageR\DataArea.cpp" />
+    <ClCompile Include="ImageR\DataTypeDialog.cpp" />
+    <ClCompile Include="ImageR\DicomContours.cpp" />
+    <ClCompile Include="ImageR\DiffData.cpp" />
+    <ClCompile Include="ImageR\DisplayCoordinates.cpp" />
+    <ClCompile Include="ImageR\DisplayGE.cpp" />
+    <ClCompile Include="ImageR\DisplayRectangle.cpp" />
+    <ClCompile Include="ImageR\DRText.cpp" />
+    <ClCompile Include="ImageR\FileFactory.cpp" />
+    <ClCompile Include="ImageR\FloatPrep.cpp" />
+    <ClCompile Include="ImageR\GContour.cpp" />
+    <ClCompile Include="ImageR\GCursor.cpp" />
+    <ClCompile Include="ImageR\GEllipse.cpp" />
+    <ClCompile Include="ImageR\GGraph.cpp" />
+    <ClCompile Include="ImageR\GLine.cpp" />
+    <ClCompile Include="ImageR\GoTo.cpp" />
+    <ClCompile Include="ImageR\GoToPage.cpp" />
+    <ClCompile Include="ImageR\GPoint.cpp" />
+    <ClCompile Include="ImageR\GraphicElementOnDR.cpp" />
+    <ClCompile Include="ImageR\GRoi.cpp" />
+    <ClCompile Include="ImageR\GVolume.cpp" />
+    <ClCompile Include="ImageR\HybridFile.cpp" />
+    <ClCompile Include="ImageR\ImageParams.cpp" />
+    <ClCompile Include="ImageR\ImageView.cpp" />
+    <ClCompile Include="ImageR\MenuController.cpp" />
+    <ClCompile Include="ImageR\MetaData.cpp" />
+    <ClCompile Include="ImageR\MetaFile.cpp" />
+    <ClCompile Include="ImageR\Mip.cpp" />
+    <ClCompile Include="ImageR\MipShared.cpp" />
+    <ClCompile Include="ImageR\MipVolume.cpp" />
+    <ClCompile Include="ImageR\MultiDataFile.cpp" />
+    <ClCompile Include="ImageR\MultiFile.cpp" />
+    <ClCompile Include="ImageR\MultiPageLoader.cpp" />
+    <ClCompile Include="ImageR\ImageRApp.cpp" />
+    <ClCompile Include="ImageR\Oblique.cpp" />
+    <ClCompile Include="ImageR\ObliquePosition.cpp" />
+    <ClCompile Include="ImageR\ObliqueRef.cpp" />
+    <ClCompile Include="ImageR\PflhDicomFile.cpp" />
+    <ClCompile Include="ImageR\PipeBufReadings.cpp" />
+    <ClCompile Include="ImageR\PipeIF.cpp" />
+    <ClCompile Include="ImageR\PrintExcel.cpp" />
+    <ClCompile Include="ImageR\PrintStat.cpp" />
+    <ClCompile Include="ImageR\ProcImage.cpp" />
+    <ClCompile Include="ImageR\ReadingPosition.cpp" />
+    <ClCompile Include="ImageR\ReadingsFile.cpp" />
+    <ClCompile Include="ImageR\RecentFiles.cpp" />
+    <ClCompile Include="ImageR\RingID.cpp" />
+    <ClCompile Include="ImageR\RotationMatrix.cpp" />
+    <ClCompile Include="ImageR\Screens.cpp" />
+    <ClCompile Include="ImageR\SelectParamsDialog.cpp" />
+    <ClCompile Include="ImageR\SharedMemFile.cpp" />
+    <ClCompile Include="ImageR\Sinograms.cpp" />
+    <ClCompile Include="ImageR\SlicesDialog.cpp" />
+    <ClCompile Include="ImageR\stdafx.cpp" />
+    <ClCompile Include="ImageR\TextController.cpp" />
+    <ClCompile Include="ImageR\Tissue.cpp" />
+    <ClCompile Include="ImageR\TypedData.cpp" />
+    <ClCompile Include="ImageR\Viewer.cpp" />
+    <ClCompile Include="ImageR\ViewParams.cpp" />
+    <ClCompile Include="ImageR\VolTissue.cpp" />
+    <ClCompile Include="ImageR\VolumeRenderingIF.cpp" />
+    <ClCompile Include="ImageR\Volumetric.cpp" />
+    <ClCompile Include="ImageR\WindowDlg.cpp" />
+    <ClCompile Include="ImageR\WindowParams.cpp" />
+    <ClCompile Include="ImageR\ZoomParamsDlg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="ImageR\res\ImageRLogo.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="ImageR\ImageR.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
