@@ -120,10 +120,10 @@ protected:
 	afx_msg void OnFileRecentfiles6();
 
 	afx_msg void OnClose();
-	afx_msg void OnFileAdd();
+	//afx_msg void OnFileAdd();
 	afx_msg void OnSettingsSetfullroi();
 	afx_msg void OnWindowSpecialWindow();
-	afx_msg void OnAddDiff();
+	//afx_msg void OnAddDiff();
 	afx_msg void OnPrintExcel();
     afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	//}}AFX_MSG
@@ -232,7 +232,7 @@ public:
 	CList<CString*,CString*> msStartFiles;
 	bool mbStartDiff;
     afx_msg void OnAddMip();
-    afx_msg void OnAddRatio();
+    //afx_msg void OnAddRatio();
     void OnAddDiffOrRatio(const char *zName);
     afx_msg void OnGraphicSetcolor();
     afx_msg void OnMipSelectslice();
@@ -338,5 +338,12 @@ public:
 	afx_msg void OnSettingsVerticalzoomfactor();
 	afx_msg void OnGraphicSavedatatoexcel();
 	afx_msg void OnExportGraphicdatatoexcel();
+	afx_msg void OnAddFile33992();
+	afx_msg void OnAddDiff33993();
+	afx_msg void OnAddCoronal33994();
+	afx_msg void OnAddMip33995();
+	afx_msg void OnAddSmooth33996();
+	afx_msg void OnAddCombine33997();
+	afx_msg void OnAddRatio33998();
 };
 
