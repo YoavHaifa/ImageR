@@ -358,7 +358,6 @@ copy D:\Views\GRAD\ViewingInfra\Src\VR2Solution\vr2.dll $(OutDir)
     <ClInclude Include="ImageR\WindowDlg.h" />
     <ClInclude Include="ImageR\WindowParams.h" />
     <ClInclude Include="ImageR\ZoomParamsDlg.h" />
-    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ImageR\res\icon1.ico" />
