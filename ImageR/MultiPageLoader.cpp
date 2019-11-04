@@ -261,7 +261,7 @@ void CMultiPageLoader::PrintValues2Excel(FILE *pf, int nCols, int iLine, int iCo
 		{
 			CString s(mpData->mpTypedData->Value2s(pPage->GetDataStart(), nCols, iLine, iCol,
 				mpData->mRescaleSlope, mpData->mRescaleIntercept));
-			fprintf(pf,"%s\t",s);
+			fprintf(pf,"%s\t",(const char*)s);
 		}
 		else
 			fprintf(pf,"=??\t");

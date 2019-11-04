@@ -201,7 +201,7 @@ void CImageParams::CreatePattern (T first, T delta, const char *zTypeName)
 {
     char zTmp[128];
 	sprintf_s (zTmp, 128, "%s\\ImagePattern_lines%d_cols%d", 
-		CMyWindows::GetLogDir(), mnLines, mnCols);
+		(const char*)CMyWindows::GetLogDir(), mnLines, mnCols);
 
     CString sfName(zTmp);
     if (mOffsetBytes)

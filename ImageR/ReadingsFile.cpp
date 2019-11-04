@@ -129,12 +129,12 @@ void CReadingsFile::PrintReadingHeaders(void)
 	if (mlFanHeaderBytes != sizeof(S7200RHeader))
 	{
 		char zBuf[128];
-		sprintf_s(zBuf,sizeof(zBuf),"Reading Header size %d != %d expected", mlFanHeaderBytes, sizeof(S7200RHeader));
+		sprintf_s(zBuf,sizeof(zBuf),"Reading Header size %d != %d expected", mlFanHeaderBytes, (int)sizeof(S7200RHeader));
 		CMyWindows::MessBox(zBuf,"Reading Headers Can't be Printed");
 		return;
 	}
     char zName[256];
-    sprintf_s (zName, 256, "%s.headers.xls", PrivateName());
+    sprintf_s (zName, 256, "%s.headers.xls", (const char*)PrivateName());
     CLogFile logFile ("Readings", zName);
     if (!logFile)
         return;
@@ -142,7 +142,7 @@ void CReadingsFile::PrintReadingHeaders(void)
 	CLogFile logBedFile;
 	if (umbPrintBedPosition)
 	{
-	    sprintf_s (zName, 256, "%s.headersBed.xls", PrivateName());
+	    sprintf_s (zName, 256, "%s.headersBed.xls", (const char*)PrivateName());
 		logBedFile.Open ("Readings", zName);
 	}
 
@@ -182,7 +182,7 @@ void CReadingsFile::PrintReadingHeaders(void)
 	if (singleRotationTimeSec == 0)
 		singleRotationTimeSec = 1;
 
-	sprintf_s (zName, 256, "%s.Rotation.xls", PrivateName());
+	sprintf_s (zName, 256, "%s.Rotation.xls", (const char*)PrivateName());
     CLogFile logRotation ("Readings", zName);
 	if (logRotation)
 		fprintf(logRotation.mpf,"i \t rot \t bed \t deltaBed \t speed \t pitch \n");
@@ -299,7 +299,7 @@ void CReadingsFile::EditRaw(void)
 	if (mlFanHeaderBytes != sizeof(S7200RHeader))
 	{
 		char zBuf[128];
-		sprintf_s(zBuf,sizeof(zBuf),"Reading Header size %d != %d expected", mlFanHeaderBytes, sizeof(S7200RHeader));
+		sprintf_s(zBuf,sizeof(zBuf),"Reading Header size %d != %d expected", mlFanHeaderBytes, (int)sizeof(S7200RHeader));
 		CMyWindows::MessBox(zBuf,"Reading Headers should be S7200RHeader");
 		return;
 	}
@@ -336,13 +336,13 @@ void CReadingsFile::EditRaw(void)
 		return;
 
     char zLogName[256];
-    sprintf_s (zLogName, 256, "%s.edit.log", PrivateName());
+    sprintf_s (zLogName, 256, "%s.edit.log", (const char*)PrivateName());
     CLogFile logFile ("Readings", zLogName);
     if (!logFile)
         return;
 	fprintf(logFile.mpf,"<CReadingsFile::EditRaw>\n");
-	fprintf(logFile.mpf,"FROM: %s\n", Name());
-	fprintf(logFile.mpf,"TO: %s\n", sNewName);
+	fprintf(logFile.mpf,"FROM: %s\n", (const char*)Name());
+	fprintf(logFile.mpf,"TO: %s\n", (const char*)sNewName);
 	fprintf(logFile.mpf,"\n");
 
     char *pBuf = new char[mReadingSize];
@@ -492,7 +492,7 @@ void CReadingsFile::DisplaySinus(float initialAngle, float maxDetectorDistanceFr
 		(int)(maxDetectorDistanceFromCenter - 0.5f) : (int)(maxDetectorDistanceFromCenter + 0.5f);
 
     char zName[256];
-	sprintf_s (zName, 256, "%s_sl%d_fs%d_ang%.3f_max%d.xls", PrivateName(), 
+	sprintf_s (zName, 256, "%s_sl%d_fs%d_ang%.3f_max%d.xls", (const char*)PrivateName(), 
 		pPos->miSlice, pPos->miFFS, initialAngle, iMax);
     CLogFile logFile ("Readings_Sinus", zName);
     if (!logFile)
@@ -529,7 +529,7 @@ void CReadingsFile::DisplaySinus(float initialAngle, float maxDetectorDistanceFr
 		fprintf(log.mpf,"offsetToNextReading %d\n", offsetToNextReadingHeader);
 		unsigned long len = (unsigned long)CMyWindows::GetFileLength(msName);
 		fprintf(log.mpf,"\n");
-		fprintf(log.mpf,"File %s\n", msName);
+		fprintf(log.mpf,"File %s\n", (const char*)msName);
 		fprintf(log.mpf,"len                 %d\n", len);
 		fprintf(log.mpf,"nFarmes             %d\n", len / offsetToNextReadingHeader);
 		fprintf(log.mpf,"\n");
@@ -583,7 +583,7 @@ void CReadingsFile::DisplaySinus(float initialAngle, float maxDetectorDistanceFr
         if (nBytesRead != sizeof(value))
 		{
 			if (log)
-				fprintf(log.mpf,"ReadFile 2 failed, nRead %d / %d\n", (int)nBytesRead, sizeof(value));
+				fprintf(log.mpf,"ReadFile 2 failed, nRead %d / %d\n", (int)nBytesRead, (int)sizeof(value));
 			break;
 		}
 

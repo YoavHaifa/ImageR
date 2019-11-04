@@ -184,9 +184,9 @@ void CGraphicElementOnDR::Draw (CDC &dc)
 {
 	if (mpGE->mpfLog)
 	{
-		fprintf(mpGE->mpfLog,"<Draw> on %s\n", mpDR->Name());
+		fprintf(mpGE->mpfLog,"<Draw> on %s\n", (const char*)mpDR->Name());
 		if (mpDR->GetCurrentData())
-			fprintf(mpGE->mpfLog,"    Data %s\n", mpDR->GetCurrentData()->Name());
+			fprintf(mpGE->mpfLog,"    Data %s\n", (const char*)mpDR->GetCurrentData()->Name());
 		fflush(mpGE->mpfLog);
 	}
 	static int unDebug = 0;
@@ -423,7 +423,7 @@ void CGraphicElementOnDR::SaveState(CXMLDump & xmlDump)
 }
 void CGraphicElementOnDR::Print(FILE *pf)
 {
-	fprintf (pf, "<CGraphicElementOnDR::Print> %s nPoints %d\n", msName, mnPointsOnDR);
+	fprintf (pf, "<CGraphicElementOnDR::Print> %s nPoints %d\n", (const char*)msName, mnPointsOnDR);
     for (int i = 0; i < mnPointsOnDR; i++)
     {
         mapPointsOnDR[i]->Print(pf);

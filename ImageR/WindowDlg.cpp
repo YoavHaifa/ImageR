@@ -46,14 +46,14 @@ CWindowDlg::CWindowDlg(CMetaData* pData, CWindowParams* pWindParams)
 		mpfLog = CMyWindows::FOpenLogFile("WindowDlg", count++);
 		if (mpfLog)
 		{
-			fprintf(mpfLog, "<WindowDlg> %d %s - pWindParams %p\n", count, pWindParams->Name(), pWindParams);
+			fprintf(mpfLog, "<WindowDlg> %d %s - pWindParams %p\n", count, (const char*)pWindParams->Name(), pWindParams);
 			fprintf(mpfLog, "Saved Center %f Width %f\n", mSavedCenter, mSaveWidth);
 			if (mpWindowParams)
 			{
-				fprintf(mpfLog, "GUI Center %s Width %s\n", mpWindowParams->GetCenterText(), mpWindowParams->GetWidthText());
+				fprintf(mpfLog, "GUI Center %s Width %s\n", (const char*)mpWindowParams->GetCenterText(), (const char*)mpWindowParams->GetWidthText());
 				fprintf(mpfLog, "min %f max %f range %f\n", mpWindowParams->mMin, mpWindowParams->mMax, mpWindowParams->mRange);
 			}
-			fprintf(mpfLog, "pData %p %s\n", pData, pData->Name());
+			fprintf(mpfLog, "pData %p %s\n", pData, (const char*)pData->Name());
 			fprintf(mpfLog, "\n");
 			fflush(mpfLog);
 		}

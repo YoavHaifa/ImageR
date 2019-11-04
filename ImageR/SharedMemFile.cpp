@@ -57,9 +57,9 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 		if (mpfLog)
 		{
 			static int count = 0;
-			fprintf (mpfLog, "<CSharedMemFile::CSharedMemFile> %d %p %s\n", ++count, this, Name());
+			fprintf (mpfLog, "<CSharedMemFile::CSharedMemFile> %d %p %s\n", ++count, this, (const char*)Name());
 			fprintf (mpfLog, "mpHeader %p\n", mpHeader);
-			fprintf (mpfLog, "Position Name <%s>\n", sPositionName);
+			fprintf (mpfLog, "Position Name <%s>\n", (const char*)sPositionName);
 			if (mbBitVolume)
 				fprintf (mpfLog, "Bit Volume\n");
 		}
@@ -76,7 +76,7 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 		{
 			SetPositionLike(pData);
 			if (mpfLog)
-				fprintf (mpfLog, "Set Position Like <%s>\n", pData->Name());
+				fprintf (mpfLog, "Set Position Like <%s>\n", (const char*)pData->Name());
 		}
 	}
 	
@@ -87,7 +87,7 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 	{
 	    SetNewPosition("Shared", mpHeader->miFirst, mpHeader->miLast);
 		if (mpfLog)
-			fprintf (mpfLog, "Set Common Position\n", sPositionName);
+			fprintf (mpfLog, "Set Common Position\n", (const char*)sPositionName);
 		CPosition *pPosition = GetPosition();
 		if (pPosition)
 		{
@@ -95,7 +95,7 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 			if (pUser)
 			{
 				if (mpfLog)
-					fprintf (mpfLog, "First user of Position %p %s\n", pUser, pUser->Name());
+					fprintf (mpfLog, "First user of Position %p %s\n", pUser, (const char*)pUser->Name());
 				if (pUser->IsMultiDataFile())
 					mnLinesInMultiDataPage = pUser->GetNLinesInPage();
 				else if (pUser == this)
@@ -117,7 +117,7 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 					{
 						mnLinesInMultiDataPage = pOther->mnLinesInMultiDataPage;
 						if (mpfLog)
-							fprintf (mpfLog, "First User same class, pOther %p %s\n", pOther, pOther->Name());
+							fprintf (mpfLog, "First User same class, pOther %p %s\n", pOther, (const char*)pOther->Name());
 					}
 				}
 				if (pUser->GetPosition(1))
@@ -128,12 +128,12 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 			}
 		}
 		if (mpfLog)
-			fprintf (mpfLog, "Set Common Position <%s> (nLinesInMultiPage %d)\n", sPositionName, mnLinesInMultiDataPage);
+			fprintf (mpfLog, "Set Common Position <%s> (nLinesInMultiPage %d)\n", (const char*)sPositionName, mnLinesInMultiDataPage);
 	}
 	else if (sPositionName == "Shared2d" && mpHeader->mnImagesInRow > 1)
 	{
 		if (mpfLog)
-			fprintf (mpfLog, "Set 2D Positions\n", sPositionName);
+			fprintf (mpfLog, "Set 2D Positions\n", (const char*)sPositionName);
 
 		CPosition *pPosition = GetPositionByNameAndRange("Shared",
 			mpHeader->miFirst, mpHeader->miFirst + mpHeader->mnImagesInRow - 1);
@@ -143,7 +143,7 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 			0, max (0, mpHeader->mnPages / mpHeader->mnImagesInRow - 1));
 		SetPosition(pSecPos,1);
 		if (mpfLog)
-			fprintf (mpfLog, "pSecPos %p %s\n", pSecPos, pSecPos->Name());
+			fprintf (mpfLog, "pSecPos %p %s\n", pSecPos, (const char*)pSecPos->Name());
 	}
 	else
 	{
@@ -208,10 +208,10 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 	{
 		CPosition *pPos = GetPosition();
 		if (pPos)
-			fprintf(mpfLog, "Position %p %s\n", pPos, pPos->Name());
+			fprintf(mpfLog, "Position %p %s\n", pPos, (const char*)pPos->Name());
 		if (mpVolume)
-			fprintf(mpfLog, "Volume %s\n", mpVolume->Name());
-		fprintf (mpfLog, "<CSharedMemFile::CSharedMemFile> End %s\n\n", Name());
+			fprintf(mpfLog, "Volume %s\n", (const char*)mpVolume->Name());
+		fprintf (mpfLog, "<CSharedMemFile::CSharedMemFile> End %s\n\n", (const char*)Name());
 	}
 }
 
@@ -338,7 +338,7 @@ bool CSharedMemFile::DoUpdatePageData()
 	}
     if (mpfLog)
     {
-        fprintf (mpfLog, "\n<CSharedMemFile::DoUpdatePageData> %s %d\n", msName, count);
+        fprintf (mpfLog, "\n<CSharedMemFile::DoUpdatePageData> %s %d\n", (const char*)msName, count);
         if (mbBitVolume)
             fprintf (mpfLog, "Bit Volume: miCurrent %d\n", pPosition->miCurrent);
 		else if (mpVolume)
@@ -346,7 +346,7 @@ bool CSharedMemFile::DoUpdatePageData()
 			pPosition->miCurrent, pSecondPosition ? pSecondPosition->miCurrent : 0);
 
         fprintf (mpfLog, "<CSharedMemFile::DoUpdatePageData> %s mpMem %p\n", 
-            mpVolume ? mpVolume->msName : "", mpMem);
+            mpVolume ? (const char*)mpVolume->msName : "", mpMem);
         fflush (mpfLog);
     }
     if (!mpMem || !mbImageValid)
@@ -444,11 +444,11 @@ bool CSharedMemFile::ShouldUpdate(void)
     if (mbBitVolume)
     {
         if (mpfLog && umbDebugShouldUpdate)
-            fprintf (mpfLog, "<CSharedMemFile::ShouldUpdate> Bit Volume %s\n", msName);
+            fprintf (mpfLog, "<CSharedMemFile::ShouldUpdate> Bit Volume %s\n", (const char*)msName);
     }
 	if (mpHeader && mpfLog && (umDebug & 8))
 	{
-		fprintf (mpfLog, "<CSharedMemFile::ShouldUpdate> %s\n", msName);
+		fprintf (mpfLog, "<CSharedMemFile::ShouldUpdate> %s\n", (const char*)msName);
 		mpHeader->Print(mpfLog);
 	}
 
@@ -494,7 +494,7 @@ bool CSharedMemFile::UpdateColorer(CDisplayRectangle &displayRect)
     if (mbBitVolume)
     {
         if (pfLog)
-            fprintf (pfLog, "<CSharedMemFile::UpdateColorer> %s\n", msName);
+            fprintf (pfLog, "<CSharedMemFile::UpdateColorer> %s\n", (const char*)msName);
     }
     CMetaData *pData = displayRect.GetCurrentData();
 
@@ -504,16 +504,16 @@ bool CSharedMemFile::UpdateColorer(CDisplayRectangle &displayRect)
 		pfLog = umpfColorer;
 	}
 	if (pfLog)
-		fprintf (pfLog, "\n<CSharedMemFile::UpdateColorer> %s\n", msName);
+		fprintf (pfLog, "\n<CSharedMemFile::UpdateColorer> %s\n", (const char*)msName);
 
 	CPosition *pPosition = GetPosition();
     if (pData->GetPosition() != pPosition)
 	{
 		if (pfLog)
 		{
-			fprintf (pfLog, "Not Same Pos <%s> != ", pData->GetPosition()->Name());
+			fprintf (pfLog, "Not Same Pos <%s> != ", (const char*)pData->GetPosition()->Name());
 			if (pPosition)
-				fprintf (pfLog, "<%s>\n", pPosition->Name());
+				fprintf (pfLog, "<%s>\n", (const char*)pPosition->Name());
 			else
 				fprintf (pfLog, "NULL\n");
 		}

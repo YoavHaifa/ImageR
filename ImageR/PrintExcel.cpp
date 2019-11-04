@@ -62,7 +62,7 @@ void CPrintExcel::PrintFromFile (CMetaData &file, int nColsInFile, EMyImageDataT
 	unsigned short tUSh;
 
 	sprintf_s (zBuf, 256, "%s.col_%d_range_%d_%d_%d%s.xls",
-		file.PrivateName(), m_Position,
+		(const char*)file.PrivateName(), m_Position,
 		m_From, m_Till, m_Step,
 		m_SwapWords ? "_sw" : "");
 

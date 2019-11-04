@@ -94,7 +94,7 @@ bool CVolTissue::DoUpdatePageData()
     if (mpfLog)
     {
         fprintf (mpfLog, "<CVolTissue::DoUpdatePageData> %s n %d i %d\n", 
-            msName, n, miLastComputed);
+			(const char*)msName, n, miLastComputed);
         fprintf (mpfLog, "\n");
         fflush (mpfLog);
     }

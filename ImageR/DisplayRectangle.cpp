@@ -622,7 +622,7 @@ bool CDisplayRectangle::AddGraphicElement(CGraphicElement * pElement)
 	if (pElement->GetNPoints() < 1 && !pElement->mbContour)
 	{
 		char zBuf[128];
-		sprintf_s(zBuf,sizeof(zBuf),"<CDisplayRectangle::AddGraphicElement> %s with no points", pElement->Name());
+		sprintf_s(zBuf,sizeof(zBuf),"<CDisplayRectangle::AddGraphicElement> %s with no points", (const char*)pElement->Name());
 		CMyWindows::MessBox(zBuf, "SW Error");
 		return false;
 	}
@@ -811,7 +811,7 @@ void CDisplayRectangle::Paint(void)
 	}
 
 	if (mpfLog)
-		fprintf (mpfLog, "<Paint> %d data %s\n", mnPaint, mpCurrentData->Name());
+		fprintf (mpfLog, "<Paint> %d data %s\n", mnPaint, (const char*)mpCurrentData->Name());
 	if (left == right)
 	{
 		static int unErr = 0;
@@ -895,17 +895,17 @@ void CDisplayRectangle::ApplyColorer(CMetaData *pColorer, FILE *pfLog)
         if (pColorer->UpdateColorer(*this))
         {
 			if (pfLog)
-				fprintf (pfLog, "Colorer %s Average %f\n", pColorer->Name(), pColorer->Average());
+				fprintf (pfLog, "Colorer %s Average %f\n", (const char*)pColorer->Name(), pColorer->Average());
             UpdateColorRaster();
             pColorer->AdjustColors(*this);
 			if (pfLog)
-				fprintf (pfLog, "Colorer %s displayed\n", pColorer->Name());
+				fprintf (pfLog, "Colorer %s displayed\n", (const char*)pColorer->Name());
         }
 		else if (pfLog)
-			fprintf (pfLog, "Colorer %s UpdateColorer failed\n", pColorer->Name());
+			fprintf (pfLog, "Colorer %s UpdateColorer failed\n", (const char*)pColorer->Name());
     }
 	else if (pfLog)
-		fprintf (pfLog, "Colorer %s is not valid\n", pColorer->Name());
+		fprintf (pfLog, "Colorer %s is not valid\n", (const char*)pColorer->Name());
 }
 void CDisplayRectangle::ApplyColorers(void)
 {
@@ -923,7 +923,7 @@ void CDisplayRectangle::ApplyColorers(void)
 	if (mpCurrentData && !mpCurrentData->AllowColors())
 		return;
 	if (upf)
-		fprintf (upf, "<ApplyColorers> %d on %s\n", count, mpCurrentData->msName);
+		fprintf (upf, "<ApplyColorers> %d on %s\n", count, (const char*)mpCurrentData->msName);
 
     POSITION pos = mColorersList.GetHeadPosition();
     while (pos)
@@ -932,7 +932,7 @@ void CDisplayRectangle::ApplyColorers(void)
 		if (!pColorer->IsOnTop())
 		{
 			if (upf)
-				fprintf (upf, "Background Colorer %s\n", pColorer->msName);
+				fprintf (upf, "Background Colorer %s\n", (const char*)pColorer->msName);
 			ApplyColorer(pColorer, upf);
 		}
     }
@@ -941,7 +941,7 @@ void CDisplayRectangle::ApplyColorers(void)
     {
         CMetaData *pColorer = gScreens.mGlobalColorersList.GetNext(pos);
 		if (upf)
-			fprintf (upf, "Global Colorer %s\n", pColorer->msName);
+			fprintf (upf, "Global Colorer %s\n", (const char*)pColorer->msName);
 		ApplyColorer(pColorer, upf);
     }
     pos = mColorersList.GetHeadPosition();
@@ -951,13 +951,13 @@ void CDisplayRectangle::ApplyColorers(void)
 		if (pColorer->IsOnTop())
 		{
 			if (upf)
-				fprintf (upf, "Top Colorer %s\n", pColorer->msName);
+				fprintf (upf, "Top Colorer %s\n", (const char*)pColorer->msName);
 			ApplyColorer(pColorer, upf);
 		}
     }
 	if (upf)
 	{
-		fprintf (upf, "<ApplyColorers> %d on %s End\n\n", count, mpCurrentData->msName);
+		fprintf (upf, "<ApplyColorers> %d on %s End\n\n", count, (const char*)mpCurrentData->msName);
 		fclose(upf);
 		upf = NULL;
 		CSharedMemFile::SetColorerDebugLog(NULL);
@@ -1040,7 +1040,7 @@ void CDisplayRectangle::PrintStatusBar(CDRCoordinates drCoo)
 
     if (!gScreens.mbEbwMode && pDataForDisplay->GetPosition())
     {
-        sprintf_s(zBuf, 128, "%s %s", pDataForDisplay->GetPageText(), pDataForDisplay->GetPosition()->GetText());
+        sprintf_s(zBuf, 128, "%s %s", (const char*)pDataForDisplay->GetPageText(), (const char*)pDataForDisplay->GetPosition()->GetText());
         gScreens.PrintStatusInBar (CScreens::SBAR_PAGE, zBuf);
     }
 
@@ -1590,7 +1590,7 @@ bool CDisplayRectangle::DeleteText(const char * zPrefix)
 void CDisplayRectangle::DisplayTextItem(CDRText *pText, CDC * pDC)
 {
 	if (mpfLog && umDebugText)
-		fprintf(mpfLog,"<DisplayTextItem> text is <%s>\n", pText->msText);
+		fprintf(mpfLog,"<DisplayTextItem> text is <%s>\n", (const char*)pText->msText);
 	if (pText->msText.IsEmpty())
 		return;
 
@@ -1653,7 +1653,7 @@ void CDisplayRectangle::DisplayTextItem(CDRText *pText, CDC * pDC)
 
     pDC->DrawText(sText, rect, 0);
 	if (mpfLog && umDebugText)
-		fprintf(mpfLog,"<DisplayTextItem> Drawt Text <%s>\n", sText);
+		fprintf(mpfLog,"<DisplayTextItem> Drawt Text <%s>\n", (const char*)sText);
 }
 void CDisplayRectangle::DisplayTitleText(CDC * pDC, const char *zText)
 {
@@ -1670,7 +1670,7 @@ void CDisplayRectangle::DisplayTitleText(CDC * pDC, const char *zText)
     pDC->DrawText(sText, rect, 0);
 	mnTitleLinesDisplayed++;
 	if (mpfLog && umDebugText)
-		fprintf(mpfLog,"<DisplayTitleText> %d <%s>\n", mnTitleLinesDisplayed, sText);
+		fprintf(mpfLog,"<DisplayTitleText> %d <%s>\n", mnTitleLinesDisplayed, (const char*)sText);
 }
 bool CDisplayRectangle::DisplayTextOfCurrentImage(CDC * pDC)
 {
@@ -1764,7 +1764,7 @@ bool CDisplayRectangle::DisplayText(CDC * pDC)
 		if (!pDataTextList->IsEmpty())
 		{
 			if (mpfLog && umDebugText)
-				fprintf(mpfLog,"pDataTextList %d items\n", pDataTextList->GetSize());
+				fprintf(mpfLog,"pDataTextList %d items\n", (int)pDataTextList->GetSize());
 			pos = pDataTextList->GetHeadPosition();
 			while (pos)
 			{
@@ -1843,7 +1843,7 @@ void CDisplayRectangle::UpdateDataCheck(void)
 	if (mpCurrentData)
 	{
 		if (mpfLog)
-			fprintf(mpfLog,"<UpdateDataCheck> %s\n", mpCurrentData->Name());
+			fprintf(mpfLog,"<UpdateDataCheck> %s\n", (const char*)mpCurrentData->Name());
 
 		unsigned long updateId = mpCurrentData->miUpdate;
 		mpCurrentData->UpdatePageData ();

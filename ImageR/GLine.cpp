@@ -350,7 +350,7 @@ void CGLine::PrintInfo(CMetaData *pData)
 		CString sStat;
 		mbDisplayStatisticsOnStatusBar = true;
 		if (GetStatisticsString(pData, sStat, NULL))
-			fprintf(fLog.mpf, "%s\n\n", sStat);
+			fprintf(fLog.mpf, "%s\n\n", (const char*)sStat);
 
 		int nPoints = 0;
 		float dx = pTailCoo->fx - pHeadCoo->fx;
@@ -413,7 +413,7 @@ void CGLine::PrintInfo(CMetaData *pData)
 		}
 
 		if (logXls)
-			fprintf(fLog.mpf,"\nFor Displaying Value's Grap Open: %s\n", logXls.Name());
+			fprintf(fLog.mpf,"\nFor Displaying Value's Grap Open: %s\n", (const char*)logXls.Name());
 	}
 	CMyWindows::CreateProcess("NotePad",sfName);
 }

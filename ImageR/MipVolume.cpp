@@ -122,7 +122,7 @@ bool CMipVolume::DoUpdatePageData()
         //    mpPosition->miCurrent, pageOffset);
         fprintf (umpfLog, "pVolHeader %p\n", pVolume->GetHeader());
 		if (mTissuesToRemove.GetSize() > 0)
-			fprintf (umpfLog, "Remove: %s\n", mTissuesToRemove.GetHead()->msName);
+			fprintf (umpfLog, "Remove: %s\n", (const char*)mTissuesToRemove.GetHead()->msName);
     }
     for (int iMipLine = 0; iMipLine < nLinesToCompute; iMipLine++)
     {

@@ -229,7 +229,7 @@ void CMetaData::PrintId(FILE * pf, const char * zText)
         fprintf (pf, "%s ", zText);
 	fprintf (pf, "File <%s>", z_name());
     if (HasFileType())
-	    fprintf (pf, " Type <%s>", FileType());
+	    fprintf (pf, " Type <%s>", (const char*)FileType());
 	fprintf (pf, "\n");
 }
 float CMetaData::Min ()
@@ -387,7 +387,7 @@ bool CMetaData::UpdatePageData()
 		if (!unWarnings++)
 		{
 			char zBuf[256];
-			sprintf_s(zBuf,sizeof(zBuf),"nLines %d nCols %d - %s", mnLinesInPage, mnCols, Name());
+			sprintf_s(zBuf,sizeof(zBuf),"nLines %d nCols %d - %s", mnLinesInPage, mnCols, (const char*)Name());
 			CMyWindows::MessBox(zBuf,"Warning: No Data to Display");
 		}
 		return false; 
@@ -397,7 +397,7 @@ bool CMetaData::UpdatePageData()
     if (mnCols < 0 || mnCols > 10000)
     {
         char zBuf[256];
-        sprintf_s (zBuf, 256, "%s\n mnCols %d", msName, mnCols);
+        sprintf_s (zBuf, 256, "%s\n mnCols %d", (const char*)msName, mnCols);
         MessageBox (NULL, zBuf, "Error", MB_OK);
         return false;
     }
@@ -509,10 +509,10 @@ bool CMetaData::UpdatePageData()
 					{
 						char zBuf[256];
 						if (sum > 0.001f || sum < -0.001f)
-							sprintf_s (zBuf, sizeof(zBuf), "%s\n%d pixels read, sum %f", msName, 
+							sprintf_s (zBuf, sizeof(zBuf), "%s\n%d pixels read, sum %f", (const char*)msName, 
 								mpTypedData->mnSummed, sum);
 						else
-							sprintf_s (zBuf, sizeof(zBuf), "%s\n%d pixels read, sum %.12f", msName, 
+							sprintf_s (zBuf, sizeof(zBuf), "%s\n%d pixels read, sum %.12f", (const char*)msName, 
 								mpTypedData->mnSummed, sum);
 						CString sWarning(zBuf);
 						if (mpTypedData->mnNan > 0)
@@ -533,7 +533,7 @@ bool CMetaData::UpdatePageData()
         {
             fprintf (mpfLog, "<CMetaData::UpdatePageData> %s\n", 
                 (const char *)msName);
-            fprintf (mpfLog, "%s\n", mpTypedData->GetRangeAndAverageText());
+            fprintf (mpfLog, "%s\n", (const char*)mpTypedData->GetRangeAndAverageText());
             fprintf (mpfLog, "\n");
             fflush (mpfLog);
         }
@@ -563,7 +563,7 @@ bool CMetaData::DoUpdatePageData()
 	if (!unWarning++)
 	{
 		char zBuf[256];
-		sprintf_s(zBuf,sizeof(zBuf),"Class <%s> should implement \"DoUpdatePageData()\" to see data", GetClass());
+		sprintf_s(zBuf,sizeof(zBuf),"Class <%s> should implement \"DoUpdatePageData()\" to see data", (const char*)GetClass());
 		CMyWindows::MessBox(zBuf, "SW Warning");
 	}
     if (mpPageData)
@@ -576,7 +576,7 @@ bool CMetaData::DoLoadVolume()
 	if (!unWarning++)
 	{
 		char zBuf[256];
-		sprintf_s(zBuf,sizeof(zBuf),"Class <%s> should implement \"DoLoadVolume()\" to see volumetric data", GetClass());
+		sprintf_s(zBuf,sizeof(zBuf),"Class <%s> should implement \"DoLoadVolume()\" to see volumetric data", (const char*)GetClass());
 		CMyWindows::MessBox(zBuf, "SW Warning");
 	}
     if (mpPageData)
@@ -707,7 +707,7 @@ void CMetaData::OnFillZoomedRasterError(const char *zText)
     if (!nErrors++)
     {
         char zBuf[256];
-        sprintf_s (zBuf, 256, "Fill Zoomed Raster Error: %s\n%s", zText, msName);
+        sprintf_s (zBuf, 256, "Fill Zoomed Raster Error: %s\n%s", zText, (const char*)msName);
         MessageBox(NULL, zBuf, msName, MB_OK);
     }
 }
@@ -1297,7 +1297,7 @@ void CMetaData::AdjustColors(CDisplayRectangle &dr)
     COLORREF *pColors = colorRaster.GetData();
 	if (mpfLog)
 		fprintf (mpfLog, "<CMetaData::AdjustColors> %s type %d color %x %s\n", 
-		Name(), mDataType, mColor, mbTransparent ? "Transparent" : "");
+		(const char*)Name(), mDataType, mColor, mbTransparent ? "Transparent" : "");
 
     float *pColorerData = mpZoomedRasterFloat->GetData();
 	if (mDataType == DATA_TYPE_RGB)
@@ -1344,7 +1344,7 @@ void CMetaData::AdjustColors(CDisplayRectangle &dr)
 		colorRaster.Dump();
 	if (mpfLog)
 		fprintf (mpfLog, "<CMetaData::AdjustColors> End %s type %d color %x %s\n", 
-		Name(), mDataType, mColor, mbTransparent ? "Transparent" : "");
+		(const char*)Name(), mDataType, mColor, mbTransparent ? "Transparent" : "");
 }
 bool CMetaData::ComputeStatistics(CTImage<bool> &mask, SStatistics &oStat)
 {
@@ -1482,7 +1482,7 @@ void CMetaData::AttachToSharedVolume(CFileMapping * pMapping)
 {
     if (mpfLog)
     {
-        fprintf (mpfLog, "<CMultiFile::AttachToSharedVolume> %s\n", msName);
+        fprintf (mpfLog, "<CMultiFile::AttachToSharedVolume> %s\n", (const char*)msName);
         fflush (mpfLog);
     }
 
@@ -1554,7 +1554,7 @@ void CMetaData::DumpAllPageData(const char *zUserName)
 		CMyWindows::PrintStatus(zBuf);
 	} 
 	fclose (pf);
-	sprintf_s(zBuf, "%d slices saved to file <%s>", nSaved, sName);
+	sprintf_s(zBuf, "%d slices saved to file <%s>", nSaved, (const char*)sName);
 	CMyWindows::MessBox(zBuf, "Dump Finished");
 }
 void CMetaData::DumpAllPageDataCoronals(const char *zUserName)
@@ -1610,7 +1610,7 @@ void CMetaData::DumpAllPageDataCoronals(const char *zUserName)
 		CMyWindows::PrintStatus(zBuf);
 	} 
 	fclose (pf);
-	sprintf_s(zBuf, "%d slices saved to file <%s>", nSaved, sName);
+	sprintf_s(zBuf, "%d slices saved to file <%s>", nSaved, (const char*)sName);
 	CMyWindows::MessBox(zBuf, "Dump Finished");
 }
 void CMetaData::DumpAllPageDataCoronalsMultiFile(const char *zUserName)
@@ -1672,7 +1672,7 @@ void CMetaData::DumpAllPageDataCoronalsMultiFile(const char *zUserName)
 	for (int i = 0; i < nFiles; i++)
 		fclose(paFiles[i]);
 	delete paFiles;
-	sprintf_s(zBuf, "%d slices saved to %d files <%s>", nSaved, nFiles, sName);
+	sprintf_s(zBuf, "%d slices saved to %d files <%s>", nSaved, nFiles, (const char*)sName);
 	CMyWindows::MessBox(zBuf, "Dump Finished");
 }
 void CMetaData::DumpSlice(bool bAll, bool bUncompressDicom)
@@ -1767,7 +1767,7 @@ void CMetaData::DumpSlicesSubSet()
 		} 
 	}
 	fclose (pf);
-	sprintf_s(zBuf, "%d slices saved to file <%s>", nSaved, sName);
+	sprintf_s(zBuf, "%d slices saved to file <%s>", nSaved, (const char*)sName);
 	CMyWindows::MessBox(zBuf, "Dump Finished");
 }
 void CMetaData::DumpCoronals(void)
@@ -2028,11 +2028,11 @@ void CMetaData::PrintFromAllDicom(void)
 					CString sVal = pDicom->GetTextField(tag);
 					if (sVal.IsEmpty())
 						sVal = "NULL";
-					fprintf(fLog.mpf, "%s\t", sVal);
+					fprintf(fLog.mpf, "%s\t", (const char*)sVal);
 				}
 			}
 
-			fprintf(fLog.mpf, "%s", Name());
+			fprintf(fLog.mpf, "%s", (const char*)Name());
 			fprintf(fLog.mpf, "\n");
 		}
 		while (!namesList.IsEmpty())
@@ -2292,14 +2292,14 @@ void CMetaData::PrintValue2Excel(FILE *pf, int iLine, int iCol)
 	{
 		CString s(mpTypedData->Value2s(mpPageData->GetDataStart(), mnCols, iLine, iCol,
 			mRescaleSlope, mRescaleIntercept));
-		fprintf(pf,"%s\t",s);
+		fprintf(pf,"%s\t",(const char*)s);
 	}
 	else
 		fprintf(pf,"=?=\t");
 }
 void CMetaData::PrintExcelHeader(FILE *pf)
 {
-	fprintf(pf,"%s\t", Name());
+	fprintf(pf,"%s\t", (const char*)Name());
 }
 void CMetaData::PrintCsvHeader(CCsvFile &csv)
 {

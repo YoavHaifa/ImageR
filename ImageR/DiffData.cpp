@@ -395,11 +395,11 @@ void CDiffData::ReportTypeError(void)
 		char zBuf[128];
 		if (meDataTypePlus == meDataTypeMinus)
 			sprintf_s(zBuf,sizeof(zBuf),"<CDiffData::DoUpdatePageData> type %d %s diff is not supported", 
-				meDataTypePlus, CMyImage::GetDataTypeString(meDataTypePlus));
+				meDataTypePlus, (const char*)CMyImage::GetDataTypeString(meDataTypePlus));
 		else
 			sprintf_s(zBuf,sizeof(zBuf),"<CDiffData::DoUpdatePageData> type %d %s vs %d %s diff is not supported", 
-				meDataTypePlus, CMyImage::GetDataTypeString(meDataTypePlus),
-				meDataTypeMinus, CMyImage::GetDataTypeString(meDataTypeMinus)
+				meDataTypePlus, (const char*)CMyImage::GetDataTypeString(meDataTypePlus),
+				meDataTypeMinus, (const char*)CMyImage::GetDataTypeString(meDataTypeMinus)
 				);
 		CMyWindows::MessBox(zBuf,"Warning");
 	}
@@ -855,8 +855,8 @@ bool CDiffData::FindBestFit(void)
 
 	if (log)
 	{
-		fprintf(log.mpf,"First %s pos %d\n", pFirstData->Name(), pFirstPos->miCurrent);
-		fprintf(log.mpf,"Second %s pos %d\n", pSecData->Name(), pSecPos->miCurrent);
+		fprintf(log.mpf,"First %s pos %d\n", (const char*)pFirstData->Name(), pFirstPos->miCurrent);
+		fprintf(log.mpf,"Second %s pos %d\n", (const char*)pSecData->Name(), pSecPos->miCurrent);
 		fprintf(log.mpf,"\n");
 	}
 	pSecPos->SaveCurrentPosition();
