@@ -286,7 +286,7 @@ bool CGLine::GetStatisticsString(CMetaData *pData, CString &sValue, class CGraph
 		float dy = headCoo.fy - tailCoo.fy;
 		dx *= pData->MmPerPixelWidth();
 		dy *= pData->MmPerPixelHeight();
-		dist = sqrt(dx * dx + dy * dy);
+		dist = sqrtf(dx * dx + dy * dy);
 	}
 
 	char zBuf[256];

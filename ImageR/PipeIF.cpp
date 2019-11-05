@@ -360,7 +360,7 @@ bool CPipeIF::WaitPrep(void)
     }
     if (mpfLog)
     {
-        fprintf (mpfLog, "10M arrived? %d\n", len);
+        fprintf (mpfLog, "10M arrived? %I64d\n", len);
         fflush (mpfLog);
     }
     FILE *pf = MyFOpen (msNextImageName, "rb");

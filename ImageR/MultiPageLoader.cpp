@@ -42,7 +42,7 @@ bool CMultiPageLoader::AllocateImages(void)
 {
 	char zBuf[128];
 
-	int n = mImages.GetSize();
+	int n = (int)mImages.GetSize();
 	while (mImages.GetSize() < mnWanted)
 	{
 		CFileName fName(mpData->msName);

@@ -173,7 +173,7 @@ bool CGraphicElementOnDR::ComputePointsScreenPosition (void)
         bOnRect |= mapPointsOnDR[i]->mbOnRect;
 		if (mpGE->mpfLog && (umDebug & 0x100))
 		{
-			fprintf(mpGE->mpfLog,"<ComputePointsScreenPosition> %d: (x %.2f, y %.2f) --> (x %d, y %d)\n", 
+			fprintf(mpGE->mpfLog,"<ComputePointsScreenPosition>: (x %.2f, y %.2f) --> (x %d, y %d)\n", 
 				mapPointsOnDR[i]->mpData->fx, mapPointsOnDR[i]->mpData->fy,
 				mapPointsOnDR[i]->x, mapPointsOnDR[i]->y);
 		}

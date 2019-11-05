@@ -537,9 +537,9 @@ void CSinograms::ComputeSinogramFromCols(float * pSinogram, float theta)
     if (mbPrint)
         fprintf (mpfLog, "\n <CSinograms::ComputeSinogramFromCols> %d  theta %f\n", mCount, theta);
 
-    float dsdx = cos(theta);
+    float dsdx = cosf(theta);
 //    float dxds = (float)(1.0f / dsdx);
-    float dsdy = sin(theta);
+    float dsdy = sinf(theta);
     float dyds = (float)(1.0f / dsdy);
 
     float dxdy = (float)tan(theta);

@@ -566,7 +566,7 @@ void CReadingsFile::DisplaySinus(float initialAngle, float maxDetectorDistanceFr
 		liOffsetValue.QuadPart += offsetToSliceInReading;
 
 		float angle = initialAngle + iRead * deltaAngle;
-		float angSin = sin(angle);
+		float angSin = sinf(angle);
 		float xForLine = centralDetector + angSin * maxDetectorDistanceFromCenter;
 		int iDet = (int)(xForLine + 0.5f);
 		liOffsetValue.QuadPart += iDet * sizeof(short);

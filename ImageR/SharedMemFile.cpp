@@ -87,7 +87,7 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 	{
 	    SetNewPosition("Shared", mpHeader->miFirst, mpHeader->miLast);
 		if (mpfLog)
-			fprintf (mpfLog, "Set Common Position\n", (const char*)sPositionName);
+			fprintf (mpfLog, "Set Common Position %s\n", (const char*)sPositionName);
 		CPosition *pPosition = GetPosition();
 		if (pPosition)
 		{
@@ -133,7 +133,7 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 	else if (sPositionName == "Shared2d" && mpHeader->mnImagesInRow > 1)
 	{
 		if (mpfLog)
-			fprintf (mpfLog, "Set 2D Positions\n", (const char*)sPositionName);
+			fprintf (mpfLog, "Set 2D Positions %s\n", (const char*)sPositionName);
 
 		CPosition *pPosition = GetPositionByNameAndRange("Shared",
 			mpHeader->miFirst, mpHeader->miFirst + mpHeader->mnImagesInRow - 1);
