@@ -63,14 +63,14 @@ void CMip::OnAssignDR (void)
 	UpdateRefToImagePos();
     if (umpfLog && pRefData)
     {
-        fprintf (umpfLog, "<OnAssignDR> this %p name %s mpVolumeData %s\n", this, msName, pRefData->msName);
+        fprintf (umpfLog, "<OnAssignDR> this %p name %s mpVolumeData %s\n", this, (const char*)msName, (const char*)pRefData->msName);
         fprintf (umpfLog, "<OnAssignDR> pDataCoo %p\n", pDataCoo);
         fprintf (umpfLog, "<OnAssignDR> mbDisableStateRestore %d\n", (int)mpDR->mbDisableStateRestore);
-        fprintf (umpfLog, "<OnAssignDR> Volume Data Class %s\n", pRefData->GetClass());
+        fprintf (umpfLog, "<OnAssignDR> Volume Data Class %s\n", (const char*)pRefData->GetClass());
 		if (pRefData->GetVolume())
-			fprintf (umpfLog, "<OnAssignDR> Volume Class %s\n", pRefData->GetVolume()->GetClass());
+			fprintf (umpfLog, "<OnAssignDR> Volume Class %s\n", (const char*)pRefData->GetVolume()->GetClass());
         fprintf (umpfLog, "<OnAssignDR> umpRefToImage %p\n", umpRefToImage);
-        fprintf (umpfLog, "<OnAssignDR> umpRefToImage name %s\n", umpRefToImage->msName);
+        fprintf (umpfLog, "<OnAssignDR> umpRefToImage name %s\n", (const char*)umpRefToImage->msName);
         fprintf (umpfLog, "\n");
         fflush (umpfLog);
     }

@@ -17,7 +17,7 @@
 #include "MipVolume.h"
 #include "MultiDataFile.h"
 #include "HybridFile.h"
-#include <typeinfo.h>
+#include <typeinfo>
 #include "SharedMemFile.h"
 #include "MipShared.h"
 #include "..\..\ImageRLib\FileMapping.h"
@@ -114,7 +114,7 @@ bool CFileFactory::CreateAndDisplayFileObject(const char * zfName, bool bNewDisp
         if (pData->IsColorer())
         {
             if (mpfLog)
-				fprintf (mpfLog, "<CFileFactory::CreateAndDisplayFileObject> AddGlobalColorer %s\n", pData->Name());
+				fprintf (mpfLog, "<CFileFactory::CreateAndDisplayFileObject> AddGlobalColorer %s\n", (const char*)pData->Name());
             gScreens.AddGlobalColorer(pData);
             if (pData->GetVolume())
             {
@@ -137,7 +137,7 @@ bool CFileFactory::CreateAndDisplayFileObject(const char * zfName, bool bNewDisp
                             pMipVolume->AddTissue(pTissue);
 							if (mpfLog)
 								fprintf (mpfLog, "<CFileFactory::CreateAndDisplayFileObject> Add VolTissue %s to %s\n", 
-								pTissue->Name(), pData->Name());
+								(const char*)pTissue->Name(), (const char*)pData->Name());
 						}
                     }
                 }
@@ -214,7 +214,7 @@ CMetaData * CFileFactory::TryCreateMemFileObject(const char * zfName)
     if (patternLen > 0)
     {
         if (mpfLog)
-            fprintf (mpfLog, "<CFileFactory::TryCreateMemFileObject> sPattern %s\n", sPattern);
+            fprintf (mpfLog, "<CFileFactory::TryCreateMemFileObject> sPattern %s\n", (const char*)sPattern);
         CList<class CMetaData*,class CMetaData*> dataList;
         gScreens.ListData(dataList);
         POSITION pos = dataList.GetHeadPosition();
@@ -230,7 +230,7 @@ CMetaData * CFileFactory::TryCreateMemFileObject(const char * zfName)
             if (sName.Left(patternLen) == sPattern)
             {
 				if (mpfLog)
-					fprintf (mpfLog, "Check data FIT %s\n", sName);
+					fprintf (mpfLog, "Check data FIT %s\n", (const char*)sName);
 				if (bColorer)
 				{
 					CMetaData * pColorer = new CSharedMemFile (pMapping, pData);
@@ -242,12 +242,12 @@ CMetaData * CFileFactory::TryCreateMemFileObject(const char * zfName)
                 mbFileCreatedAndUsed = true;
 				if (mpfLog)
 					fprintf (mpfLog, "<CFileFactory::TryCreateMemFileObject> AttachToSharedVolume %s\n\n", 
-						sName);
+						(const char*)sName);
                 return NULL;
             }
 			else
 				if (mpfLog)
-					fprintf (mpfLog, "Check data SKIP %s\n", sName);
+					fprintf (mpfLog, "Check data SKIP %s\n", (const char*)sName);
         }
     }
 
@@ -361,7 +361,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
     if (!pf)
     {
         if (mpfLog)
-            fprintf (mpfLog, "<TryCreateFileObject> failed to open %s\n", msFileName);
+            fprintf (mpfLog, "<TryCreateFileObject> failed to open %s\n", (const char*)msFileName);
         return NULL;
     }
     fclose (pf);
@@ -394,11 +394,11 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
             if (!sData.IsEmpty())
 			{
 				if (mpfLog)
-					fprintf (mpfLog, "<CFileFactory::TryCreateFileObject> look for data %s\n", sData);
+					fprintf (mpfLog, "<CFileFactory::TryCreateFileObject> look for data %s\n", (const char*)sData);
                 pDR = gScreens.GetRectangleWithData(sData);
 				if (!pDR && mpfLog)
 				{
-					fprintf (mpfLog, "<CFileFactory::TryCreateFileObject> ERROR: Failed to find %s\n\n", sData);
+					fprintf (mpfLog, "<CFileFactory::TryCreateFileObject> ERROR: Failed to find %s\n\n", (const char*)sData);
 				}
 			}
             if (!pDR)
@@ -586,7 +586,7 @@ void CFileFactory::CreateFiles(const char * zFilesFileName)
         {
             if (mpfLog)
             {
-                fprintf (mpfLog, "<CFileFactory::CreateFiles> %s\n", sfName);
+                fprintf (mpfLog, "<CFileFactory::CreateFiles> %s\n", (const char*)sfName);
                 fflush (mpfLog);
             }
         }

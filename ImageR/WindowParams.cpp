@@ -36,7 +36,7 @@ CWindowParams::CWindowParams(class CMetaData *pData, bool bSetFocus)
 	if (umpfLog)
 	{
 		fprintf(umpfLog,"<CWindowParams> pData %p %s focus %d\n", 
-			pData, pData ? pData->msName : "", (int)bSetFocus);
+			pData, pData ? (const char*)pData->msName : "", (int)bSetFocus);
 		fflush(umpfLog);
 	}
     if (!ReadInitialWindowFromRegistry(pData))
@@ -106,7 +106,7 @@ CString CWindowParams::GetLowText ()
 		CString sNew = Value2StringByScale (low, bUseInt);
 		if (sNew != sLast)
 		{
-			fprintf(umpfLog,"<GetLowText> %s\n", sNew);
+			fprintf(umpfLog,"<GetLowText> %s\n", (const char*)sNew);
 			sLast = sNew;
 		}
 	}
@@ -125,7 +125,7 @@ CString CWindowParams::GetHighText ()
 		CString sNew = Value2StringByScale (high, bUseInt);
 		if (sNew != sLast)
 		{
-			fprintf(umpfLog,"<GetHighText> %s\n", sNew);
+			fprintf(umpfLog,"<GetHighText> %s\n", (const char*)sNew);
 			sLast = sNew;
 		}
 	}
@@ -245,7 +245,7 @@ bool CWindowParams::SetAutoFocus(CMetaData *pData)
 	if (umpfLog)
 	{
 		fprintf(umpfLog,"<SetAutoFocus> pData %p %s ready %s\n", 
-			pData, pData ? pData->msName : "", pData->ReadyForWindowFocus() ? "Yes" : "No");
+			pData, pData ? (const char*)pData->msName : "", pData->ReadyForWindowFocus() ? "Yes" : "No");
 		fflush(umpfLog);
 	}
     if (!pData->ReadyForWindowFocus())
@@ -509,7 +509,7 @@ void CWindowParams::DebugPrint(const char *zText)
 {
 	if (!umpfLog)
 		return;
-	fprintf(umpfLog,"<CWindowParams::DebugPrint> %s %d: %s\n", msName, mUId, zText);
+	fprintf(umpfLog,"<CWindowParams::DebugPrint> %s %d: %s\n", (const char*)msName, mUId, zText);
 
 	fprintf(umpfLog,"C %12f  -  W %12f  -  [%8.3f - %8.3f] range %.3f %s\n", mCenter, mWidth, mMin, mMax, mRange,
 		mbExternalRangeSet ? "Ext Range Set" : "");

@@ -82,7 +82,7 @@ bool CGCursor::GetStatisticsString(CMetaData *pData, CString &sValue, class CGra
 		float save = value;
 		value = pGEOnDR->GetDataValue(pData, 0);
 		if (mpfLog)
-			fprintf(mpfLog,"DISPLAY ON NON-OROGINAL DATA %s, value %f --> %f\n\n", pData->Name(), save, value);
+			fprintf(mpfLog,"DISPLAY ON NON-OROGINAL DATA %s, value %f --> %f\n\n", (const char*)pData->Name(), save, value);
 	}
 
 	value = pData->Rescale(value);
@@ -101,7 +101,7 @@ bool CGCursor::GetStatisticsString(CMetaData *pData, CString &sValue, class CGra
     sValue = zBuf;
 	if (mpfLog)
 	{
-		fprintf(mpfLog,"<GetStatisticsString> (fx %.2f fy %.2f) %s\n", pDataCoo->fx, pDataCoo->fy, sValue);
+		fprintf(mpfLog,"<GetStatisticsString> (fx %.2f fy %.2f) %s\n", pDataCoo->fx, pDataCoo->fy, (const char*)sValue);
 		fflush(mpfLog);
 	}
     return true;

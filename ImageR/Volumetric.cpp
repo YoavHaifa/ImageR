@@ -52,7 +52,7 @@ bool CVolumetric::VerifyMmPerPixelPage(void)
         mbSliceIncrementInitialized = true;
         if (mpfLog)
             fprintf (mpfLog, "<CVolumetric::VerifyMmPerPixelPage> %s volData %s mMmPerPixelHeight %f\n",
-                msName, mpVolumeData->msName, mMmPerPixelHeight);
+			(const char*)msName, (const char*)mpVolumeData->msName, mMmPerPixelHeight);
         return true;
     }
     return false;

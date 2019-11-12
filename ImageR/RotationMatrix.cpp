@@ -156,7 +156,7 @@ void CRotationMatrix3::SetRandom(double dMin, double dMax)
 }
 void CRotationMatrix3::Print(FILE *pf)const
 {
-	fprintf(pf, "<CRotationMatrix3> %s\n", msName);
+	fprintf(pf, "<CRotationMatrix3> %s\n", (const char*)msName);
 	for (int iRow = 0; iRow < 3; iRow++)
 	{
 		for (int iCol = 0; iCol < 3; iCol++)
@@ -311,7 +311,7 @@ double CRotationMatrix4::MaxDiff(const CRotationMatrix4 &other)
 }
 void CRotationMatrix4::Print(FILE *pf)const
 {
-	fprintf(pf, "<CRotationMatrix4> %s\n", msName);
+	fprintf(pf, "<CRotationMatrix4> %s\n", (const char*)msName);
 	for (int iRow = 0; iRow < 4; iRow++)
 	{
 		for (int iCol = 0; iCol < 4; iCol++)

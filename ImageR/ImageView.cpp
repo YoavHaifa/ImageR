@@ -170,7 +170,7 @@ bool CImageView::SetDisplayFiles(void)
 		{
 			if (mpfLog)
 			{
-				fprintf (mpfLog, "<SetDisplayFiles> %s\n", sName);
+				fprintf (mpfLog, "<SetDisplayFiles> %s\n", (const char*)sName);
 				fflush(mpfLog);
 			}
 			bool bOK = false;
@@ -1768,7 +1768,7 @@ void CImageView::OnDicomPrint()
 		else
 		{
 			char zBuf[512];
-			sprintf_s(zBuf,512,"No DICOM data found for <%s>", pData->Name());
+			sprintf_s(zBuf,512,"No DICOM data found for <%s>", (const char*)pData->Name());
 			CMyWindows::MessBox(zBuf,"Notice");
 		}
 	}
@@ -1991,7 +1991,7 @@ void CImageView::OnDicomDate()
     {
         char zBuf[512];
         sprintf_s (zBuf, 512, "Image: %s\nNew Date %s\nAre you sure you want to changed data for %d images?",
-            pData->msName, sDate, pData->GetNPages());
+            (const char*)pData->msName, (const char*)sDate, pData->GetNPages());
         int rc = MessageBox(zBuf, "Change Dicom Date Confirmation", MB_OKCANCEL);
         if (rc == IDOK)
         {
@@ -2018,7 +2018,7 @@ void CImageView::OnLoadToCurrentDR(void)
     count++;
     char zName[128];
 	sprintf_s (zName, 128, "%s\\take.%d.Graphic.xml", 
-		CMyWindows::GetLogDir("ImageRInput"), count);
+		(const char*)CMyWindows::GetLogDir("ImageRInput"), count);
     AddFile(zName);
 }
 

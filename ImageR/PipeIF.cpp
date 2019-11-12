@@ -38,7 +38,7 @@ bool CPipeIF::GetFirstFileName (CString &sName)
     mFilesList.RemoveHead();
     if (mpfLog)
     {
-        fprintf (mpfLog, "<GetFirstFileName> %s\n", sName);
+        fprintf (mpfLog, "<GetFirstFileName> %s\n", (const char*)sName);
         fflush (mpfLog);
     }
     return true;
@@ -62,7 +62,7 @@ DWORD __stdcall CPipeIF::WaitImageThread (void)
             {
                 if (mpfLog)
                 {
-                    fprintf (mpfLog, "Found: %d %s\n", miNextImage, msNextImageName);
+                    fprintf (mpfLog, "Found: %d %s\n", miNextImage, (const char*)msNextImageName);
                     fflush (mpfLog);
                 }
                 if (mbWaitPrep)
@@ -76,7 +76,7 @@ DWORD __stdcall CPipeIF::WaitImageThread (void)
                     if (pData && !pPosition)
                         pPosition = pData->GetPosition();
                     if (mpfLog && pData)
-                        fprintf (mpfLog, "pData: %s\n\n", pData->msName);
+                        fprintf (mpfLog, "pData: %s\n\n", (const char*)pData->msName);
                 }
 
                 if (pPosition)
@@ -360,7 +360,7 @@ bool CPipeIF::WaitPrep(void)
     }
     if (mpfLog)
     {
-        fprintf (mpfLog, "10M arrived? %d\n", len);
+        fprintf (mpfLog, "10M arrived? %I64d\n", len);
         fflush (mpfLog);
     }
     FILE *pf = MyFOpen (msNextImageName, "rb");
@@ -389,7 +389,7 @@ void CPipeIF::UpdateObjects(void)
     while (GetFirstFileName(sName))
     {
 		if (mpfLog)
-			fprintf (mpfLog, "<UpdateObjects> sName %s\n", sName);
+			fprintf (mpfLog, "<UpdateObjects> sName %s\n", (const char*)sName);
         if (sName.Left(2) == "::")
             sName = sName.Right(sName.GetLength() - 2);
         if (isdigit(sName[0]))
@@ -399,7 +399,7 @@ void CPipeIF::UpdateObjects(void)
             if (pObject)
 			{
 				if (mpfLog)
-					fprintf (mpfLog, "<UpdateObjects> object %s\n", pObject->Name());
+					fprintf (mpfLog, "<UpdateObjects> object %s\n", (const char*)pObject->Name());
                 pObject->UpdateYourself();
 			}
         }
@@ -580,7 +580,7 @@ void CPipeIF::OnDisplayImage(bool bReplace)
 			CFileNamePattern::SetNextFileUseSpecialPos(mNextFileUseSpecialPos);
 		if (mpfLog)
 		{
-			fprintf (mpfLog, "%s\n", sMsg);
+			fprintf (mpfLog, "%s\n", (const char*)sMsg);
 			fflush (mpfLog);
 		}
 		gScreens.miPipeMessageToHandle = miMessage;

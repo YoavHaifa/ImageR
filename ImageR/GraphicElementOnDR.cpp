@@ -173,7 +173,7 @@ bool CGraphicElementOnDR::ComputePointsScreenPosition (void)
         bOnRect |= mapPointsOnDR[i]->mbOnRect;
 		if (mpGE->mpfLog && (umDebug & 0x100))
 		{
-			fprintf(mpGE->mpfLog,"<ComputePointsScreenPosition> %d: (x %.2f, y %.2f) --> (x %d, y %d)\n", 
+			fprintf(mpGE->mpfLog,"<ComputePointsScreenPosition>: (x %.2f, y %.2f) --> (x %d, y %d)\n", 
 				mapPointsOnDR[i]->mpData->fx, mapPointsOnDR[i]->mpData->fy,
 				mapPointsOnDR[i]->x, mapPointsOnDR[i]->y);
 		}
@@ -184,9 +184,9 @@ void CGraphicElementOnDR::Draw (CDC &dc)
 {
 	if (mpGE->mpfLog)
 	{
-		fprintf(mpGE->mpfLog,"<Draw> on %s\n", mpDR->Name());
+		fprintf(mpGE->mpfLog,"<Draw> on %s\n", (const char*)mpDR->Name());
 		if (mpDR->GetCurrentData())
-			fprintf(mpGE->mpfLog,"    Data %s\n", mpDR->GetCurrentData()->Name());
+			fprintf(mpGE->mpfLog,"    Data %s\n", (const char*)mpDR->GetCurrentData()->Name());
 		fflush(mpGE->mpfLog);
 	}
 	static int unDebug = 0;
@@ -423,7 +423,7 @@ void CGraphicElementOnDR::SaveState(CXMLDump & xmlDump)
 }
 void CGraphicElementOnDR::Print(FILE *pf)
 {
-	fprintf (pf, "<CGraphicElementOnDR::Print> %s nPoints %d\n", msName, mnPointsOnDR);
+	fprintf (pf, "<CGraphicElementOnDR::Print> %s nPoints %d\n", (const char*)msName, mnPointsOnDR);
     for (int i = 0; i < mnPointsOnDR; i++)
     {
         mapPointsOnDR[i]->Print(pf);

@@ -90,7 +90,7 @@ BOOL CImageRApp::InitInstance()
 	FILE *pfLog = dlg.GetPFLog();
 	if (pfLog)
 		fprintf (pfLog, "<CDataViewApp::InitInstance> cmd line %s (len %d)\n", 
-		theApp.m_lpCmdLine, strlen(theApp.m_lpCmdLine));
+		theApp.m_lpCmdLine, (int)strlen(theApp.m_lpCmdLine));
 
     // Look for pipe name in command line
 

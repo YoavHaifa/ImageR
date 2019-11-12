@@ -278,7 +278,7 @@ void CMultiFile::PrintId(FILE * pf, const char * zText)
     CMetaData::PrintId (pf, zText);
 	if (IsMultiFile())
 		fprintf (pf, "MultiFile <%s> i <%d>\n",
-			mNamePattern.GetPattern(), i());
+			(const char*)mNamePattern.GetPattern(), i());
 }
 bool CMultiFile::guess_matrix_and_offset()
 {
@@ -330,7 +330,7 @@ void CMultiFile::ChangeDicomDateToAllFiles(CString sNewDate)
         if (!CFileName::Exist(sLog))
             break;
         char zBuf[256];
-        sprintf_s (zBuf, 256, "%s.%d.change_date.log", PrivateName(), iFile);
+        sprintf_s (zBuf, 256, "%s.%d.change_date.log", (const char*)PrivateName(), iFile);
         sName = zBuf;
     }
     CLogFile log (sName);
@@ -346,7 +346,7 @@ void CMultiFile::ChangeDicomDateToAllFiles(CString sNewDate)
         if (!pDicom)
         {
             if (log)
-                fprintf (log.mpf, "NOT DICOM: %s\n", sName);
+                fprintf (log.mpf, "NOT DICOM: %s\n", (const char*)sName);
             MessageBox (NULL, sName, "Not Dicom", MB_OK);
             continue;
         }
@@ -355,13 +355,13 @@ void CMultiFile::ChangeDicomDateToAllFiles(CString sNewDate)
         if (nFieldsChanged)
         {
             if (log)
-                fprintf (log.mpf, "CHANGED %d: %s\n", nFieldsChanged, sName);
+                fprintf (log.mpf, "CHANGED %d: %s\n", nFieldsChanged, (const char*)sName);
             nChanged++;
         }
         else
         {
             if (log)
-                fprintf (log.mpf, "NO CHANGE: %s\n", sName);
+                fprintf (log.mpf, "NO CHANGE: %s\n", (const char*)sName);
             MessageBox (NULL, sName, "NO CHANGE", MB_OK);
         }
 
@@ -412,7 +412,7 @@ bool CMultiFile::DoUpdatePageData()
 	if (!pf)
 	{
 		char zBuf[256];
-		sprintf_s(zBuf, 256, "<CMultiFile::DoUpdatePageData> Failed to open <%s>", sfName);
+		sprintf_s(zBuf, 256, "<CMultiFile::DoUpdatePageData> Failed to open <%s>", (const char*)sfName);
 		MessageBox(NULL, zBuf, "File Open Error", MB_OK);
 		return false;
 	}
@@ -574,9 +574,9 @@ void CMultiFile::ReorderFiles(int iFirst, int iLast, int step, int iOut, int iOu
 	CFileName fName(Name());
 	int absStep = abs(step);
 	if (absStep == 1)
-		sprintf_s(zBuf,sizeof(zBuf),"%s\\ReOrdered_%d_%d", fName.Path(), iFirst, iLast);
+		sprintf_s(zBuf,sizeof(zBuf),"%s\\ReOrdered_%d_%d", (const char*)fName.Path(), iFirst, iLast);
 	else
-		sprintf_s(zBuf,sizeof(zBuf),"%s\\ReOrdered_%d_%d_step%d", fName.Path(), iFirst, iLast, absStep);
+		sprintf_s(zBuf,sizeof(zBuf),"%s\\ReOrdered_%d_%d_step%d", (const char*)fName.Path(), iFirst, iLast, absStep);
 	CString sOutDir(zBuf);
 	if (!CMyWindows::VerifyDirectory(sOutDir))
 		return;
@@ -602,9 +602,9 @@ void CMultiFile::ReorderFiles(int iFirst, int iLast, int step, int iOut, int iOu
 		while (nSaved < n)
 		{
 			CString sSrc = GetFileNameOfPage(pPos->miCurrent);
-			sprintf_s(zBuf,sizeof(zBuf),"%s\\%s_%03d.dat", sOutDir, sPrefix, iOut);
+			sprintf_s(zBuf,sizeof(zBuf),"%s\\%s_%03d.dat", (const char*)sOutDir, (const char*)sPrefix, iOut);
 			if (log)
-				fprintf(log.mpf,"Copy %s --> %s\n", sSrc, zBuf);
+				fprintf(log.mpf,"Copy %s --> %s\n", (const char*)sSrc, zBuf);
 			if (!CMyWindows::MyCopyFile(sSrc,zBuf))
 			{
 				if (log)
@@ -636,7 +636,7 @@ void CMultiFile::ReorderFiles(int iFirst, int iLast, int step, int iOut, int iOu
 	if (log)
 		fprintf(log.mpf,"\n%d files reordered\n", nSaved);
 	pPos->RestoreSavedPosition();
-	sprintf_s(zBuf,"%d  reordered files in %s", nSaved, sOutDir);
+	sprintf_s(zBuf,"%d  reordered files in %s", nSaved, (const char*)sOutDir);
 	CMyWindows::MessBox(zBuf,"Notice");
 }
 bool CMultiFile::DoLoadVolume()

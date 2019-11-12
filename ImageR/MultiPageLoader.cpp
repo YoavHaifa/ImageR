@@ -42,7 +42,7 @@ bool CMultiPageLoader::AllocateImages(void)
 {
 	char zBuf[128];
 
-	int n = mImages.GetSize();
+	int n = (int)mImages.GetSize();
 	while (mImages.GetSize() < mnWanted)
 	{
 		CFileName fName(mpData->msName);
@@ -261,7 +261,7 @@ void CMultiPageLoader::PrintValues2Excel(FILE *pf, int nCols, int iLine, int iCo
 		{
 			CString s(mpData->mpTypedData->Value2s(pPage->GetDataStart(), nCols, iLine, iCol,
 				mpData->mRescaleSlope, mpData->mRescaleIntercept));
-			fprintf(pf,"%s\t",s);
+			fprintf(pf,"%s\t",(const char*)s);
 		}
 		else
 			fprintf(pf,"=??\t");

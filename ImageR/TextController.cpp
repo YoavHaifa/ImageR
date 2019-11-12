@@ -224,7 +224,7 @@ void CTextController::SetPathTexts(CMetaData *pData)
 			if (pValue)
 			{
 				char zBuf[128];
-				sprintf_s (zBuf, 128, "%s %s", pField->msName, pValue->msValue);
+				sprintf_s (zBuf, 128, "%s %s", (const char*)pField->msName, (const char*)pValue->msValue);
 				CDRText *pText = pData->AddDataText(zBuf);
 				pText->meTextType = CDRText::TEXT_XML;
 			}

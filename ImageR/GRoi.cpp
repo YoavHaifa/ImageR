@@ -166,7 +166,7 @@ bool CGRoi::GetStatisticsString(CMetaData *pData, CString &sValue, class CGraphi
 
     char zBuf[256];
     sprintf_s (zBuf, 256, "Ar %d Av %s std %s", 
-		area, CMyWindows::FormatByScale(avg), CMyWindows::FormatByScale(std));
+		area, (const char*)CMyWindows::FormatByScale(avg), (const char*)CMyWindows::FormatByScale(std));
     sValue = zBuf;
     return true;
 }

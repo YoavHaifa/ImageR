@@ -127,7 +127,7 @@ bool CHybridFile::DoUpdatePageData(void)
 	bool bOK = mpCurrentFile->UpdatePageData();
 	if (upfLog)
 	{
-		fprintf (upfLog, "this %p %4d: %s\n", this, mUId, mpCurrentFile->Name());
+		fprintf (upfLog, "this %p %4d: %s\n", this, mUId, (const char*)mpCurrentFile->Name());
 		fprintf (upfLog, "typed %p Avg %f\n", mpTypedData, mpTypedData->Average());
 		fprintf (upfLog, "\n");
 		fflush (upfLog);
@@ -215,7 +215,7 @@ void CHybridFile::SetNewDate(const char * zNewDate)
     char zBuf[512];
 	int n = (int)mFileNamesList.GetSize();
     sprintf_s (zBuf, sizeof(zBuf), "First Image: %s\nNew Date %s\nAre you sure you want to changed data for %d images?",
-        Name(), zNewDate, n);
+        (const char*)Name(), zNewDate, n);
     int rc = MessageBox(NULL, zBuf, "Change Dicom Date Confirmation", MB_OKCANCEL);
     if (rc != IDOK)
 		return;
@@ -234,13 +234,13 @@ void CHybridFile::SetNewDate(const char * zNewDate)
 			if (nFieldsChanged)
 			{
 				if (log)
-					fprintf (log.mpf, "CHANGED %d: %s\n", nFieldsChanged, sName);
+					fprintf (log.mpf, "CHANGED %d: %s\n", nFieldsChanged, (const char*)sName);
 				nChanged++;
 			}
 			else
 			{
 				if (log)
-					fprintf (log.mpf, "NO CHANGE: %s\n", sName);
+					fprintf (log.mpf, "NO CHANGE: %s\n", (const char*)sName);
 				MessageBox (NULL, sName, "NO CHANGE", MB_OK);
 			}
 

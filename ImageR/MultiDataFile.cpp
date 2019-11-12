@@ -111,7 +111,7 @@ bool CMultiDataFile::DoUpdatePageData(void)
         if (!bOK)
         {
             char zBuf[256];
-            sprintf_s (zBuf, 256, "Read File failed: %s", msName);
+            sprintf_s (zBuf, 256, "Read File failed: %s", (const char*)msName);
             CMyWindows::DisplayLastError(GetLastError(), zBuf);
         }
         if (nBytesRead < mPageLenNeto)
@@ -132,7 +132,7 @@ bool CMultiDataFile::ReadPageHeader(void)
     if (!bOK)
     {
         char zBuf[256];
-        sprintf_s (zBuf, 256, "Read File header failed: %s", msName);
+        sprintf_s (zBuf, 256, "Read File header failed: %s", (const char*)msName);
         CMyWindows::DisplayLastError(GetLastError(), zBuf);
 		return false;
     }
