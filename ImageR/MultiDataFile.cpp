@@ -123,6 +123,8 @@ bool CMultiDataFile::DoUpdatePageData(void)
     }
 
     close();
+	if (mbZeroNanOnRead)
+		ZeroNan();
     return true;
 }
 bool CMultiDataFile::ReadPageHeader(void)

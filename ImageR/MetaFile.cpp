@@ -26,12 +26,19 @@ CMetaFile::CMetaFile(const char *zName, CXMLParseNode *pMetaDataXml)
 , mbDicomMatrix (false)
 , mPlanarConfig(0) // Keep RGB in 3 separate consecutive plans
 , mbDicomSetOnce(false)
+, mbZeroNanOnRead(false)
 {
 	int offset = 0;
     CFileName fName(msName);
     CString sPrivate(fName.Private());
     if (CMyWindows::GetValueFromString(sPrivate, "_ofs", offset))
 		mOffsetBytes = offset;
+
+	int nanValue = -1;
+    if (CMyWindows::GetValueFromString(sPrivate, "_nan", nanValue))
+		if (nanValue == 0)
+			mbZeroNanOnRead = true;
+
 	GetFileLength();
 
 	if (mnCols > 0 && !mnLinesInPage)
@@ -264,4 +271,17 @@ void CMetaFile::SetDicomOnce()
 			pCurData->SetMmPerPixel(*this);
 	}
 
+}
+void CMetaFile::ZeroNan()
+{
+	if (mDataType == DATA_TYPE_FLOAT)
+	{
+		float *pData = (float *)mpPageData->GetDataStart();
+		int pageLen = mnLinesInPage * mnCols;
+		for (int i = 0; i < pageLen; i++)
+		{
+			if (_isnan(pData[i]))
+				pData[i] = 0;
+		}
+	}
 }

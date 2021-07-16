@@ -56,6 +56,8 @@ protected:
 
     void SetDicomOnce();
 	bool mbDicomSetOnce;
+	bool mbZeroNanOnRead;
+	void ZeroNan();
 
 public:
     //void PostConstructInit(void);
