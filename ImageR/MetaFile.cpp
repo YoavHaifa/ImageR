@@ -276,11 +276,23 @@ void CMetaFile::ZeroNan()
 {
 	if (mDataType == DATA_TYPE_FLOAT)
 	{
-		float *pData = (float *)mpPageData->GetDataStart();
+		float* pData = (float*)mpPageData->GetDataStart();
 		int pageLen = mnLinesInPage * mnCols;
 		for (int i = 0; i < pageLen; i++)
 		{
-			if (_isnan(pData[i]))
+			float value = pData[i];
+			if (_isnanf(value) || !_finitef(value))
+				pData[i] = 0;
+		}
+	}
+	else if (mDataType == DATA_TYPE_DOUBLE)
+	{
+		double* pData = (double*)mpPageData->GetDataStart();
+		int pageLen = mnLinesInPage * mnCols;
+		for (int i = 0; i < pageLen; i++)
+		{
+			double value = pData[i];
+			if (_isnan(value) || !_finite(value))
 				pData[i] = 0;
 		}
 	}
