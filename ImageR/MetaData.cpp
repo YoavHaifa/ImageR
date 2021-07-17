@@ -12,6 +12,7 @@
 #include "..\..\yUtils\MyRegistry.h"
 #include "..\..\yUtils\NameGetDialog.h"
 #include "..\..\yUtils\MyMath.h"
+#include "..\..\yUtils\MyDicomWriter.h"
 
 #include "..\..\ImageRLib\Zoomer.h"
 #include "..\..\ImageRLib\ImageStatistics.h"
@@ -2336,4 +2337,34 @@ bool CMetaData::ScalePageData(class CCompVector &scaled)
 		}
 	}
 	return true;
+}
+bool CMetaData::SaveToDicom(const char* zDicomFileName)
+{
+	CMyDicom templateDicom(zDicomFileName);
+	if (!templateDicom.IsDicom())
+		return false;
+
+	CString sfName;
+	if (CFileName::Exist(msName))
+		sfName = msName + ".RDicom";
+	else
+		sfName = CMyWindows::GetLogDir() + msName + ".RDicom";
+
+	templateDicom.IncrementSopTextField(SOP_INSTANCE_UID_GROUP, SOP_INSTANCE_UID_NUM, 1);
+	templateDicom.IncrementSopTextField(SERIES_INSTANCE_UID_GROUP, SERIES_INSTANCE_UID_NUM, 1);
+
+	if (templateDicom.HasTagRef(IMAGE_ROWS_GROUP, IMAGE_ROWS_NUM))
+	{
+		unsigned short nRows = (unsigned short)mnLinesInPage;
+		templateDicom.SetTagData(IMAGE_ROWS_GROUP, IMAGE_ROWS_NUM, &nRows, sizeof(nRows));
+	}
+	if (templateDicom.HasTagRef(IMAGE_COLS_GROUP, IMAGE_COLS_NUM))
+	{
+		unsigned short nCols = (unsigned short)mnCols;
+		templateDicom.SetTagData(IMAGE_COLS_GROUP, IMAGE_COLS_NUM, &nCols, sizeof(nCols));
+	}
+
+	CMyDicomWriter dicomWriter(&templateDicom, sfName, "<CMetaData::SaveToDicom>");
+	short* pRaster = (short *)mpPageData->GetDataStart();
+	return dicomWriter.SaveWithNewRasterInsteadOfCompressed(pRaster, mnCols * mnLinesInPage * sizeof(short));
 }

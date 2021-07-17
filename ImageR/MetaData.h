@@ -358,4 +358,5 @@ public:
 	virtual void PrintExcelHeader(FILE *pf);
 	virtual void PrintCsvHeader(class CCsvFile &csv);
 	bool ScalePageData(class CCompVector &scaled);
+	bool SaveToDicom(const char* zDicomFileName);
 };

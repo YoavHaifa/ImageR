@@ -345,5 +345,6 @@ public:
 	afx_msg void OnAddSmooth33996();
 	afx_msg void OnAddCombine33997();
 	afx_msg void OnAddRatio33998();
+	afx_msg void OnDicomExportrastertodicom();
 };
 

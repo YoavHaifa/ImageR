@@ -429,6 +429,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_ADD_SMOOTH33996, &CImageView::OnAddSmooth33996)
 		ON_COMMAND(ID_ADD_COMBINE33997, &CImageView::OnAddCombine33997)
 		ON_COMMAND(ID_Menu33998, &CImageView::OnAddRatio33998)
+		ON_COMMAND(ID_DICOM_EXPORTRASTERTODICOM, &CImageView::OnDicomExportrastertodicom)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -2512,4 +2513,19 @@ void CImageView::OnAddCombine33997()
 void CImageView::OnAddRatio33998()
 {
 	OnAddDiffOrRatio("Ratio");
+}
+void CImageView::OnDicomExportrastertodicom()
+{
+	CMyFileDialog dlg(CMyFileDialog::FD_OPEN, "Select Template Dicom File");
+	if (dlg.DoModal())
+	{
+		CString sPath(dlg.GetPathName());
+		if (CFileName::Exist(sPath))
+		{
+			CMetaData* pData = gScreens.GetCurrentData();
+			if (pData)
+				pData->SaveToDicom(sPath);
+
+		}
+	}
 }
