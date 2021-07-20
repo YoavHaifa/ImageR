@@ -3,9 +3,6 @@
 
 #include "afxtempl.h"
 
-//#include <afxwin.h>         // MFC core and standard components
-//#include <afxext.h>         // MFC extensions
-
 class CRecentFiles
 {
 public:
@@ -17,16 +14,23 @@ public:
     void init(CMenu *pSubMenu);
     void update_menu();
     void update(const char *zNewFileName);
-    void update_registry();
     const char *MenuFileExist(int index);
 
 private:
-    CList<CString*,CString*> mFilesMenuList;
+	void UpdateRegistry();
+	void ReadFromRegistry();
+	void ReadFromFile();
+	void UpdateInFile();
+	bool GetFileName();
+	
+	CString msfName;
+	CList<CString*,CString*> mFilesMenuList;
     CList<CString*,CString*> mFilesRegistryList;
 
     CMenu *mpSubMenu;
     DWORD mnFirstItemId;
 
+	static bool umbSaveInFile;
     static const CString umsRegKey;
 	bool mbReportOnFailureToAccessRegistry;
 };

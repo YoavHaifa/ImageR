@@ -8,6 +8,7 @@ const CString CRecentFiles::umsRegKey("SOFTWARE\\ImageR\\RecentFiles\\RecentFile
 
 CRecentFiles gRecentFiles;
 int CRecentFiles::umMaxRecentFiles = 7;
+bool CRecentFiles::umbSaveInFile = true;
 
 CRecentFiles::CRecentFiles()
 : mpSubMenu(NULL)
@@ -32,32 +33,12 @@ void CRecentFiles::init(CMenu *pSubMenu)
     mpSubMenu = pSubMenu;
     mnFirstItemId = mpSubMenu->GetMenuItemID(0);
 
-    HKEY hConfigsKey;
-    LONG lRet;
-    char KeyName[256];
- 	
-    for (int i = 0; i < umMaxRecentFiles; i++) 
-    {
-        sprintf_s(KeyName, 256, "%s%d", (const char *)umsRegKey, i);
-        if ((lRet = RegOpenKeyEx (HKEY_LOCAL_MACHINE,
-             KeyName, 0, KEY_READ, &hConfigsKey)) != ERROR_SUCCESS) 
-        {
-            continue;
-        }
-        char zBuf[256];
-        DWORD bufLen=255;
-        if (RegQueryValueEx(hConfigsKey, NULL, 0, NULL, (LPBYTE)zBuf, 
-                    &bufLen) != ERROR_SUCCESS) 
-        {
-            continue;
-        }
-        RegCloseKey(hConfigsKey);
-        if (CFileName::Exist(zBuf))
-        {
-            mFilesRegistryList.AddTail(new CString(zBuf));
-            mFilesMenuList.AddTail(new CString(zBuf));
-        }
-    }
+	if (umbSaveInFile)
+		ReadFromFile();
+	else
+		ReadFromRegistry();
+
+
     update_menu();
 }
 void CRecentFiles::update_menu()
@@ -124,12 +105,100 @@ void CRecentFiles::update(const char *zNewFileName)
         CString *psName = mFilesRegistryList.RemoveTail();
         delete psName;
     }
-    update_registry();
+
+	if (umbSaveInFile)
+		UpdateInFile();
+	else
+	    UpdateRegistry();
     //update_menu(); // Don't update menu here - menu stays the same after initializing
 }
-void CRecentFiles::update_registry()
+void CRecentFiles::ReadFromRegistry()
 {
-    HKEY hConfigsKey;
+	HKEY hConfigsKey;
+	LONG lRet;
+	char KeyName[256];
+
+	for (int i = 0; i < umMaxRecentFiles; i++)
+	{
+		sprintf_s(KeyName, 256, "%s%d", (const char*)umsRegKey, i);
+		if ((lRet = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+			KeyName, 0, KEY_READ, &hConfigsKey)) != ERROR_SUCCESS)
+		{
+			continue;
+		}
+		char zBuf[256];
+		DWORD bufLen = 255;
+		if (RegQueryValueEx(hConfigsKey, NULL, 0, NULL, (LPBYTE)zBuf,
+			&bufLen) != ERROR_SUCCESS)
+		{
+			continue;
+		}
+		RegCloseKey(hConfigsKey);
+		if (CFileName::Exist(zBuf))
+		{
+			mFilesRegistryList.AddTail(new CString(zBuf));
+			mFilesMenuList.AddTail(new CString(zBuf));
+		}
+	}
+}
+bool CRecentFiles::GetFileName()
+{
+	msfName = CMyWindows::GetApplicationPath();
+	if (msfName.IsEmpty())
+		return false;
+	msfName += CMyWindows::GetApplicationName();
+	msfName += ".RecentFiles.txt";
+	return true;
+}
+void CRecentFiles::ReadFromFile()
+{
+	if (!GetFileName())
+		return;
+
+	FILE* pf = NULL;
+	fopen_s(&pf, msfName, "r");
+	if (!pf)
+		return;
+
+	char aLine[256];
+	while (fgets(aLine, sizeof(aLine), pf))
+	{
+		int len = (int)strlen(aLine);
+		if (aLine[len-1] == '\n')
+			aLine[len-1] = 0;
+		if (CFileName::Exist(aLine))
+		{
+			mFilesRegistryList.AddTail(new CString(aLine));
+			mFilesMenuList.AddTail(new CString(aLine));
+			if (mFilesRegistryList.GetSize() >= umMaxRecentFiles)
+				break;
+		}
+	}
+
+	fclose(pf);
+}
+void CRecentFiles::UpdateInFile()
+{
+	if (!GetFileName())
+		return;
+	FILE* pf = NULL;
+	fopen_s(&pf, msfName, "w");
+	if (!pf)
+		return;
+
+	int n = 0;
+	POSITION pos = mFilesRegistryList.GetHeadPosition();
+	while (pos && n < umMaxRecentFiles)
+	{
+		CString* psName = mFilesRegistryList.GetNext(pos);
+		fprintf(pf, "%s\n", (const char*)*psName);
+		n++;
+	}
+	fclose(pf);
+}
+void CRecentFiles::UpdateRegistry()
+{
+	HKEY hConfigsKey;
     LONG lRet;
     char KeyName[256];
 
