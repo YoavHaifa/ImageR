@@ -2341,8 +2341,11 @@ bool CMetaData::ScalePageData(class CCompVector &scaled)
 bool CMetaData::SaveToDicom(const char* zDicomFileName)
 {
 	CMyDicom templateDicom(zDicomFileName);
-	if (!templateDicom.IsDicom())
+	if (!templateDicom.HasPixels())
+	{
+		CMyWindows::MessBox(zDicomFileName, "Template is not Dicom or has no pixels");
 		return false;
+	}
 
 	CString sfName;
 	if (CFileName::Exist(msName))
