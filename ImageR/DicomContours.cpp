@@ -160,7 +160,7 @@ bool CDicomContours::OnNewDicom(void)
 	CPosition *pPos = mMultiPosition.GetPosition(1);
 	if (!pPos && mnContours > 1)
 	{
-		CPosition *pPos = new CPosition("ContourSelect");
+		pPos = new CPosition("ContourSelect");
 		pPos->SetLeafRange(0,mnContours-1);
 		mMultiPosition.Add(pPos);
 	}

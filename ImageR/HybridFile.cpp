@@ -136,9 +136,9 @@ bool CHybridFile::DoUpdatePageData(void)
 }
 void CHybridFile::RemoveSomeFiles(void)
 {
-	static int i = 0;
+	static int ui = 0;
 	char zBuf[128];
-	sprintf_s(zBuf,sizeof(zBuf),"CHybridFile%d_Files",++i);
+	sprintf_s(zBuf,sizeof(zBuf),"CHybridFile%d_Files",++ui);
     CLogFile log (zBuf);
 	int nInit = (int)mFileNamesList.GetSize();
 
@@ -192,7 +192,7 @@ void CHybridFile::SaveState(class CXMLDump & xmlDump)
 	xmlDump.Write("dir_name", msDir);
 	xmlDump.Write("i_file", miFile);
 	{
-		CXMLDumpScope graph("files_list",xmlDump);
+		CXMLDumpScope scope1("files_list",xmlDump);
 
 		POSITION pos = mFileNamesList.GetHeadPosition();
 		while (pos)

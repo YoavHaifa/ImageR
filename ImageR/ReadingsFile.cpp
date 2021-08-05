@@ -416,8 +416,8 @@ void CReadingsFile::EditRaw(void)
 		{
 			if (iRead == umnConstantPitchLearn)
 			{
-				int lastBed = pHdr->TablePosition;
-				pitch = ((float)lastBed - (float)origFirstBed) / (iRead - 1);
+				int lastBed1 = pHdr->TablePosition;
+				pitch = ((float)lastBed1 - (float)origFirstBed) / (iRead - 1);
 			}
 			else if (iRead > umnConstantPitchLearn)
 			{

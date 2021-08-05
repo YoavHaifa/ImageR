@@ -55,11 +55,11 @@ BOOL CZoomParamsDlg::OnInitDialog()
 
     char zStr[32];
 
-    CEdit *pWnd=(CEdit *)GetDlgItem(IDC_EDITZOOM);
+    CEdit *pEditWnd=(CEdit *)GetDlgItem(IDC_EDITZOOM);
     sprintf_s(zStr, 32, "%.2f", mpZoomParams->GetZoomFactor(mpData));
-    pWnd->SetWindowText(zStr);
-    pWnd->SetFocus();
-    pWnd->SetSel(0, -1);
+	pEditWnd->SetWindowText(zStr);
+	pEditWnd->SetFocus();
+	pEditWnd->SetSel(0, -1);
 
 	if (gScreens.mbEbwMode)
 	{
@@ -111,15 +111,15 @@ void CZoomParamsDlg::OnOK()
     pWnd->GetWindowText(zStr, 15);
     mpZoomParams->SetZoomFactor (mpData, (float)atof(zStr));
 
-    CButton *pButton=(CButton *)GetDlgItem(IDC_RADIO_DISABLE);;
-    if (pButton->GetCheck())
+    CButton *pRadioButtonDis=(CButton *)GetDlgItem(IDC_RADIO_DISABLE);;
+    if (pRadioButtonDis->GetCheck())
     {
         mpZoomParams->mbEnableZoom = false;
     }
     else
     {
-        CButton *pButton=(CButton *)GetDlgItem(IDC_RADIO_DUP);;
-        if (pButton->GetCheck())
+        CButton *pRadioButtonDup=(CButton *)GetDlgItem(IDC_RADIO_DUP);;
+        if (pRadioButtonDup->GetCheck())
             mpZoomParams->SetMode(ZOOM_DUP);
         else
 		{

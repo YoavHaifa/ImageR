@@ -132,7 +132,6 @@ bool CDisplayRectangle::InitGraphicsFromXml(CXMLParseNode *pGraphicsXml,
     {
 		CString sClass = pGEXml->GetFirstDeepString("class","unknown");
 		CString sName = pGEXml->GetFirstDeepString("name","");
-		bool bSeparationGraph = ((sName.Find("SeparationGraph")) >= 0 && (sClass == "CDataLine"));
 
 		bool bEllipse = false;
 		bool bRectangle = false;
@@ -149,8 +148,8 @@ bool CDisplayRectangle::InitGraphicsFromXml(CXMLParseNode *pGraphicsXml,
             CGEllipse *pEllipse = (CGEllipse *)GetParsed(pGEXml);
             if (!pEllipse)
 			{
-				CString sName = pGEXml->GetFirstDeepString("name","unknown");
-				if (sName == "RingID")
+				CString sName1 = pGEXml->GetFirstDeepString("name","unknown");
+				if (sName1 == "RingID")
 				{
 					CRingID *pRingID = AddScanCenter();
 					if (pRingID)

@@ -321,19 +321,19 @@ CString CMultiFile::GetFileNameOfPage(int iPage)
 
 void CMultiFile::ChangeDicomDateToAllFiles(CString sNewDate)
 {
-    CString sName = PrivateName() + ".change_date.log";
+    CString sLogName = PrivateName() + ".change_date.log";
     for (int iFile = 0; iFile < 1000; iFile++)
     {
         CString sLog = CMyWindows::GetLogDir();
         sLog += "\\";
-        sLog += sName;
+        sLog += sLogName;
         if (!CFileName::Exist(sLog))
             break;
         char zBuf[256];
         sprintf_s (zBuf, 256, "%s.%d.change_date.log", (const char*)PrivateName(), iFile);
-        sName = zBuf;
+		sLogName = zBuf;
     }
-    CLogFile log (sName);
+    CLogFile log (sLogName);
 
 	int n = GetNDataUnits();
     int nChanged = 0;

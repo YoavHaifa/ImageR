@@ -725,7 +725,7 @@ void CImageView::EditMenu(void)
     if (!mbDicomMaster)
     {
         // Remove special DICOM options
-        int prevState = pMenu->RemoveMenu(ID_DICOM_CHANGETABLE, MF_BYCOMMAND);
+        prevState = pMenu->RemoveMenu(ID_DICOM_CHANGETABLE, MF_BYCOMMAND);
         prevState = pMenu->RemoveMenu(ID_DICOM_EDITTEXTFIELDS, MF_BYCOMMAND);
         prevState = pMenu->RemoveMenu(ID_DICOM_AMENDALLBYXML, MF_BYCOMMAND);
     }

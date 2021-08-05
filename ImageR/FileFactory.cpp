@@ -130,14 +130,14 @@ bool CFileFactory::CreateAndDisplayFileObject(const char * zfName, bool bNewDisp
                     POSITION pos = list.GetHeadPosition();
                     while (pos)
                     {
-                        CMetaData *pData = list.GetNext(pos);
-						CMipVolume *pMipVolume = pData->PMipVolume();
+                        CMetaData *pDataInList = list.GetNext(pos);
+						CMipVolume *pMipVolume = pDataInList->PMipVolume();
                         if (pMipVolume)
 						{
                             pMipVolume->AddTissue(pTissue);
 							if (mpfLog)
 								fprintf (mpfLog, "<CFileFactory::CreateAndDisplayFileObject> Add VolTissue %s to %s\n", 
-								(const char*)pTissue->Name(), (const char*)pData->Name());
+								(const char*)pTissue->Name(), (const char*)pDataInList->Name());
 						}
                     }
                 }

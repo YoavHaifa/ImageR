@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.4.1");
+CString CScreens::umsVersion("V1.4.2");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -571,8 +571,8 @@ void CScreens::UpdateDataSetTitle(void)
 }
 bool CScreens::UpdateDataCheck(void)
 {
-	static int count = 0;
-	CMyTracer myTracer("CScreens::UpdateDataCheck", ++count);
+	static int ucount = 0;
+	CMyTracer myTracer0("CScreens::UpdateDataCheck", ++ucount);
     if (mpfLog)
         fprintf (mpfLog, "\n<CScreens::UpdateDataCheck>\n");
 
@@ -1291,7 +1291,7 @@ bool CScreens::OnMousePos(CPoint point)
         if (mpWaitKillFocusDR)
             bChanged |= OnWaitedKillFocus();
 
-        POSITION pos = mGlobalRefList.GetHeadPosition();
+        pos = mGlobalRefList.GetHeadPosition();
         while (pos)
         {
             CGraphicElement *pElement = mGlobalRefList.GetNext(pos);
@@ -1392,8 +1392,8 @@ void CScreens::Paint()
 	umnInPaint++;
 	bool bSkippedUpdate = false;
 
-	static int count = 0;
-	CMyTracer myTracer("CScreens::Paint", ++count);
+	static int ucount = 0;
+	CMyTracer myTracer("CScreens::Paint", ++ucount);
 	if (umnInPaint == 1)
 		UpdateDataCheck();
 	else
@@ -1421,8 +1421,8 @@ void CScreens::Paint()
 		RECT updateRect;
 		pWnd->GetClientRect(&updateRect);
 
-		static int count = 0;
-		CMyTracer myTracer("CScreens::Paint-critical", ++count);
+		static int uccount = 0;
+		CMyTracer myTraceCrit("CScreens::Paint-critical", ++uccount);
 		static bool bOnce = false;
 		if (!bOnce)
 		{
@@ -1437,8 +1437,8 @@ void CScreens::Paint()
 
 		if (umpfUpdatesLog)
 		{
-			static int count = 0;
-			fprintf (umpfUpdatesLog, "\nPaint Start ========= %d =======>>>\n", ++count);
+			static int uStartCount = 0;
+			fprintf (umpfUpdatesLog, "\nPaint Start ========= %d =======>>>\n", ++uStartCount);
 			fflush (umpfUpdatesLog);
 		}
 
@@ -1704,7 +1704,7 @@ CString CScreens::SaveState(const char *zName, const char *zMessage)
     if (mGlobalColorersList.GetSize() > 0)
     {
         CXMLDumpScope graph("GlobalColorersList",xmlDump);
-        POSITION pos = mGlobalColorersList.GetHeadPosition();
+        pos = mGlobalColorersList.GetHeadPosition();
         while (pos)
         {
             CMetaData *pData = mGlobalColorersList.GetNext(pos);
@@ -1949,8 +1949,8 @@ bool CScreens::SelectMultiFile(void)
     while (pos)
     {
         CDisplayRectangle *pDR = mRectanglesList.GetNext(pos);
-        CMetaData *pData = pDR->GetCurrentData();
-        if (pData && pData->IsMultiFile())
+        CMetaData *CurpData = pDR->GetCurrentData();
+        if (CurpData && CurpData->IsMultiFile())
         {
             SetCurrentDR(pDR);
             return true;

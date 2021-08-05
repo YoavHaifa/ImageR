@@ -375,11 +375,11 @@ bool CDiffData::DoUpdatePageData()
 	{
 		for (int iLine = 0; iLine < mnLinesToCompare; iLine++)
 		{
-			void *pResult = mpPageData->GetLineDataStart(iLine);
-			void *pPlusData = pPlus->GetPageDataLine(iLine);
-			void *pMinusData = pMinus->GetPageDataLine(iLine);
+			void *pResultLine = mpPageData->GetLineDataStart(iLine);
+			void *pPlusDataLine = pPlus->GetPageDataLine(iLine);
+			void *pMinusDataLine = pMinus->GetPageDataLine(iLine);
 
-			CompareTypedData(pPlusData, pMinusData, pResult, mnColsToCompare);
+			CompareTypedData(pPlusDataLine, pMinusDataLine, pResultLine, mnColsToCompare);
 		}
 	}
 

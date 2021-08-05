@@ -177,9 +177,15 @@ void CMetaFile::GetFileLength(void)
 		{
 			CString s;
 			if (mLength < 1)
-				s.Format("<CMetaFile::GetFileLength> EMPTY file <%s>", msName);
+				s = "<CMetaFile::GetFileLength> EMPTY file <" + msName + ">";
 			else
-				s.Format("<CMetaFile::GetFileLength> SHORT file <%s> len %d", msName, (int)mLength);
+			{
+				char zBuf[128];
+				_itoa_s((int)mLength, zBuf, 128, 10);
+				s = "<CMetaFile::GetFileLength> SHORT file <" + msName + "> len " + zBuf;
+
+			}
+				//s.Format("<CMetaFile::GetFileLength> SHORT file <%s> len %d", msName, (int));
 			CMyWindows::MessBox(s,"Warning");
 		}
 	}

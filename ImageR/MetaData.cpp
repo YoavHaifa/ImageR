@@ -895,7 +895,7 @@ void CMetaData::SaveState(class CXMLDump & xmlDump)
 
     if (mpSpecialWindowParams)
 	{
-	    CXMLDumpScope graph("SpecialWindow",xmlDump);
+	    CXMLDumpScope graph1("SpecialWindow",xmlDump);
 
 		xmlDump.Write("b_use_special_window", mbUseSpecialWindow);
         mpSpecialWindowParams->SaveState(xmlDump);
@@ -905,7 +905,7 @@ void CMetaData::SaveState(class CXMLDump & xmlDump)
         mpCommonZoomPanParams->SaveState(xmlDump);
 	if (mpSpecialZoomPanParams)
 	{
-		CXMLDumpScope graph("SpecialZoom",xmlDump);
+		CXMLDumpScope graph2("SpecialZoom",xmlDump);
 		xmlDump.Write("b_use_special_zoom", mbUseSpecialZoom);
 		mpSpecialZoomPanParams->SaveState(xmlDump);
 	}
@@ -930,7 +930,7 @@ void CMetaData::SaveState(class CXMLDump & xmlDump)
 
 	if (mpTypedData)
 	{
-		CXMLDumpScope graph("LastUpdate",xmlDump);
+		CXMLDumpScope graph3("LastUpdate",xmlDump);
 		xmlDump.Write("i_update", (unsigned int)miUpdate);
 		xmlDump.Write("min", mpTypedData->Min());
 		xmlDump.Write("max", mpTypedData->Max());
@@ -947,7 +947,7 @@ void CMetaData::SaveState(class CXMLDump & xmlDump)
 	}
 	if (!mDataTextList.IsEmpty())
 	{
-		CXMLDumpScope graph("Texts",xmlDump);
+		CXMLDumpScope graph4("Texts",xmlDump);
 		POSITION pos = mDataTextList.GetHeadPosition();
 		while (pos)
 			mDataTextList.GetNext(pos)->SaveState(xmlDump);
@@ -964,7 +964,7 @@ CWindowParams *CMetaData::GetWindowParamsTyped(void)
 	{
 		umiFirstType = mpTypesPosition->miFirst;
 		umiLastType = mpTypesPosition->miLast;
-		int n = umiLastType - umiFirstType + 1;
+		// int n = umiLastType - umiFirstType + 1;
 
 	}
 	int iCur = mpTypesPosition->miCurrent;
@@ -1830,7 +1830,7 @@ void CMetaData::PrintStatisticsAvi(void)
 	//sprintf_s(zBuf, "%d slices saved to file <%s>", nSaved, sName);
 	//CMyWindows::MessBox(zBuf, "Dump Finished");
 }
-void CMetaData::PrintStatisticsDiff(CMetaData *pOther)
+void CMetaData::PrintStatisticsDiff(CMetaData * /*pOther*/)
 {
 	CPrintStat ps;
 	if (!ps.mLog)

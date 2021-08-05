@@ -174,24 +174,24 @@ bool CGContour::ComputeEdgesToDraw(void)
 	// Each pixel may add lines to 4 of its neighbors - from up to lower right
 
 	// First Line, no prev... may have next line
-	bool *pLine = mpEdges->GetLine(rect.top);
-	bool *pFullLine = mpFull->GetLine(rect.top);
-	bool *pNext = NULL;
-	bool *pFullNext = NULL;
+	bool *pLine1 = mpEdges->GetLine(rect.top);
+	bool *pFullLine1 = mpFull->GetLine(rect.top);
+	bool *pNext1 = NULL;
+	bool *pFullNext1 = NULL;
 	if (rect.top + 1 <= rect.bottom)
 	{
-		pNext = mpEdges->GetLine(rect.top+1);
-		pFullNext = mpFull->GetLine(rect.top+1);
+		pNext1 = mpEdges->GetLine(rect.top+1);
+		pFullNext1 = mpFull->GetLine(rect.top+1);
 	}	
 	for (int iPix = rect.left; iPix < rect.right; iPix++)
 	{
-		if (pLine[iPix])
+		if (pLine1[iPix])
 		{
-			if (pLine[iPix + 1])
+			if (pLine1[iPix + 1])
 				AddEdgeToDraw(rect.top, iPix, rect.top, iPix + 1);
-			if (pNext && pNext[iPix + 1])
+			if (pNext1 && pNext1[iPix + 1])
 			{
-				if (!pFullLine[iPix + 1] || !pFullNext[iPix])
+				if (!pFullLine1[iPix + 1] || !pFullNext1[iPix])
 					AddEdgeToDraw(rect.top, iPix, rect.top+1, iPix + 1);
 			}
 		}
@@ -334,7 +334,7 @@ void CGContour::SaveState(class CXMLDump & xmlDump)
     
 	CGraphicElement::SaveState(xmlDump);
 	{
-		CXMLDumpScope graph("seed",xmlDump);
+		CXMLDumpScope graph1("seed",xmlDump);
 		xmlDump.Write("seed_x", mSeed.fx);
 		xmlDump.Write("seed_y", mSeed.fy);
 	}
