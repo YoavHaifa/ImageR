@@ -2341,9 +2341,19 @@ bool CMetaData::ScalePageData(class CCompVector &scaled)
 bool CMetaData::SaveToDicom(const char* zDicomFileName)
 {
 	CMyDicom templateDicom(zDicomFileName);
+	if (!templateDicom.IsDicom())
+	{
+		CMyWindows::MessBox(zDicomFileName, "Template is not Dicom");
+		return false;
+	}
+	if (!templateDicom.HasVR())
+	{
+		CMyWindows::MessBox(zDicomFileName, "Template must be Dicom with VR");
+		return false;
+	}
 	if (!templateDicom.HasPixels())
 	{
-		CMyWindows::MessBox(zDicomFileName, "Template is not Dicom or has no pixels");
+		CMyWindows::MessBox(zDicomFileName, "Template has no pixels");
 		return false;
 	}
 
@@ -2369,5 +2379,9 @@ bool CMetaData::SaveToDicom(const char* zDicomFileName)
 
 	CMyDicomWriter dicomWriter(&templateDicom, sfName, "<CMetaData::SaveToDicom>");
 	short* pRaster = (short *)mpPageData->GetDataStart();
-	return dicomWriter.SaveWithNewRasterInsteadOfCompressed(pRaster, mnCols * mnLinesInPage * sizeof(short));
+	if (!dicomWriter.SaveWithNewRasterInsteadOfCompressed(pRaster, mnCols * mnLinesInPage * sizeof(short)))
+		return false;
+
+	CMyWindows::MessBox(sfName, "Raster saved as Dicom");
+	return true;
 }
