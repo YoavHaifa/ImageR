@@ -430,6 +430,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_ADD_COMBINE33997, &CImageView::OnAddCombine33997)
 		ON_COMMAND(ID_Menu33998, &CImageView::OnAddRatio33998)
 		ON_COMMAND(ID_DICOM_EXPORTRASTERTODICOM, &CImageView::OnDicomExportrastertodicom)
+		ON_COMMAND(ID_DICOM_EXPORTTOMINIMALDICOM, &CImageView::OnDicomExporttominimaldicom)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -2528,4 +2529,10 @@ void CImageView::OnDicomExportrastertodicom()
 
 		}
 	}
+}
+void CImageView::OnDicomExporttominimaldicom()
+{
+	CMetaData* pData = gScreens.GetCurrentData();
+	if (pData)
+		pData->SaveToMinimalDicom();
 }

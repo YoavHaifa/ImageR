@@ -1369,6 +1369,7 @@ bool CMetaData::ComputeStatistics(CTImage<bool> &mask, SStatistics &oStat)
         return false;
 
     float *pBuffer = new float [oStat.mn];
+	memset(pBuffer, 0, oStat.mn*sizeof(float));
 
     bool *pMask = mask.GetData();
 
@@ -1398,7 +1399,7 @@ bool CMetaData::ComputeStatistics(CTImage<bool> &mask, SStatistics &oStat)
         float diff = pBuffer[i] - oStat.mAverage;
         sumVariance += diff * diff;
     }
-    delete pBuffer;
+    delete[] pBuffer;
     //if (n > 1)
     //    oStat.mStandardDeviation = (float)sqrt(sumVariance / (n-1));
     if (n > 0)
@@ -1574,7 +1575,7 @@ void CMetaData::DumpAllPageDataCoronals(const char *zUserName)
 		return;
 
 	unsigned int lineSize = mpPageData->GetLineByteSize();
-	__int64 outputPageSize = lineSize * nOutputLines;
+	__int64 outputPageSize = (__int64)lineSize * nOutputLines;
 
 	CMyProgress progress(1,(short)nOutputLines);
 
@@ -2338,6 +2339,13 @@ bool CMetaData::ScalePageData(class CCompVector &scaled)
 	}
 	return true;
 }
+CString CMetaData::GetNameForDicomExport(const char* zType)
+{
+	CString sfName;
+	if (CFileName::Exist(msName))
+		return msName + "." + zType;
+	return CMyWindows::GetLogDir() + msName + "." + zType;
+}
 bool CMetaData::SaveToDicom(const char* zDicomFileName)
 {
 	CMyDicom templateDicom(zDicomFileName);
@@ -2357,12 +2365,6 @@ bool CMetaData::SaveToDicom(const char* zDicomFileName)
 		return false;
 	}
 
-	CString sfName;
-	if (CFileName::Exist(msName))
-		sfName = msName + ".RDicom";
-	else
-		sfName = CMyWindows::GetLogDir() + msName + ".RDicom";
-
 	templateDicom.IncrementSopTextField(SOP_INSTANCE_UID_GROUP, SOP_INSTANCE_UID_NUM, 1);
 	templateDicom.IncrementSopTextField(SERIES_INSTANCE_UID_GROUP, SERIES_INSTANCE_UID_NUM, 1);
 
@@ -2377,11 +2379,23 @@ bool CMetaData::SaveToDicom(const char* zDicomFileName)
 		templateDicom.SetTagData(IMAGE_COLS_GROUP, IMAGE_COLS_NUM, &nCols, sizeof(nCols));
 	}
 
+	CString sfName(GetNameForDicomExport("RDicom"));
 	CMyDicomWriter dicomWriter(&templateDicom, sfName, "<CMetaData::SaveToDicom>");
 	short* pRaster = (short *)mpPageData->GetDataStart();
 	if (!dicomWriter.SaveWithNewRasterInsteadOfCompressed(pRaster, mnCols * mnLinesInPage * sizeof(short)))
 		return false;
 
 	CMyWindows::MessBox(sfName, "Raster saved as Dicom");
+	return true;
+}
+bool CMetaData::SaveToMinimalDicom()
+{
+	CString sfName(GetNameForDicomExport("MinDicom"));
+	short* pRaster = (short*)mpPageData->GetDataStart();
+	CMyDicomWriter dicomWriter(NULL, sfName, "<CMetaData::SaveToMinDicom>");
+	if (!dicomWriter.SaveMinimalDicom((unsigned short)mnLinesInPage, (unsigned short)mnCols, pRaster))
+		return false;
+
+	CMyWindows::MessBox(sfName, "Raster saved as minimal Dicom");
 	return true;
 }
