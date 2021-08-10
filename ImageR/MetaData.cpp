@@ -77,6 +77,7 @@ CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 , mbIsDataForColoring(false)
 , msUserDefinedTitle(_T(""))
 , mpWindParamsDlg(NULL)
+, mbChangeEndian(false)
 {
 	mbCtImage = true;
     CFileName fName (zName);
@@ -476,6 +477,12 @@ bool CMetaData::UpdatePageData()
         }
         return false;
     }
+	else
+	{
+		if (mbChangeEndian)
+			ChangeEndianInPage();
+	}
+
     mbPageUpdated = true;
 	CMyTracer::Print("Check umDebug");
     if ((umDebug & 0x2) && mpfLog)
@@ -2398,4 +2405,25 @@ bool CMetaData::SaveToMinimalDicom()
 
 	CMyWindows::MessBox(sfName, "Raster saved as minimal Dicom");
 	return true;
+}
+void CMetaData::ChangeEndian()
+{
+	mbChangeEndian = !mbChangeEndian;
+	ForceUpdate();
+}
+void CMetaData::ChangeEndianInPage()
+{
+	if (mDataType == DATA_TYPE_USHORT || mDataType == DATA_TYPE_SHORT)
+	{
+		unsigned short* pShort = (unsigned short*)mpPageData->GetDataStart();
+		int nPixels = mnLinesInPage * mnCols;
+		for (int i = 0; i < nPixels; i++)
+		{
+			unsigned char* pChar = (unsigned char*)pShort;
+			unsigned char ch0 = pChar[0];
+			pChar[0] = pChar[1];
+			pChar[1] = ch0;
+			pShort++;
+		}
+	}
 }

@@ -234,6 +234,8 @@ protected:
     void OnFillZoomedRasterError(const char *zText);
 	void DeleteAllText(void);
 
+	bool mbChangeEndian;
+
 private:
     CZoomPanParams *mpCommonZoomPanParams;
     CZoomPanParams *mpSpecialZoomPanParams;
@@ -361,4 +363,6 @@ public:
 	bool SaveToDicom(const char* zDicomFileName);
 	bool SaveToMinimalDicom();
 	CString GetNameForDicomExport(const char* zType);
+	void ChangeEndian();
+	void ChangeEndianInPage();
 };
