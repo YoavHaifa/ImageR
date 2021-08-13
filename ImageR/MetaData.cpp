@@ -2346,13 +2346,6 @@ bool CMetaData::ScalePageData(class CCompVector &scaled)
 	}
 	return true;
 }
-CString CMetaData::GetNameForDicomExport(const char* zType)
-{
-	CString sfName;
-	if (CFileName::Exist(msName))
-		return msName + "." + zType;
-	return CMyWindows::GetLogDir() + msName + "." + zType;
-}
 bool CMetaData::SaveToDicom(const char* zDicomFileName)
 {
 	CMyDicom templateDicom(zDicomFileName);
@@ -2386,7 +2379,7 @@ bool CMetaData::SaveToDicom(const char* zDicomFileName)
 		templateDicom.SetTagData(IMAGE_COLS_GROUP, IMAGE_COLS_NUM, &nCols, sizeof(nCols));
 	}
 
-	CString sfName(GetNameForDicomExport("RDicom"));
+	CString sfName(CMyDicomWriter::GetNameForDicomExport(msName, "RDicom"));
 	CMyDicomWriter dicomWriter(&templateDicom, sfName, "<CMetaData::SaveToDicom>");
 	short* pRaster = (short *)mpPageData->GetDataStart();
 	if (!dicomWriter.SaveWithNewRasterInsteadOfCompressed(pRaster, mnCols * mnLinesInPage * sizeof(short)))
@@ -2397,14 +2390,29 @@ bool CMetaData::SaveToDicom(const char* zDicomFileName)
 }
 bool CMetaData::SaveToMinimalDicom()
 {
-	CString sfName(GetNameForDicomExport("MinDicom"));
-	short* pRaster = (short*)mpPageData->GetDataStart();
-	CMyDicomWriter dicomWriter(NULL, sfName, "<CMetaData::SaveToMinDicom>");
-	if (!dicomWriter.SaveMinimalDicom((unsigned short)mnLinesInPage, (unsigned short)mnCols, pRaster))
-		return false;
+	// TEMP Debug option for static function "CMyDicomWriter::SaveMinimalDicom" - 
+	// BUT the static function only works on certain files - 
+	// And this function works on any raster
+	bool bDebug = false;
+	bool bOK = false;
+	CString sResult;
+	if (bDebug)
+	{
+		bOK = CMyDicomWriter::SaveMinimalDicom(msName, &sResult);
+	}
+	else
+	{
+		sResult = CMyDicomWriter::GetNameForDicomExport(msName, "MinDicom");
+		short* pRaster = (short*)mpPageData->GetDataStart();
+		CMyDicomWriter dicomWriter(NULL, sResult, "<CMetaData::SaveToMinDicom>");
+		if (!dicomWriter.SaveMinimalDicom((unsigned short)mnLinesInPage, (unsigned short)mnCols, pRaster))
+			return false;
+		bOK = true;
+	}
 
-	CMyWindows::MessBox(sfName, "Raster saved as minimal Dicom");
-	return true;
+	if (bOK)
+		CMyWindows::MessBox(sResult, "Raster saved as minimal Dicom");
+	return bOK;
 }
 void CMetaData::ChangeEndian()
 {

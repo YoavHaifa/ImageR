@@ -362,7 +362,6 @@ public:
 	bool ScalePageData(class CCompVector &scaled);
 	bool SaveToDicom(const char* zDicomFileName);
 	bool SaveToMinimalDicom();
-	CString GetNameForDicomExport(const char* zType);
 	void ChangeEndian();
 	void ChangeEndianInPage();
 };
