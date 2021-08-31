@@ -348,5 +348,6 @@ public:
 	afx_msg void OnDicomExportrastertodicom();
 	afx_msg void OnDicomExporttominimaldicom();
 	afx_msg void OnAddChangeendian();
+	afx_msg void OnDiffFindbesttransformation();
 };
 

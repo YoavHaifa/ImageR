@@ -1754,8 +1754,8 @@ void CMetaData::DumpSlicesSubSet()
 				}
 				else
 				{
-					if (!pPos->TrySetCurrent(iLast))
-						break;
+					//if (!pPos->TrySetCurrent(iLast))
+					break;
 				}
 			}
 			else // (iLast < iFirst)

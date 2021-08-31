@@ -69,20 +69,25 @@ public:
 	bool mbCombine;
 	float mWeight1;
 	float mWeight2;
-    void StartCompare(void);
+    void StartCompare();
 	int miPlus;
 	int miMinus;
 	int miDiff;
-	bool ChangePlus(void);
-	bool ChangeMinus(void);
-	void PrintStatistics(void);
-	bool FindBestFit(void);
+	bool ChangePlus();
+	bool ChangeMinus();
+	void PrintStatistics();
+	bool FindBestFit();
+	bool FindBestTransformation();
 	void PrintHistogram(class CFileCompareBase &compFile);
 
 	static bool umbAllowDiffOfDifferentSize;
 	int mnLinesToCompare;
 	int mnColsToCompare;
 	bool mbPrintHistogram;
+
+	bool mbTransform;
+	float mTransFactor;
+	float mTransBias;
 
 	static bool umbScaleDiff;
 	static void ReadRegistry(class CMyRegistry &myReg);

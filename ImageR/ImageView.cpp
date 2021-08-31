@@ -432,6 +432,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_DICOM_EXPORTRASTERTODICOM, &CImageView::OnDicomExportrastertodicom)
 		ON_COMMAND(ID_DICOM_EXPORTTOMINIMALDICOM, &CImageView::OnDicomExporttominimaldicom)
 		ON_COMMAND(ID_ADD_CHANGEENDIAN, &CImageView::OnAddChangeendian)
+		ON_COMMAND(ID_DIFF_FINDBESTTRANSFORMATION, &CImageView::OnDiffFindbesttransformation)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -2131,6 +2132,14 @@ void CImageView::OnDiffFindbestfit()
     if (!pDiff)
         return;
     if (pDiff->FindBestFit())
+		gScreens.Refresh();
+}
+void CImageView::OnDiffFindbesttransformation()
+{
+	CDiffData* pDiff = gScreens.GetCurrentDiffData();
+	if (!pDiff)
+		return;
+	if (pDiff->FindBestTransformation())
 		gScreens.Refresh();
 }
 void CImageView::OnViewRefresh()

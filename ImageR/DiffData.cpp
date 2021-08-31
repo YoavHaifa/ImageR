@@ -7,6 +7,7 @@
 #include "..\..\yUtils\TFileCompare.h"
 #include "..\..\yUtils\MyRegistry.h"
 #include "..\..\yUtils\MyProgress.h"
+#include "..\..\yUtils\Histogram.h"
 
 #include "..\..\ImageRLib\ImageStatistics.h"
 #include "..\..\ImageRLib\Position.h"
@@ -129,6 +130,9 @@ CDiffData::CDiffData(CDisplayRectangle *pDRPlus, CDisplayRectangle *pDRMinus, co
 , mbShouldScale(false)
 , mScaledPlus("ScaledPlus")
 , mScaledMinus("ScaledMinus")
+, mbTransform(false)
+, mTransFactor(1)
+, mTransBias(0)
 {
     if (msName == "Ratio")
         mbRatio = true;
@@ -156,6 +160,9 @@ CDiffData::CDiffData(CXMLParseNode *pXmlNode)
 , mbShouldScale(false)
 , mScaledPlus("ScaledPlus")
 , mScaledMinus("ScaledMinus")
+, mbTransform(false)
+, mTransFactor(1)
+, mTransBias(0)
 {
     if (pXmlNode->GetFirstDeep("b_ratio"))
         mbRatio = true;
@@ -369,7 +376,15 @@ bool CDiffData::DoUpdatePageData()
 
 	if (bCompareInOneChunck)
 	{
-		CompareTypedData(pPlusData, pMinusData, pResult, n);
+		if (mbTransform)
+		{
+			CCompVector minusTransformed("vTrans", n);
+			minusTransformed.Transform((float*)pMinusData, mTransFactor, mTransBias);
+			pMinusData = minusTransformed.GetData();
+			CompareTypedData(pPlusData, pMinusData, pResult, n);
+		}
+		else
+			CompareTypedData(pPlusData, pMinusData, pResult, n);
 	}
 	else
 	{
@@ -901,4 +916,54 @@ bool CDiffData::FindBestFit(void)
 void CDiffData::ReadRegistry(CMyRegistry &myReg)
 {
 	myReg.Get("b_scale_diff", umbScaleDiff);
+}
+bool CDiffData::FindBestTransformation()
+{
+	CMetaData *pPlus = mpDRPlus->GetCurrentData();
+	if (!pPlus)
+	{
+		mbCompareFailed = true;
+		return false;
+	}
+	CMetaData *pMinus = mpDRMinus->GetCurrentData();
+	if (!pMinus)
+	{
+		mbCompareFailed = true;
+		return false;
+	}
+	if (!pPlus->IsDataOfType(DATA_TYPE_FLOAT) || !pPlus->IsDataOfType(DATA_TYPE_FLOAT))
+	{
+		CMyWindows::MessBox("<FindBestTransformation> is currently supported only for float", "Warning");
+		return false;
+	}
+	float* pPlusData = (float *)pPlus->GetPageData();
+	float* pMinusData = (float*)pMinus->GetPageData();
+	CCompVector vPlus("vPlus", pPlusData, pPlus->GetNPixelsInPage());
+	CCompVector vMinus("vMinus", pMinusData, pMinus->GetNPixelsInPage());
+
+	static const int HIST_LEN = 1024;
+	CHistogram hPlus("hPlus", HIST_LEN);
+	CHistogram hMinus("hMinus", HIST_LEN);
+	hPlus.Compute(vPlus);
+	hMinus.Compute(vMinus);
+	float lowPlus = hPlus.AverageInRange(0.1f, 0.5f);
+	float highPlus = hPlus.AverageInRange(0.5f, 0.9f);
+	float lowMinus = hMinus.AverageInRange(0.1f, 0.5f);
+	float highMinus = hMinus.AverageInRange(0.5f, 0.9f);
+	float spanSrc = highMinus - lowMinus;
+	float spanTarget = highPlus - lowPlus;
+	mTransFactor = spanTarget / spanSrc;
+
+	float avgTarget = vPlus.ComputeAverage();
+	float avgSrv = vMinus.ComputeAverage();
+	mTransBias = avgTarget - mTransFactor * avgSrv;
+
+	mbTransform = true;
+
+	char zBuf[128];
+	sprintf_s(zBuf, sizeof(zBuf), "Transfer formula %.3f * x + %.3f", mTransFactor, mTransBias);
+	CMyWindows::MessBox(zBuf, "Notice");
+
+	ForceUpdate();
+	return true;
 }
