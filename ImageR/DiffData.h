@@ -77,8 +77,11 @@ public:
 	bool ChangeMinus();
 	void PrintStatistics();
 	bool FindBestFit();
-	bool FindBestTransformation();
+	bool FindBestTransformation(bool bMessBox = false);
 	void PrintHistogram(class CFileCompareBase &compFile);
+	bool mbLookingForBestFit;
+	//bool mbFirstWithBestFit;
+
 
 	static bool umbAllowDiffOfDifferentSize;
 	int mnLinesToCompare;

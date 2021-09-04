@@ -2139,7 +2139,7 @@ void CImageView::OnDiffFindbesttransformation()
 	CDiffData* pDiff = gScreens.GetCurrentDiffData();
 	if (!pDiff)
 		return;
-	if (pDiff->FindBestTransformation())
+	if (pDiff->FindBestTransformation(true))
 		gScreens.Refresh();
 }
 void CImageView::OnViewRefresh()

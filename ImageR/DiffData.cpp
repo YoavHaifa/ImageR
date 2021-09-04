@@ -133,6 +133,7 @@ CDiffData::CDiffData(CDisplayRectangle *pDRPlus, CDisplayRectangle *pDRMinus, co
 , mbTransform(false)
 , mTransFactor(1)
 , mTransBias(0)
+, mbLookingForBestFit(false)
 {
     if (msName == "Ratio")
         mbRatio = true;
@@ -163,6 +164,7 @@ CDiffData::CDiffData(CXMLParseNode *pXmlNode)
 , mbTransform(false)
 , mTransFactor(1)
 , mTransBias(0)
+, mbLookingForBestFit(false)
 {
     if (pXmlNode->GetFirstDeep("b_ratio"))
         mbRatio = true;
@@ -378,6 +380,7 @@ bool CDiffData::DoUpdatePageData()
 	{
 		if (mbTransform)
 		{
+			FindBestTransformation();
 			CCompVector minusTransformed("vTrans", n);
 			minusTransformed.Transform((float*)pMinusData, mTransFactor, mTransBias);
 			pMinusData = minusTransformed.GetData();
@@ -857,7 +860,7 @@ void CDiffData::PrintHistogram(CFileCompareBase &compFile)
 }
 bool CDiffData::FindBestFit(void)
 {
-	CLogFile log("CDiffData__FindBestFit");
+	CLogFile log("CDiffData__FindBestFit.csv");
 	CMetaData *pFirstData = mpDRPlus->GetCurrentData();
 	CPosition *pFirstPos = pFirstData->GetPosition();
 	CMetaData *pSecData = mpDRMinus->GetCurrentData();
@@ -880,6 +883,7 @@ bool CDiffData::FindBestFit(void)
 	int iBest = -1;
 	double bestAvg = 1000000000;
 
+	mbLookingForBestFit = true;
 	for (int i = pSecData->StartLoop(); i >= 0; i = pSecData->LoopNext())
 	{
 		if (!pSecData->ForceUpdatePageData())
@@ -890,7 +894,11 @@ bool CDiffData::FindBestFit(void)
 
 		double avg = mpPageData->GetAverageAbs();
 		if (log)
-			fprintf(log.mpf,"%3d: %f", pSecPos->miFirst + i, avg);
+		{
+			fprintf(log.mpf,"%3d, %f,", pSecPos->miFirst + i, avg);
+			if (mbTransform)
+				fprintf(log.mpf, "%.3f, %.3ff,", mTransFactor, mTransBias);
+		}
 
 		if (iBest < 0 || avg < bestAvg)
 		{
@@ -909,6 +917,7 @@ bool CDiffData::FindBestFit(void)
 	else
 		pSecPos->RestoreSavedPosition();
 
+	mbLookingForBestFit = false;
 	pSecData->ForceUpdate();
 	ForceUpdate();
 	return true;
@@ -917,7 +926,7 @@ void CDiffData::ReadRegistry(CMyRegistry &myReg)
 {
 	myReg.Get("b_scale_diff", umbScaleDiff);
 }
-bool CDiffData::FindBestTransformation()
+bool CDiffData::FindBestTransformation(bool bMessBox)
 {
 	CMetaData *pPlus = mpDRPlus->GetCurrentData();
 	if (!pPlus)
@@ -960,9 +969,12 @@ bool CDiffData::FindBestTransformation()
 
 	mbTransform = true;
 
-	char zBuf[128];
-	sprintf_s(zBuf, sizeof(zBuf), "Transfer formula %.3f * x + %.3f", mTransFactor, mTransBias);
-	CMyWindows::MessBox(zBuf, "Notice");
+	if (bMessBox)
+	{
+		char zBuf[128];
+		sprintf_s(zBuf, sizeof(zBuf), "Transfer formula %.3f * x + %.3f", mTransFactor, mTransBias);
+		CMyWindows::MessBox(zBuf, "Notice");
+	}
 
 	ForceUpdate();
 	return true;
