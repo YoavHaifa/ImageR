@@ -81,6 +81,18 @@ CWindowParams::~CWindowParams(void)
 {
 	DebugPrint("destructor");
 }
+void CWindowParams::UpdateByMouseMove(int deltaX, int deltaY, class CMetaData* pData)
+{
+	bool bCT = pData->IsCtImage();
+	float range = pData->Range();
+
+	mWidth += ScaleDelta(deltaX, range, bCT);
+	mCenter -= ScaleDelta(deltaY, range, bCT);
+
+	SetInRange(bCT, pData->Min(), pData->Max());
+	if (umDebugWindow)
+		DebugPrint("UpdateByMouseMove");
+}
 CString CWindowParams::Value2StringByScale(float value, bool bInt)
 {
     static char zBuf[128];

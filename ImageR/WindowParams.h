@@ -37,6 +37,7 @@ private:
 
 public:
     // Methods
+    void UpdateByMouseMove(int deltaX, int deltaY, class CMetaData* pData);
     float ScaleDelta (int delta, float range, int bInteger);
 
     void SetCt();

@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.4.3");
+CString CScreens::umsVersion("V1.4.4");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -792,13 +792,16 @@ bool CScreens::UpdateCurrentWindowByMouse(CPoint point)
         return false;
 
     CWindowParams *pWindowParams = pData->GetWindowParams();
+	pWindowParams->UpdateByMouseMove(point.x - mPrevPoint.x, point.y - mPrevPoint.y, pData);
 
-    bool bCT = pData->IsCtImage();
-    float range = pData->Range();
+	/*
+	bool bCT = pData->IsCtImage();
+	float range = pData->Range();
 	pWindowParams->mWidth += pWindowParams->ScaleDelta (point.x - mPrevPoint.x, range, bCT);
 	pWindowParams->mCenter -= pWindowParams->ScaleDelta (point.y - mPrevPoint.y, range, bCT);
 
-    pWindowParams->SetInRange(bCT, pData->Min(), pData->Max());
+	pWindowParams->SetInRange(bCT, pData->Min(), pData->Max());
+	*/
     return true;
 }
 void CScreens::SetScreenDivision(void)
@@ -2676,6 +2679,10 @@ void CScreens::ReadRegistry(CMyRegistry &myReg)
 {
 	myReg.Get("ScreensDebug", CScreens::umDebug);
 	myReg.Get("DebugColor", mDebugColor);
+	myReg.Get("DebugMouse", mbDebugMouse);
+	if (mbDebugMouse && !CNamedObject::umDebug)
+		CNamedObject::umDebug = 1;
+
 	myReg.Get("RawTitle", umsRawScreenTitle);
 	myReg.Get("CtImageTitle", umsImageScreenTitle);
 	myReg.Get("bDisplayDisclaimer", umbDisplayDisclaimer);
