@@ -30,7 +30,7 @@ public:
     void PostConstruct(class CXMLParseNode *pXmlNode);
     virtual void ParsePosition(class CXMLParseNode *pPosXmlNode);
     virtual void InitPosition(void);
-    bool SetNewPosition(const char * zName, int iFirs, int iLast, CXMLParseNode *pMetaDataXml = NULL);
+    bool SetNewPosition(const char * zName, int iFirst, int iLast, CXMLParseNode *pMetaDataXml = NULL);
 
     bool ComputeStatistics(CTImage<bool> &mask, SStatistics &oStat);
     bool IsRealCtImage (void) {return mbCtImage && (mRescaleSlope == 1);}
@@ -204,7 +204,9 @@ public:
 
 protected:
     CList<class CDRText*,class CDRText*> mDataTextList;
-    class CXMLParseNode *mpXmlNode;  // In case this data was parsed from saved state
+	class CXMLParseNode* mpXmlNode;  // In case this data was parsed from saved state
+	class CXMLParseNode* mpXmlMetaDataNode;  // In case this data was parsed from saved state
+	class CXMLParseNode* mpXmlMetaDataBaseNode;  // In case this data was parsed from saved state
 
     CWindowParams *mpCommonWindowParams;
     CWindowParams *mpSpecialWindowParams;

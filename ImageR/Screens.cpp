@@ -1689,10 +1689,14 @@ CString CScreens::SaveState(const char *zName, const char *zMessage)
 	if (zMessage)
         xmlDump.Write("message",zMessage);
 
-    {
-        CXMLDumpScope graph("ScreenSize",xmlDump);
-        xmlDump.Write("cx",(int)mScreenSize.cx);
-        xmlDump.Write("cy",(int)mScreenSize.cy);
+	{
+		CXMLDumpScope graph("Screen", xmlDump);
+		{
+			CXMLDumpScope graph("ScreenSize", xmlDump);
+			xmlDump.Write("cx", (int)mScreenSize.cx);
+			xmlDump.Write("cy", (int)mScreenSize.cy);
+		}
+		xmlDump.Write("max_columns", mnMaxRectanglesInRow);
     }
 
     xmlDump.Write("n_rectangles",(int)mRectanglesList.GetSize());
@@ -1764,6 +1768,13 @@ void CScreens::LoadSavedState(const char *zfName)
     CXMLParseNode *pRoot = mpXmlParse->GetRoot();
     if (!pRoot)
         return;
+
+	CXMLParseNode* pScreen = pRoot->GetFirst("Screen");
+	if (pScreen)
+	{
+		if (pScreen->GetValue("max_columns", mnMaxRectanglesInRow))
+			mbMaxRectanglesInRowSetByUser = true;
+	}
 
     int i = 1;
     CXMLParseNode *pDRXml = pRoot->GetFirst("DisplayRectangle");

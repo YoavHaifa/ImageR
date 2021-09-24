@@ -28,6 +28,7 @@ CDRText::CDRText(const char *zText, int iLine, int iCol, bool bAbsolute)
 , miFrom(0)
 , miTill(0)
 {
+	mbDisplayInactivePoints = false;
 	mbDisplayStatisticsAsText = false;
 }
 
@@ -60,6 +61,7 @@ CDRText::CDRText(class CXMLParseNode *pTextXml)
 , miDicom(0)
 , meTextType(TEXT_NONE)
 {
+	mbDisplayInactivePoints = false;
 	mbDisplayStatisticsAsText = false;
     pTextXml->GetValue("text", msText);
     pTextXml->GetValue("line", miLine);
@@ -80,6 +82,7 @@ CDRText::CDRText(class CDisplayRectangle *pDispRect, class CXMLParseNode *pTextX
 , miDicom(0)
 , meTextType(TEXT_NONE)
 {
+	mbDisplayInactivePoints = false;
 	mbDisplayStatisticsAsText = false;
 }
 

@@ -97,7 +97,8 @@ CMetaData * CFileFactory::CreateFileObject(CXMLParseNode *pMetaDataXml)
         pData->SetParseId(pObjectXml);
         pData->PostConstruct(pMetaDataXml);
     }
-    return pData;
+
+	return pData;
 }
 bool CFileFactory::CreateAndDisplayFileObject(const char * zfName, bool bNewDisplay)
 {

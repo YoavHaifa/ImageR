@@ -62,6 +62,8 @@ CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 , mbUseSpecialZoom(false)
 , mpDR(NULL)
 , mpXmlNode(pXmlNode)
+, mpXmlMetaDataNode(NULL)
+, mpXmlMetaDataBaseNode(NULL)
 , mbValid(true)
 , mColor(0)
 , mbTransparent(false)
@@ -85,7 +87,10 @@ CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 
     if (pXmlNode)
     {
-        CXMLParseNode *pWindowXml = mpXmlNode->GetFirstDeep("WindowParams");
+		mpXmlMetaDataNode = mpXmlNode->GetFirstDeep("MetaData");
+		mpXmlMetaDataBaseNode = mpXmlMetaDataNode->GetFirstDeep("MetaDataBase");
+        
+		CXMLParseNode *pWindowXml = mpXmlNode->GetFirstDeep("WindowParams");
         if (pWindowXml)
         {
             CNamedObject *pObject = CNamedObject::GetParsed(pWindowXml);
@@ -158,9 +163,11 @@ void CMetaData::PostConstruct(class CXMLParseNode *pXmlNode)
     if (!mpXmlNode)
         mpXmlNode = pXmlNode;
 
+
+
     if (mpXmlNode)
     {
-        CXMLParseNode *pPositionXml = mpXmlNode->GetFirstDeep("position");
+        CXMLParseNode *pPositionXml = mpXmlNode->GetFirstDeep("multi_position");
         if (pPositionXml)
         {
             CPosition *pPos = (CPosition *)CNamedObject::GetParsed(pPositionXml);
@@ -176,8 +183,10 @@ void CMetaData::PostConstruct(class CXMLParseNode *pXmlNode)
 }
 void CMetaData::ParsePosition(class CXMLParseNode *pPosXmlNode)
 {
-    if (!HasPosition())
-        SetPosition(new CPosition(pPosXmlNode));
+    if (HasPosition())
+		mMultiPosition.RestoreState(pPosXmlNode);
+	else
+		SetPosition(new CPosition(pPosXmlNode));
 }
 void CMetaData::InitPosition(void)
 {
