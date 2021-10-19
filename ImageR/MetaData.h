@@ -316,8 +316,8 @@ public:
     void SetMmPerPixel(float width, float height, bool bOnlyOnce = false);
     void SetMmPerPixel(CMetaData & other);
     int GetNVolumePages(void);
-    bool mbMmPerPixelSet;
-    void ForceUpdate(void) {mbPageUpdated = false;}
+	bool mbMmPerPixelSet;
+	void ForceUpdate(void) {mbPageUpdated = false;}
 
 	virtual bool SaveToRecentFiles(void){return IsFile();}
 	virtual CString NameToRecentFiles(void){return Name();}

@@ -205,8 +205,9 @@ private:
 public:
 	bool MultiDimScroll(int iDim, bool bForward);
     bool mbSaveOnDataChange;
-    void SaveStateForClient(const char *zMessage = NULL);
-    void AddGlobalColorer(CMetaData * pColorer);
+	void SaveStateForClient(const char* zMessage = NULL);
+	void SaveStateToClientFile(const char* zfName);
+	void AddGlobalColorer(CMetaData * pColorer);
     bool SelectMultiFile(void);
     void BroadcastSaveDone(int objectId);
     CString GetDataPath(void);

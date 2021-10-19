@@ -148,6 +148,8 @@ bool CPipeIF::ShouldWait(void)
 //------------------------------------------------------------------
 void CPipeIF::ProcessMessage (void)
 {
+	if (mpfLog)
+		fprintf(mpfLog, "<ProcessMessage> %s\n", mzRequest);
 
     if (_strnicmp(mzRequest, "-cirs ", 6) == 0)
     {
@@ -334,6 +336,20 @@ void CPipeIF::ProcessMessage (void)
         if (bOk)
             gScreens.SetExternalFrame(sName);
     }
+	else if (_stricmp(mzRequest, "save_state") == 0)
+	{
+		if (mpfLog)
+			fprintf(mpfLog, "Handling <save_state>\n");
+        CString sName;
+        bool bOk = GetFirstSpecialName(sName);
+        if (bOk)
+            gScreens.SaveStateToClientFile(sName);
+		else
+		{
+			if (mpfLog)
+				fprintf(mpfLog, "Handling <save_state> GetFirstFileName failed\n");
+		}
+	}
     else
     {
         if (CFileName::Exist(mzRequest))

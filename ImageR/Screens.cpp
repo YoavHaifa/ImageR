@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.4.4");
+CString CScreens::umsVersion("V1.4.5");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -35,7 +35,7 @@ int CScreens::umDebug = 0;
 
 CString CScreens::umsRawScreenTitle("");
 CString CScreens::umsImageScreenTitle("");
-CString CScreens::umsDisclaimer("Beta Version");
+CString CScreens::umsDisclaimer("Beta Version-C");
 bool CScreens::umbDisplayDisclaimer = true;
 bool CScreens::umbDebugColorMap = false;
 
@@ -1935,6 +1935,19 @@ void CScreens::SaveStateForClient(const char *zMessage)
         fprintf (mpfLog, "<SaveStateForClient> End %s\n", zName);
         fflush (mpfLog);
     }
+}
+void CScreens::SaveStateToClientFile(const char* zfName)
+{
+	if (mpfLog)
+		fprintf(mpfLog, "<SaveStateToClientFile> %s\n", zfName);
+
+	SaveState(zfName);
+	BroadcastSaveDone(0); // No object ID - All state saved
+	if (mpfLog)
+	{
+		fprintf(mpfLog, "<SaveStateToClientFile> End %s\n", zfName);
+		fflush(mpfLog);
+	}
 }
 void CScreens::BroadcastSaveDone(int objectId)
 {

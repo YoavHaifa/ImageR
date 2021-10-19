@@ -271,7 +271,8 @@ void CMetaFile::SetDicomOnce()
     double dx = 0.0, dy = 0.0;
     if (GetMmPerPixel(dx, dy))
 	{
-        SetMmPerPixel((float)dx, (float)dy, true /*bOnly Once*/);
+		//if (!mpXmlNode)
+	    SetMmPerPixel((float)dx, (float)dy, true /*bOnly Once*/);
 		CMetaData *pCurData = gScreens.GetCurrentData();
 		if (pCurData && !pCurData->mbMmPerPixelSet)
 			pCurData->SetMmPerPixel(*this);

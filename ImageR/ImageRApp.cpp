@@ -336,4 +336,3 @@ HINSTANCE CImageRApp::LoadAppLangResourceDLL()
 	HINSTANCE hInstance = CMyWindows::LoadAppLangResourceDLL(m_hInstance);
 	return hInstance;
 }
-
