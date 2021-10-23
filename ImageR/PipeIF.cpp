@@ -9,6 +9,7 @@
 #include "MetaData.h"
 #include "..\..\ImageRLib\Position.h"
 #include "..\..\ImageRLib\FileNamePattern.h"
+#include "FileFactory.h"
 
 CPipeIF::CPipeIF(const char *zName, CImageView *pViewer)
 : CPipeReader (zName)
@@ -218,11 +219,21 @@ void CPipeIF::ProcessMessage (void)
     {
 		OnDisplayImage();
     }
-    else if (_stricmp(mzRequest, "replace") == 0)
-    {
+	else if (_stricmp(mzRequest, "replace") == 0)
+	{
 		OnDisplayImage(true);
-    }
-    else if (_stricmp(mzRequest, "display_colorer") == 0)
+	}
+	else if (_stricmp(mzRequest, "load_state_and_replace") == 0)
+	{
+		CString sfName;
+		bool bOk = GetFirstFileName(sfName);
+		if (bOk)
+		{
+			CFileFactory::SetReplaceFileName(sfName);
+			OnDisplayImage(true);
+		}
+	}
+	else if (_stricmp(mzRequest, "display_colorer") == 0)
     {
 		CString sfName;
 		bool bOk = GetFirstFileName(sfName);

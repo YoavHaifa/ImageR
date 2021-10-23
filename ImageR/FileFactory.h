@@ -42,9 +42,14 @@ protected:
     bool mbMultiFile;
     CFileName mName;
     class CXMLParseNode *mpMetaDataXml;
+
+	static CString umsReplaceFileName;
+
 public:
     void AddComputedData(EComputedDataType eType);
     void CreateFiles(const char * zFilesFileName);
     bool mbFileCreatedAndUsed;
     bool mbCloseLogFile;
+
+	static void SetReplaceFileName(const char* zfName);
 };

@@ -613,6 +613,8 @@ BOOL CImageView::OnInitDialog()
     }
     else if (!msStartFiles.IsEmpty())
     {
+		//CFileFactory::SetReplaceFileName("F:\\ImageQualityReview\\Data\\First initial results\\DLNR\\I00002.dcm");
+
 		POSITION pos = msStartFiles.GetHeadPosition();
 		while (pos)
 		{

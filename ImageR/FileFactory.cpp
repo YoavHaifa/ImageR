@@ -31,6 +31,13 @@
 #include "VolumeRenderingIF.h"
 #endif
 
+CString CFileFactory::umsReplaceFileName;
+
+void CFileFactory::SetReplaceFileName(const char* zfName)
+{
+	umsReplaceFileName = zfName;
+}
+
 CFileFactory::CFileFactory(FILE *pfLog)
 : mpfLog (pfLog)
 , mpDicom (NULL)
@@ -88,8 +95,15 @@ CMetaData * CFileFactory::CreateFileObject(CXMLParseNode *pMetaDataXml)
     else if (sClass == "CSinograms")
         pData = new CSinograms(pMetaDataXml);
 
-    else if (pObjectXml->GetValue("name",sName))
-       pData = TryCreateFileObject(sName);
+	else if (pObjectXml->GetValue("name", sName))
+	{
+		if (!umsReplaceFileName.IsEmpty())
+		{
+			sName = umsReplaceFileName;
+			umsReplaceFileName = "";
+		}
+		pData = TryCreateFileObject(sName);
+	}
     
     if (pData)
     {
