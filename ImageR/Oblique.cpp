@@ -40,15 +40,43 @@ COblique::EOblType COblique::GetType (const char *zType)
         return OBL_SAGITTAL;
     return OBL_CORONAL;
 }
+CString COblique::GetCurrentImageName()
+{
+	EOblType eType = GetPos().GetType();
+	char zBuf[128];
+	switch (eType)
+	{
+	case OBL_CORONAL:
+		sprintf_s(zBuf, sizeof(zBuf), "Coronal line %d", mpOblPos->miCurrent);
+		return CString(zBuf);
+	case OBL_SAGITTAL:
+		sprintf_s(zBuf, sizeof(zBuf), "Sagittal col %d", mpOblPos->miCurrent);
+		return CString(zBuf);
+	default:
+		break;
+	}
+	return CString("Oblique");
+}
 CString COblique::GetTypeName (EOblType eType)
 {
+	//char zBuf[128];
     switch (eType)
     {
     case OBL_CORONAL:
+		/*if (mpOblPos)
+		{
+			sprintf_s(zBuf, sizeof(zBuf), "Coronal line %d", mpOblPos->miCurrent);
+			return CString(zBuf);
+		} */
         return CString("Coronal");
     case OBL_SAGITTAL:
+		/* if (mpOblPos)
+		{
+			sprintf_s(zBuf, sizeof(zBuf), "Sagittal col %d", mpOblPos->miCurrent);
+			return CString(zBuf);
+		} */
         return CString("Sagittal");
-    default:
+	default:
         break;
     }
     return CString("Oblique");
@@ -110,7 +138,7 @@ bool COblique::DoUpdatePageData()
         pageOffset = iCurrentPos * mDataUnitSize;
         break;
     }
-    msName = GetTypeName(eType);
+    msName = GetCurrentImageName();
     AddDualModeToName();
 
     int nLinesToCompute = pVolume->mnLoaded;

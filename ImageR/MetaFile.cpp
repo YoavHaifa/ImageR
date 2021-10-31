@@ -211,7 +211,7 @@ void CMetaFile::close()
 		mhFile = INVALID_HANDLE_VALUE;
         if (mpTypedData)
         {
-            if (mpTypedData->Min() < 0.0f || mpTypedData->Max() > MAX_CT_VALUE)
+            if (mpTypedData->Min() < MIN_CT_VALUE || mpTypedData->Max() > MAX_CT_VALUE)
                 mbCtImage = false;
         }
 	}

@@ -126,7 +126,7 @@ public:
     CDataCoordinates SetSelectedPoint(CPoint point);
     void SetSelectedPoint(CDRCoordinates &drCoo);
     void OnViewZoom(void);
-    void SaveState(class CXMLDump & xmlDump);
+    void SaveState(class CXMLDump & xmlDump, bool bCurrent);
 	class CGCursor * AddCursor(const char * zName, COLORREF color = CGraphicElement::GetDefColor());
     void AddContour(const char * zName, COLORREF color = CGraphicElement::GetDefColor());
     class CGLine * AddLine(const char * zName, COLORREF color = CGraphicElement::GetDefColor());

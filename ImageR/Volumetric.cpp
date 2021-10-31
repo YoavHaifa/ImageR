@@ -18,6 +18,7 @@ CVolumetric::CVolumetric(const char *zName, class CXMLParseNode *pXmlNode)
 : CMetaData(zName)
 , mpVolumeData((CMetaData *)CNamedObject::GetParsed(pXmlNode, "volume_id"))
 , mbSliceIncrementInitialized(false)
+, mbInvertUpDown(false)
 {
     InitOnConstruction();
 }
@@ -32,6 +33,8 @@ void CVolumetric::InitOnConstruction(void)
     mnCols = mpVolumeData->GetNCols();
     mMmPerPixelWidth = mpVolumeData->MmPerPixelWidth();
     mbCtImage = mpVolumeData->IsCtImage();
+	mRescaleIntercept = mpVolumeData->mRescaleIntercept;
+	mRescaleSlope = mpVolumeData->mRescaleSlope;
 
 	if (mpVolumeData)
 		SetDataType(mpVolumeData->GetDataType());
@@ -63,6 +66,7 @@ void CVolumetric::SaveState(class CXMLDump & xmlDump)
     CMetaData::SaveState(xmlDump);
     if (mpVolumeData)
         xmlDump.Write("volume_id", mpVolumeData->mUId);
+	xmlDump.Write("b_invert_up_down", mbInvertUpDown);
 }
 bool CVolumetric::ReadyForWindowFocus(void)
 {

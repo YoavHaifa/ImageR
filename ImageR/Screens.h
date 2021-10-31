@@ -23,6 +23,8 @@ public:
         SBAR_LAST = 8
     } ESatusBarFields;
 
+	CString masSatusBarTexts[SBAR_LAST];
+
     // Construct/Destruct
     CScreens(void);
     ~CScreens(void);

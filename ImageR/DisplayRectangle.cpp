@@ -239,7 +239,7 @@ bool CDisplayRectangle::InitGraphicsFromXml(CXMLParseNode *pGraphicsXml,
 				bChange = true;
 			}
         }
-		else if (sClass = "CRingID")
+		else if (sClass == "CRingID")
 		{
 			AddScanCenter(pGEXml);
 		}
@@ -1208,10 +1208,13 @@ void CDisplayRectangle::OnViewZoom(void)
     dlg.DoModal();
 }
 
-void CDisplayRectangle::SaveState(CXMLDump & xmlDump)
+void CDisplayRectangle::SaveState(CXMLDump & xmlDump, bool bCurrent)
 {
     CXMLDumpScope scope("DisplayRectangle",xmlDump);
     CDependant::SaveState(xmlDump);
+
+	if (bCurrent)
+        xmlDump.Write("current", true);
 
     {
         CXMLDumpScope graph("rectangle",xmlDump);

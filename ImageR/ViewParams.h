@@ -2,7 +2,8 @@
 #include "..\..\ImageRLib\MyImage.h"
 
 
-#define MAX_CT_VALUE  4095
+#define MAX_CT_VALUE  5199  // 4095 + 1024 bias
+#define MIN_CT_VALUE  -1000
 
 //#define MAX_DATA_SIZE 0x20000000
 

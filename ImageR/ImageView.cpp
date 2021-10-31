@@ -2557,3 +2557,5 @@ void CImageView::OnAddChangeendian()
 		gScreens.Refresh();
 	}
 }
+
+

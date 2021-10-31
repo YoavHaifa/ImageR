@@ -364,7 +364,7 @@ bool CArchivesFile::DoLoadVolumeImage(int iLoad, void *pVolumePage)
     else if (iLoad == 1)
 	{
 		OnSecondImageLoaded(pDicom);
-		mMmPerPixelPage = mSecondBedPos - mFirstBedPos;
+		mMmPerPixelPage = abs(mSecondBedPos - mFirstBedPos);
 		if (mMmPerPixelPage > -0.001 && mMmPerPixelPage < 0.001)
 		{
 			static int nNotice = 0;

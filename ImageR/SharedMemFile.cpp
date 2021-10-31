@@ -194,7 +194,7 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 	        CMyImage::SSharedMemHeader *pHeader = mpVolume->GetHeader();
 		    if (pHeader)
 			{
-				mMmPerPixelPage = pHeader->mSecondBedPos - pHeader->mFirstBedPos;
+				mMmPerPixelPage = abs(pHeader->mSecondBedPos - pHeader->mFirstBedPos);
 	        }
 		}
     }

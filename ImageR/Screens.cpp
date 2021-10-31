@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.4.5");
+CString CScreens::umsVersion("V1.4.6");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -1522,6 +1522,8 @@ void CScreens::Paint()
 void CScreens::PrintStatusInBar(ESatusBarFields eField, const char *zText)
 {
     mpStatusBar->SetText(zText, eField, 0);
+	if (eField < SBAR_LAST)
+		masSatusBarTexts[eField] = zText;
 }
 void CScreens::Refresh(void)
 {
@@ -1692,7 +1694,7 @@ CString CScreens::SaveState(const char *zName, const char *zMessage)
 	{
 		CXMLDumpScope graph("Screen", xmlDump);
 		{
-			CXMLDumpScope graph("ScreenSize", xmlDump);
+			CXMLDumpScope scopeScreenSize("ScreenSize", xmlDump);
 			xmlDump.Write("cx", (int)mScreenSize.cx);
 			xmlDump.Write("cy", (int)mScreenSize.cy);
 		}
@@ -1705,7 +1707,7 @@ CString CScreens::SaveState(const char *zName, const char *zMessage)
     while (pos)
     {
         CDisplayRectangle *pDR = mRectanglesList.GetNext(pos);
-        pDR->SaveState(xmlDump);
+        pDR->SaveState(xmlDump, pDR == mpCurrentDR);
     }
 
     if (mGlobalColorersList.GetSize() > 0)
@@ -1718,6 +1720,19 @@ CString CScreens::SaveState(const char *zName, const char *zMessage)
             pData->SaveState(xmlDump);
         }
     }
+	if (mpStatusBar)
+	{
+        CXMLDumpScope graph("StatusBar",xmlDump);
+		//for (int i = 0; i < SBAR_LAST; i++)
+		xmlDump.Write("GENERAL", masSatusBarTexts[0]);
+		xmlDump.Write("PAGE", masSatusBarTexts[1]);
+		xmlDump.Write("STATISTICS", masSatusBarTexts[2]);
+		xmlDump.Write("TYPED", masSatusBarTexts[3]);
+		xmlDump.Write("DATA", masSatusBarTexts[4]);
+		xmlDump.Write("POS", masSatusBarTexts[5]);
+		xmlDump.Write("WINDOW_WIDTH", masSatusBarTexts[6]);
+		xmlDump.Write("WINDOW_CENTER", masSatusBarTexts[7]);
+	}
     return sfName;
 }
 void CScreens::SaveStateForUser(void)
@@ -2524,6 +2539,8 @@ void CScreens::GetListOfDataUsingPosition(CPosition *pPosition, CList <CMetaData
 void CScreens::SetStatusText(const char * zText, int iField)
 {
     mpStatusBar->SetText(zText, iField, 0);
+	if (iField < SBAR_LAST)
+		masSatusBarTexts[iField] = zText;
 }
 void CScreens::AllowPaging(bool flag)
 {

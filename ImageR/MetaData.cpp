@@ -512,7 +512,7 @@ bool CMetaData::UpdatePageData()
 		else
 	        mpTypedData->OnReadBytes(mpPageData->GetDataStart(), mpPageData->GetRealByteSize());
 
-        if ((mpTypedData->Min() < 0.0f) || (mpTypedData->Max() > MAX_CT_VALUE))
+        if ((mpTypedData->Min() < MIN_CT_VALUE) || (mpTypedData->Max() > MAX_CT_VALUE))
             mbCtImage = false;
         if (!gScreens.mbEbwMode && !typedCount++)
         {
@@ -1511,7 +1511,7 @@ void CMetaData::AttachToSharedVolume(CFileMapping * pMapping)
     CMyImage::SSharedMemHeader *pHeader = mpVolume->GetHeader();
     if (pHeader)
     {
-        mMmPerPixelPage = pHeader->mSecondBedPos - pHeader->mFirstBedPos;
+        mMmPerPixelPage = abs(pHeader->mSecondBedPos - pHeader->mFirstBedPos);
         if (mMmPerPixelPage > -0.001 && mMmPerPixelPage < 0.001)
         {
             static int nNotice = 0;
