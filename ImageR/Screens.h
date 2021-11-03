@@ -29,7 +29,7 @@ public:
     CScreens(void);
     ~CScreens(void);
 
-    void OnNewRect(void);
+    void OnNewRect(bool bLoadingSavedState = false);
     void AddData(class CMetaData *pData, bool bAddDisplay = true);
     void OnExtraNewRectangleAdjustSize(int delta);
     class CDisplayRectangle * GetRectangleWithData(const char *zDataName);
@@ -126,7 +126,7 @@ private:
     static const int MAX_DISPLAY_RECTANGLES = 100;
     static float MOUSE_ZOOM_FACTOR;
 
-    void SetFirstImageSize(void);
+    void SetFirstImageSize(bool bLoadingSavedState);
 	void PrintWindowRect(const char *zText, FILE *pf = NULL);
     CString SaveState(const char *zName, const char *zMessage = NULL);
 	void OnSizeExtended(UINT , int cx, int cy, bool force);

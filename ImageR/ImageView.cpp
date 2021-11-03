@@ -1914,8 +1914,7 @@ void CImageView::OnHelpOpenmanual()
 {
     CString sfName ("\"");
     sfName += CMyWindows::GetApplicationPath();
-    sfName += "ImageR Users Manual.htm\"";
-    //CMyWindows::CreateProcess ("WordPad.exe", "");
+    sfName += "Docs\\ImageR Users Manual.htm\"";
 	if (CFileName::Exist(sfName))
 		CMyWindows::CreateProcess ("C:\\Program Files\\Internet Explorer\\Iexplore.exe", sfName);
 }

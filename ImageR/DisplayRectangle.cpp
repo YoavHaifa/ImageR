@@ -275,8 +275,17 @@ void CDisplayRectangle::InitTextsFromXml(CXMLParseNode *pTextsXml)
 }
 void CDisplayRectangle::InitFromXml(CXMLParseNode * pDRXml)
 {
-    CXMLParseNode *pDataXml = pDRXml->GetFirst("data");
-    if (!pDataXml)
+	CXMLParseNode* pRectangleXml = pDRXml->GetFirst("rectangle");
+	if (pRectangleXml)
+	{
+		pRectangleXml->GetValue("left", left);
+		pRectangleXml->GetValue("right", right);
+		pRectangleXml->GetValue("top", top);
+		pRectangleXml->GetValue("bottom", bottom);
+	}
+
+	CXMLParseNode* pDataXml = pDRXml->GetFirst("data");
+	if (!pDataXml)
         return;
     InitDataFromXml(pDataXml);
 

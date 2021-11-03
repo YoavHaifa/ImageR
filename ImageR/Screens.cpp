@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.4.6");
+CString CScreens::umsVersion("V1.4.7");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -126,7 +126,7 @@ void CScreens::InitLeftMouseUpMsg(void)
 	if (!mImageRLeftMouseUpMsg)
 		mImageRLeftMouseUpMsg = RegisterWindowMessage("ImageRLeftMouseUp");
 }
-void CScreens::OnNewRect(void)
+void CScreens::OnNewRect(bool bLoadingSavedState)
 {
     SetCurrentDR(mRectanglesList.GetTail());
     CMetaData *pData = mpCurrentDR->GetCurrentData();
@@ -139,7 +139,7 @@ void CScreens::OnNewRect(void)
     }
 
     if (nRectangles == 1)
-        SetFirstImageSize();
+        SetFirstImageSize(bLoadingSavedState);
     else
          OnExtraNewRectangleAdjustSize(1); // Set Screen Size
 
@@ -1128,7 +1128,7 @@ void CScreens::OnSizeExtended(UINT , int cx, int cy, bool force)
     if (mpfLog)
         fprintf (mpfLog, "\n");
 }
-void CScreens::SetFirstImageSize(void)
+void CScreens::SetFirstImageSize(bool bLoadingSavedState)
 {
     if (mpfLog)
         fprintf (mpfLog, "<SetFirstImageSize>\n");
@@ -1151,6 +1151,11 @@ void CScreens::SetFirstImageSize(void)
 	}
 
     CSize firstImageSize = pData->DefaultImageSize();
+	if (bLoadingSavedState)
+	{
+		firstImageSize.cx = mpCurrentDR->right;
+		firstImageSize.cy = mpCurrentDR->bottom;
+	}
 	if (!mbMaxRectanglesInRowSetByUser)
 	{
 		if (firstImageSize.cx >= 1.5f * firstImageSize.cy)
@@ -1787,6 +1792,13 @@ void CScreens::LoadSavedState(const char *zfName)
 	CXMLParseNode* pScreen = pRoot->GetFirst("Screen");
 	if (pScreen)
 	{
+		/* // Screen size already includes margins, etc. Use display rectangle shape
+		CXMLParseNode* pScreenSize = pScreen->GetFirst("ScreenSize");
+		if (pScreenSize)
+		{
+			pScreenSize->GetValue("cx", mWantedSize.cx);
+			pScreenSize->GetValue("cy", mWantedSize.cy);
+		} */
 		if (pScreen->GetValue("max_columns", mnMaxRectanglesInRow))
 			mbMaxRectanglesInRowSetByUser = true;
 	}
@@ -1802,7 +1814,7 @@ void CScreens::LoadSavedState(const char *zfName)
         {
             CDisplayRectangle *pRect = new CDisplayRectangle(mpfLog, pDRXml);
             mRectanglesList.AddTail(pRect);
-            OnNewRect();
+            OnNewRect(true /* bLoadingSavedState */);
             if (mRectanglesList.GetSize() > 1)
                 AddRefToNewData();
         }

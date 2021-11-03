@@ -854,11 +854,12 @@ void CMetaData::SetNewCommonZoom ()
 		mpCommonZoomPanParams->MultiplyZoomFactor(zoomFromNameOrCommandLine);
 		mpCommonZoomPanParams->SetMode(eMode);
 	}
+	/* Zoom due to wanted size will be handled later
 	if (wantedSize.cx)
 	{
 		float zoomFactor = (float)wantedSize.cx / mnCols;
 		mpCommonZoomPanParams->MultiplyZoomFactor(zoomFactor);
-	}
+	} */
     if (DisableZoom())
         mpCommonZoomPanParams->Disable();
 }
