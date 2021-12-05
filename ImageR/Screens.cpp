@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.4.7");
+CString CScreens::umsVersion("V1.4.8");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -2353,8 +2353,15 @@ void CScreens::AfterFileDelete(CDisplayRectangle *pRect)
 }
 void CScreens::OnFileDelete(void)
 {
-	if (!mpCurrentDR)
+	CMetaData* pData = GetCurrentData();
+	if (!pData)
 		return;
+
+	if (pData->HasVolume())
+	{
+		CMyWindows::MessBox("Source of volumetric adata can't be deleted", "Warning");
+		return;
+	}
 
 	CMyCriticalSpan span(mCritical,"DeleteFile");
 	mpCurrentDR->DeleteCurrentData();
@@ -2621,7 +2628,7 @@ void CScreens::CheckForRepeatedDataOrAdjustPosition(CMetaData *pData)
 		{
 			CDisplayRectangle *pDR = mRectanglesList.GetNext(pos);
 			CMetaData *pRecData = pDR->GetCurrentData();
-			if (pRecData != pData)
+			if (pRecData && pRecData != pData)
 			{
 				if (pRecData->PermanentName() == sCurName)
 				{
@@ -2868,3 +2875,4 @@ void CScreens::ExportGraphicDataToExcel(void)
 
 	g2e.Print();
 }
+

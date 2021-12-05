@@ -120,8 +120,7 @@ CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 }
 CMetaData::~CMetaData(void)
 {
-    if (mpVolume)
-        delete mpVolume;
+	DeleteVolume();
 
     if (mpWindParamsDlg)
         delete mpWindParamsDlg;
@@ -1505,9 +1504,7 @@ void CMetaData::AttachToSharedVolume(CFileMapping * pMapping)
         fflush (mpfLog);
     }
 
-    if (mpVolume)
-        delete mpVolume;
-
+	DeleteVolume();
     mpVolume = CVolume::GetNew(pMapping, true);
     CMyImage::SSharedMemHeader *pHeader = mpVolume->GetHeader();
     if (pHeader)
@@ -2443,5 +2440,13 @@ void CMetaData::ChangeEndianInPage()
 			pChar[1] = ch0;
 			pShort++;
 		}
+	}
+}
+void CMetaData::DeleteVolume()
+{
+	if (mpVolume)
+	{
+		delete mpVolume;
+		mpVolume = NULL;
 	}
 }

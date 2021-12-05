@@ -292,8 +292,9 @@ public:
     class CMyImage *PageData(void);
     class CMyImage &CurPage(void) {return *mpPageData;}
 
-    class CVolume *GetVolume(void) {return mpVolume;}
-    bool HasPageData();
+	class CVolume* GetVolume(void) { return mpVolume; }
+	bool HasVolume(void) { return mpVolume != NULL; }
+	bool HasPageData();
     virtual void PrintId(FILE * pf, const char * zText);
     bool ForceUpdatePageData(void);
     virtual bool UpdatePageData(void);
@@ -366,4 +367,5 @@ public:
 	bool SaveToMinimalDicom();
 	void ChangeEndian();
 	void ChangeEndianInPage();
+	void DeleteVolume();
 };

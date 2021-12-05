@@ -31,6 +31,11 @@ COblique::COblique(CXMLParseNode *pXmlNode)
 }
 COblique::~COblique(void)
 {
+	if (mpOblRefOnIm)
+	{
+		CDisplayRectangle* pDataDR = mpVolumeData->GetDR();
+		pDataDR->RemoveGraphicElement(mpOblRefOnIm);
+	}
 }
 COblique::EOblType COblique::GetType (const char *zType)
 {
@@ -233,12 +238,12 @@ void COblique::OnAssignDR (void)
 	// Create reference to the oblique on the image
 	CDisplayRectangle *pDataDR = mpVolumeData->GetDR();
 	CGLine::umbCreatOnly2Points = true;
-	CObliqueRef *pOblRefOnIm = new CObliqueRef(pDataDR, true, this, mpVolumeData);
-    pFirst =  pOblRefOnIm->GetFirstDataCoo();
-    pSecond =  pOblRefOnIm->GetSecondDataCoo();
+	mpOblRefOnIm = new CObliqueRef(pDataDR, true, this, mpVolumeData);
+    pFirst =  mpOblRefOnIm->GetFirstDataCoo();
+    pSecond = mpOblRefOnIm->GetSecondDataCoo();
 	pFirst->fx = 5;
 	pSecond->fx = (float)mpVolumeData->GetNCols() - 5;
 	pFirst->fy = (float)mpVolumeData->GetNLinesInPage() / 2;
 	pSecond->fy = (float)mpVolumeData->GetNLinesInPage() / 2;
-	pDataDR->AddGraphicElement(pOblRefOnIm);
+	pDataDR->AddGraphicElement(mpOblRefOnIm);
 }

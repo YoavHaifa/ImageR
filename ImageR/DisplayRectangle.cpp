@@ -668,6 +668,22 @@ bool CDisplayRectangle::RemoveGraphicElement(CGraphicElementOnDR * pElement)
     }
     return false;
 }
+bool CDisplayRectangle::RemoveGraphicElement(CGraphicElement* pGE)
+{
+	POSITION pos = mGraphicList.GetHeadPosition();
+	while (pos)
+	{
+		POSITION prevPos = pos;
+		CGraphicElementOnDR* pGeOnDR = mGraphicList.GetNext(pos);
+		if (pGeOnDR->IsGE(pGE))
+		{
+			mGraphicList.RemoveAt(prevPos);
+			delete pGeOnDR;
+			return true;
+		}
+	}
+	return false;
+}
 CGraphicElementOnDR *CDisplayRectangle::FindGraphic(const char * zName)
 {
     POSITION pos = mGraphicList.GetHeadPosition();

@@ -33,6 +33,7 @@ protected:
     class CObliquePosition &GetPos(void){return *(class CObliquePosition *)GetPosition();}
 	class CObliquePosition *mpOblPos;
 	CString GetCurrentImageName();
+	class CObliqueRef* mpOblRefOnIm;
 
 public:
     static CString GetTypeName (EOblType eType);

@@ -250,19 +250,13 @@ public:
 	afx_msg void OnDicomSaveuncomprerssed();
 	afx_msg void OnDicomCompare();
 	afx_msg void OnExportDumpallslices();
-public:
 	afx_msg void OnFileDelete();
-public:
 	void SetTopMost(void);
-public:
 	afx_msg void OnGraphicRename();
-public:
 	afx_msg void OnGraphicSettext();
-public:
 	afx_msg void OnMipClientmessage();
 	afx_msg void OnMipSetvoi();
 	afx_msg void OnMipTopovoi();
-public:
 	afx_msg void OnGraphicAddcontour();
 	afx_msg void OnDicomAmendallbyxml();
 	afx_msg void OnDicomShowscancenter();

@@ -86,7 +86,8 @@ public:
     bool AddGraphicElement(CGraphicElementOnDR * pElement);
 	bool AddGraphicElementFromSharedMemImage(class CSharedMemFile *pSharedMemFile);
 
-    bool RemoveGraphicElement(CGraphicElementOnDR * pElement);
+	bool RemoveGraphicElement(CGraphicElementOnDR* pElement);
+	bool RemoveGraphicElement(CGraphicElement* pGE);
 
     bool OnLButtonDown(UINT nFlags, CScreenCoordinates screenCoo);
     bool OnLButtonUp(UINT nFlags, CScreenCoordinates screenCoo);

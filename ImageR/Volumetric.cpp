@@ -24,6 +24,7 @@ CVolumetric::CVolumetric(const char *zName, class CXMLParseNode *pXmlNode)
 }
 CVolumetric::~CVolumetric(void)
 {
+	mpVolumeData->DeleteVolume();
 }
 void CVolumetric::InitOnConstruction(void)
 {

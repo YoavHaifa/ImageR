@@ -40,8 +40,9 @@ public:
     void SetName (const char *zName) {mpGE->SetName(zName);}
     bool IsValid(void){return mpGE->IsValid();}
     CGPoint **GetPointsMap(void);
-    CGraphicElement *GetGE(void){return mpGE;}
-    bool IsOn(class CDisplayRectangle *pDispRect){return pDispRect == mpDR;}
+	CGraphicElement* GetGE(void) { return mpGE; }
+	bool IsGE(CGraphicElement* pGE) { return mpGE == pGE; }
+	bool IsOn(class CDisplayRectangle *pDispRect){return pDispRect == mpDR;}
     class CDisplayRectangle *GetDR(void){return mpDR;}
     bool IsActive(void){return mbActive;}
     void SetPointsColor(COLORREF color);
