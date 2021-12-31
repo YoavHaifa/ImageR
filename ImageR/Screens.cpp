@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.4.9");
+CString CScreens::umsVersion("V1.5.0");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -1526,9 +1526,16 @@ void CScreens::Paint()
 }
 void CScreens::PrintStatusInBar(ESatusBarFields eField, const char *zText)
 {
+	static bool bIn = false;
+	if (bIn)
+		return;
+	bIn = true;
+
     mpStatusBar->SetText(zText, eField, 0);
 	if (eField < SBAR_LAST)
 		masSatusBarTexts[eField] = zText;
+
+	bIn = false;
 }
 void CScreens::Refresh(void)
 {

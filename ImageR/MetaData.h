@@ -367,6 +367,7 @@ public:
 	bool StartLoadVolume(void);
 	void DeleteVolume();
 	static void ToggleEnableFastLoadFromVolume();
+	static bool umbEnableFastLoadFromVolume;
 
 protected:
 	static DWORD WINAPI StaticLoadVolume(void* p);
@@ -376,5 +377,4 @@ protected:
 	bool mbVolumeIsShared;
 	bool mbFastLoadFromVolume;
 	bool mbLoadingVolume;
-	static bool umbEnableFastLoadFromVolume;
 };

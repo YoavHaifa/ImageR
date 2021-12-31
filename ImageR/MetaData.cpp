@@ -44,7 +44,7 @@ int CMetaData::umiLastType = -2;
 bool CMetaData::umbDisplayImageOnZeroColor = false;
 bool CMetaData::umbColorTransparency = true;
 float CMetaData::umTransparencyFraction = 0.5f;
-bool CMetaData::umbEnableFastLoadFromVolume = true;
+bool CMetaData::umbEnableFastLoadFromVolume = false;
 
 void CMetaData::ToggleEnableFastLoadFromVolume()
 {

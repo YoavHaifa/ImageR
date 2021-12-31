@@ -1466,6 +1466,8 @@ void CImageView::ReadRegistry()
 
 	myReg.Get("DebugWindowDlg", CWindowDlg::umDebug);
 
+	myReg.Get("bLoadVolume", CMetaData::umbEnableFastLoadFromVolume);
+
 	int tmp = 0;
 	if (myReg.Get("DebugScorers", tmp))
 		CImageDiffScorer::SetDebug(tmp);
