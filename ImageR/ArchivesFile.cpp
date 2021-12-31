@@ -26,6 +26,7 @@ CArchivesFile::CArchivesFile(const char *zName, CMyDicom *pDicom, CXMLParseNode 
 , mbLookedForRli(false)
 {
 	mpCtImages = this;
+	mbFastLoadFromVolume = true;
 
 	static int count = 0;
 	CMyTracer myTracer("CArchivesFile::CArchivesFile", ++count);
@@ -93,16 +94,55 @@ bool CArchivesFile::GetMmPerPixel(double &mmppWidth, double &mmppHeight)
 }
 bool CArchivesFile::DoUpdatePageData()
 {
-	static CEventTracer EvTracer ("CArchFile_Update");
-	CDynamicTimer DynTimer (&EvTracer);
-
 	static int count = 0;
 	CMyTracer myTracer("CArchivesFile::DoUpdatePageData", ++count);
+
+	while (mbFastLoadFromVolume && mbLoadingVolume)
+		Sleep(10);
+
+	if (umbEnableFastLoadFromVolume)
+	{
+		if (mbFastLoadFromVolume && mpVolume && DoUpdatePageDataFromVolume())
+			return true;
+	}
+
+	if (!DoUpdatePageDataInternals())
+		return false;
+
+	if (umbEnableFastLoadFromVolume && mbFastLoadFromVolume && !mpVolume)
+	{
+		gScreens.mVolumeRefreshInterval = 0;
+		StartLoadVolume();
+	}
+	return true;
+}
+bool CArchivesFile::DoUpdatePageDataFromVolume()
+{
+	static CEventTracer EvTracer("CArchFile_UpdateFromVolume");
+	CDynamicTimer DynTimer(&EvTracer);
+
+	CPosition *pPos = mMultiPosition.GetPosition(0);
+	int iRel = pPos->GetCurrentRelative();
+	void* pVolPage = mpVolume->GetPageRelativeVP(iRel);
+	if (!pVolPage)
+		return false;
+
+	char* pBuf = (char*)mpPageData->GetDataStart();
+	int nBytes = mpPageData->GetByteSize();
+	memcpy(pBuf, pVolPage, nBytes);
+
+	return true;
+}
+bool CArchivesFile::DoUpdatePageDataInternals()
+{
+	static CEventTracer EvTracer ("CArchFile_UpdateFromFile");
+	CDynamicTimer DynTimer (&EvTracer);
+
     int nRetry = 0;
-	if (mpDicom)
- 		mpDicom->PrintSequences("Before UpdateDicom");
+	//if (mpDicom)
+ 	//	mpDicom->PrintSequences("Before UpdateDicom");
 	UpdateDicom();
-	mpDicom->PrintSequences("After UpdateDicom");
+	//mpDicom->PrintSequences("After UpdateDicom");
     while (!mpDicom && nRetry++ < 10)
     {
         Sleep(100);

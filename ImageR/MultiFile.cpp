@@ -339,7 +339,7 @@ void CMultiFile::ChangeDicomDateToAllFiles(CString sNewDate)
     int nChanged = 0;
     CMyDicom *pDicom = NULL;
 
-	for (int i = StartLoop(); i >= 0; i = LoopNext())
+	for (int i = StartLoopI(); i >= 0; i = LoopNext())
     {
 		CString sName (mNamePattern.GetName());
         pDicom = CFileName::GetDicomFile(sName);
@@ -442,7 +442,7 @@ void CMultiFile::CheckDicomSeries(void)
 		return;
 
 	CMyDicomCheckSeries series;
-	for (int i = StartLoop(); i >= 0; i = LoopNext())
+	for (int i = StartLoopI(); i >= 0; i = LoopNext())
     {
 		CString sName (mNamePattern.GetName());
         CMyDicom *pDicom = CFileName::GetDicomFile(sName);
@@ -496,7 +496,7 @@ void CMultiFile::AmendAllByXml(void)
 	int n = GetNDataUnits();
 	CMyProgress myProgress (0, (short)n); 
 
-	for (int i = StartLoop(); i >= 0; i = LoopNext())
+	for (int i = StartLoopI(); i >= 0; i = LoopNext())
     {
 		CString sName (mNamePattern.GetName());
         CMyDicom *pDicom = CFileName::GetDicomFile(sName);
@@ -641,14 +641,21 @@ void CMultiFile::ReorderFiles(int iFirst, int iLast, int step, int iOut, int iOu
 }
 bool CMultiFile::DoLoadVolume()
 {
-    if (!mpVolume)
-        return false;
+	if (!mpVolume)
+	{
+		mbLoadingVolume = false;
+		return false;
+	}
 
     unsigned char *pVolumePage = (unsigned char *) mpVolume->GetPageVP(GetPosition()->miFirst);
-    if (!pVolumePage)
+	if (!pVolumePage)
+	{
+		mbLoadingVolume = false;
         return false;
+	}
 
     int nToLoad = GetNPages();
+	mpVolume->mnLoaded = 0;
     unsigned int pageLenBytes = mnLinesInPage * mnCols * mDataUnitSize;
     //unsigned int pageSize = pageLen * sizeof(pVolumePage[0]);
     if (mpfLog)
@@ -657,20 +664,32 @@ bool CMultiFile::DoLoadVolume()
         fflush (mpfLog);
     }
 
-	for (int iLoad = StartLoop(); iLoad >= 0 && iLoad < nToLoad; iLoad = LoopNext())
+	//bool bLoop = StartLoop();
+	//int iFirst = mpVolume->GetIFirst();
+	//int iLast = mpVolume->GetILast();
+	CPosition* pPos = mMultiPosition.GetPosition(0);
+	for (int iLoad = StartLoopI(); iLoad >= 0 && iLoad < nToLoad; iLoad = LoopNext())
     {
-		if (!DoLoadVolumeImage(iLoad, pVolumePage))
-			return false;
+		//int iLoad = pPos->GetCurrent();
+		int iLoadRelative = pPos->GetCurrentRelative();
 
-        int ii = iLoad + 1;
-        if ((ii % gScreens.mVolumeRefreshInterval == 0) || (ii == nToLoad))
+		if (!DoLoadVolumeImage(iLoadRelative, pVolumePage))
+		{
+			mbLoadingVolume = false;
+			return false;
+		}
+
+		mpVolume->mnLoaded++;
+        int ii = iLoadRelative + 1;
+        if ((gScreens.mVolumeRefreshInterval && (ii % gScreens.mVolumeRefreshInterval == 0)) 
+			|| (ii == nToLoad))
         {
             if (mpVolume->OnLoad(ii))
                 gScreens.Refresh();
         }
         
         char zBuf[32];
-        sprintf_s (zBuf, 32, "LV%03d", iLoad);
+        sprintf_s (zBuf, 32, "LV%03d", ii);
         gScreens.PrintStatusInBar(CScreens::SBAR_GENERAL,zBuf);
         pVolumePage += pageLenBytes;
     }
@@ -679,6 +698,7 @@ bool CMultiFile::DoLoadVolume()
         fprintf (mpfLog, "<CArchivesFile::DoLoadVolume> %d loaded\n", nToLoad);
         fflush (mpfLog);
     }
+	mbLoadingVolume = false;
 	gScreens.Refresh(); // Re-display original current image
     return true;
 }

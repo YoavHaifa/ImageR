@@ -433,6 +433,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_DICOM_EXPORTTOMINIMALDICOM, &CImageView::OnDicomExporttominimaldicom)
 		ON_COMMAND(ID_ADD_CHANGEENDIAN, &CImageView::OnAddChangeendian)
 		ON_COMMAND(ID_DIFF_FINDBESTTRANSFORMATION, &CImageView::OnDiffFindbesttransformation)
+		ON_COMMAND(ID_SETTINGS_TOGGLEFASTLOADING, &CImageView::OnSettingsTogglefastloading)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -1457,9 +1458,12 @@ void CImageView::ReadRegistry()
 	myReg.Get("bAutoFocus", CHybridFile::umbAutoFocusOnNewFile);
 	myReg.Get("UpdateDebug", CNamedObject::umDebug);
 	myReg.Get("MaxZoomFactor", CZoomPanParams::MAX_ZOOM_FACTOR);
-	myReg.Get("bTiming", CEventTracer::umbEnable);
+	if (myReg.Get("bDebugTiming", mbDebugTiming))
+	{
+		if (mbDebugTiming)
+			CEventTracer::umbEnable = true;
+	}
 
-	myReg.Get("DebugTiming", mbDebugTiming);
 	myReg.Get("DebugWindowDlg", CWindowDlg::umDebug);
 
 	int tmp = 0;
@@ -2557,4 +2561,7 @@ void CImageView::OnAddChangeendian()
 	}
 }
 
-
+void CImageView::OnSettingsTogglefastloading()
+{
+	CMetaData::ToggleEnableFastLoadFromVolume();
+}

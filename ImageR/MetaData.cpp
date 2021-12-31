@@ -44,6 +44,12 @@ int CMetaData::umiLastType = -2;
 bool CMetaData::umbDisplayImageOnZeroColor = false;
 bool CMetaData::umbColorTransparency = true;
 float CMetaData::umTransparencyFraction = 0.5f;
+bool CMetaData::umbEnableFastLoadFromVolume = true;
+
+void CMetaData::ToggleEnableFastLoadFromVolume()
+{
+	umbEnableFastLoadFromVolume = !umbEnableFastLoadFromVolume;
+}
 
 CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 : CMetaDataBase(zName)
@@ -80,6 +86,8 @@ CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 , msUserDefinedTitle(_T(""))
 , mpWindParamsDlg(NULL)
 , mbChangeEndian(false)
+, mbFastLoadFromVolume(false)
+, mbLoadingVolume(false)
 {
 	mbCtImage = true;
     CFileName fName (zName);
@@ -597,6 +605,7 @@ bool CMetaData::DoLoadVolume()
 	}
     if (mpPageData)
         mpPageData->mbUpdateFailed = true;
+	mbLoadingVolume = false;
 	return false;
 }
 bool CMetaData::StartLoadVolume ()
@@ -604,6 +613,7 @@ bool CMetaData::StartLoadVolume ()
     if (!mpVolume)
     {
         //int nPages = GetNPages();
+		mbLoadingVolume = true;
         mpVolume = CVolume::GetNew(msName + "Vol", mDataType, mnLinesInPage, mnCols,
             GetPosition());
         if (!mpVolume)
@@ -1558,7 +1568,7 @@ void CMetaData::DumpAllPageData(const char *zUserName)
 
 	char zBuf[512];
 	int nSaved = 0;
-	for (int i = StartLoop(); i >= 0; i = LoopNext())
+	for (int i = StartLoopI(); i >= 0; i = LoopNext())
 	{
 		mbPageUpdated = false;
 		if (!UpdatePageData())
@@ -1596,7 +1606,7 @@ void CMetaData::DumpAllPageDataCoronals(const char *zUserName)
 	char zBuf[512];
 	int nSaved = 0;
 	bool bFailed = false;
-	for (int i = StartLoop(); i >= 0; i = LoopNext())
+	for (int i = StartLoopI(); i >= 0; i = LoopNext())
 	{
 		progress.SetPos(nSaved);
 
@@ -1659,7 +1669,7 @@ void CMetaData::DumpAllPageDataCoronalsMultiFile(const char *zUserName)
 	char zBuf[512];
 	int nSaved = 0;
 	bool bFailed = false;
-	for (int i = StartLoop(); i >= 0; i = LoopNext())
+	for (int i = StartLoopI(); i >= 0; i = LoopNext())
 	{
 		progress.SetPos(nSaved);
 
@@ -1831,7 +1841,7 @@ void CMetaData::PrintStatisticsAvi(void)
 
 	char zBuf[128];
 	int nPrinted = 0;
-	for (int i = StartLoop(); i >= 0; i = LoopNext())
+	for (int i = StartLoopI(); i >= 0; i = LoopNext())
 	{
 		mbPageUpdated = false;
 		if (!UpdatePageData())
@@ -1853,7 +1863,7 @@ void CMetaData::PrintStatisticsDiff(CMetaData * /*pOther*/)
 
 	char zBuf[128];
 	int nPrinted = 0;
-	for (int i = StartLoop(); i >= 0; i = LoopNext())
+	for (int i = StartLoopI(); i >= 0; i = LoopNext())
 	{
 		mbPageUpdated = false;
 		if (!UpdatePageData())
@@ -2011,7 +2021,7 @@ void CMetaData::PrintFromAllDicom(void)
 		int maxLoopLevel = -1;
 
 		int n = 0;
-		for (int i = StartLoop(); i >= 0; i = LoopNext(maxLoopLevel))
+		for (int i = StartLoopI(); i >= 0; i = LoopNext(maxLoopLevel))
 		{
 			mbPageUpdated = false;
 			UpdatePageData();

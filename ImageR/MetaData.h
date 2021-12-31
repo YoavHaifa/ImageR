@@ -144,7 +144,6 @@ public:
     virtual CSize DefaultImageSize(void);
     CFloatCoordinates GetCenter();
 
-    bool StartLoadVolume (void);
     virtual void OnStartUpdate (void){};
 
     virtual CString GetStatisticsStringPerCoo(class CDataCoordinates coo);
@@ -231,8 +230,6 @@ protected:
     SRoi mLoadRoi; // Current ROI of file in Load Buffer
 
     virtual bool DoUpdatePageData(void);
-    virtual bool DoLoadVolume();
-    static DWORD WINAPI StaticLoadVolume(void *p);
     void OnFillZoomedRasterError(const char *zText);
 	void DeleteAllText(void);
 
@@ -255,9 +252,6 @@ private:
 protected:
     CMyImage *mpPageData;
 	bool mbPageDataCreatedByMe;
-
-    class CVolume *mpVolume;
-    bool mbVolumeIsShared;
 
     bool CreatePageData (void);
 
@@ -367,5 +361,20 @@ public:
 	bool SaveToMinimalDicom();
 	void ChangeEndian();
 	void ChangeEndianInPage();
+
+	// Control loaded volume
+public:
+	bool StartLoadVolume(void);
 	void DeleteVolume();
+	static void ToggleEnableFastLoadFromVolume();
+
+protected:
+	static DWORD WINAPI StaticLoadVolume(void* p);
+	virtual bool DoLoadVolume();
+
+	class CVolume* mpVolume;
+	bool mbVolumeIsShared;
+	bool mbFastLoadFromVolume;
+	bool mbLoadingVolume;
+	static bool umbEnableFastLoadFromVolume;
 };

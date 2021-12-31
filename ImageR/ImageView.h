@@ -178,7 +178,7 @@ protected:
     void init_on_construction();
     bool mbLastMoveHorizontal;
     bool mbMouseMoved;
-	int mbDebugTiming;
+	bool mbDebugTiming;
 
     class CPipeWriter *mpDv2EcgvPipe;
 	HWND parentWindowHandle;
@@ -343,5 +343,6 @@ public:
 	afx_msg void OnDicomExporttominimaldicom();
 	afx_msg void OnAddChangeendian();
 	afx_msg void OnDiffFindbesttransformation();
+	afx_msg void OnSettingsTogglefastloading();
 };
 

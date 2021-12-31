@@ -884,7 +884,7 @@ bool CDiffData::FindBestFit(void)
 	double bestAvg = 1000000000;
 
 	mbLookingForBestFit = true;
-	for (int i = pSecData->StartLoop(); i >= 0; i = pSecData->LoopNext())
+	for (int i = pSecData->StartLoopI(); i >= 0; i = pSecData->LoopNext())
 	{
 		if (!pSecData->ForceUpdatePageData())
 			break;
