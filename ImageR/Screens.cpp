@@ -220,6 +220,8 @@ void CScreens::AddData(CMetaData *pNewData, bool bAddDisplay)
 
 	if (mbCommonDisplayWidth && (mnCommonDisplayWidth > 1))
 		pNewData->SetDisplayWidth(mnCommonDisplayWidth);
+
+	pNewData->SetSyncPosition();
 }
 void CScreens::PrintWindowRect(const char *zText, FILE *pf)
 {

@@ -2460,3 +2460,8 @@ void CMetaData::DeleteVolume()
 		mpVolume = NULL;
 	}
 }
+void CMetaData::SetSyncPosition()
+{
+	mMultiPosition.SetSyncPosition();
+}
+

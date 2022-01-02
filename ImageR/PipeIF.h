@@ -28,8 +28,6 @@ public:
     int miNextImage;
     bool mbWaitInThread;
     int mnMaxToDisplay;
-    bool mbWaitPrep;
-    bool WaitPrep(void);
     void UpdateObjects(void);
     bool GetFirstSpecialName(CString & sName);
     bool GetFirstInt(int & value);

@@ -58,7 +58,7 @@ public:
 
     //virtual bool read_image (int , class MyImage &){return false;}
 	virtual bool set_i (int ){return true;}
-    virtual CString GetPageText (void) {return CString("Page");}
+    virtual CString GetPageText (void) {return CString("P");}
     virtual int GetSpecTextSize(void){return mbCtImage ? 55 : 0;}
     virtual int GetDataTextSize(void){return 60;}
 
@@ -361,6 +361,7 @@ public:
 	bool SaveToMinimalDicom();
 	void ChangeEndian();
 	void ChangeEndianInPage();
+    void SetSyncPosition();
 
 	// Control loaded volume
 public:

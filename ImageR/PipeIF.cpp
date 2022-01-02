@@ -19,7 +19,6 @@ CPipeIF::CPipeIF(const char *zName, CImageView *pViewer)
 , miNextImage(0)
 , mbWaitInThread(false)
 , mnMaxToDisplay(10)
-, mbWaitPrep(false)
 , mNextFileUseSpecialPos(0)
 {
     if (mhPipe == INVALID_HANDLE_VALUE)
@@ -37,11 +36,7 @@ bool CPipeIF::GetFirstFileName (CString &sName)
 
     sName = *(mFilesList.GetHead());
     mFilesList.RemoveHead();
-    if (mpfLog)
-    {
-        fprintf (mpfLog, "<GetFirstFileName> %s\n", (const char*)sName);
-        fflush (mpfLog);
-    }
+    mLogger.Log("<GetFirstFileName>", (const char*)sName);
     return true;
 }
 
@@ -61,13 +56,7 @@ DWORD __stdcall CPipeIF::WaitImageThread (void)
         {
             if (CFileName::Exist(msNextImageName))
             {
-                if (mpfLog)
-                {
-                    fprintf (mpfLog, "Found: %d %s\n", miNextImage, (const char*)msNextImageName);
-                    fflush (mpfLog);
-                }
-                if (mbWaitPrep)
-                    WaitPrep();
+                mLogger.Printf("Found: %d %s", miNextImage, (const char*)msNextImageName);
  
                 while (miNextImage > 1 && !pPosition)
                 {
@@ -76,8 +65,8 @@ DWORD __stdcall CPipeIF::WaitImageThread (void)
                         pData = gScreens.GetCurrentData();
                     if (pData && !pPosition)
                         pPosition = pData->GetPosition();
-                    if (mpfLog && pData)
-                        fprintf (mpfLog, "pData: %s\n\n", (const char*)pData->msName);
+                    if (pData)
+                        mLogger.Log ("pData: ", (const char*)pData->msName);
                 }
 
                 if (pPosition)
@@ -91,14 +80,11 @@ DWORD __stdcall CPipeIF::WaitImageThread (void)
                     if (mFilesList.GetSize() >= mnMaxToDisplay)
                     {
                         //Sleep(100);
-                        if (mpfLog)
-                            fprintf (mpfLog, "Set Display\n");
+                        mLogger.Log("Set Display");
                         mpViewer->InitiateSetDisplayFiles();
                     }
                 }                 
                 msNextImageName = "";
-                if (mpfLog)
-                    fflush (mpfLog);
 				gScreens.Refresh();
             }
             else
@@ -110,30 +96,10 @@ DWORD __stdcall CPipeIF::WaitImageThread (void)
         {
             // Start looking for next image
             miNextImage++;
-            if (mbWaitPrep)
-            {
-                if (miNextImage == 1)
-                    msNextImageName = msImagePattern;
-                else
-                {
-                    msNextImageName = "";
-                    msImagePattern = "";
-                }
-            }
-            else
-            {
-                char zBuf[256];
-                sprintf_s (zBuf, 256, msImagePattern, miNextImage);
-                msNextImageName = zBuf;
-            }
-            if (mpfLog)
-            {
-                if (mbWaitPrep)
-                    fprintf (mpfLog, "%3d: Waiting Prep %s\n", miNextImage, (const char *)msNextImageName);
-                else
-                    fprintf (mpfLog, "%3d: Waiting next image %s\n", miNextImage, (const char *)msNextImageName);
-                fflush (mpfLog);
-            }
+            char zBuf[256];
+            sprintf_s (zBuf, 256, msImagePattern, miNextImage);
+            msNextImageName = zBuf;
+            mLogger.Printf("%3d: Waiting next image %s", miNextImage, (const char *)msNextImageName);
         }
         else
             Sleep (20);
@@ -149,8 +115,7 @@ bool CPipeIF::ShouldWait(void)
 //------------------------------------------------------------------
 void CPipeIF::ProcessMessage (void)
 {
-	if (mpfLog)
-		fprintf(mpfLog, "<ProcessMessage> %s\n", mzRequest);
+	mLogger.Log("<ProcessMessage>", mzRequest);
 
     if (_strnicmp(mzRequest, "-cirs ", 6) == 0)
     {
@@ -161,13 +126,10 @@ void CPipeIF::ProcessMessage (void)
 
         CFileName fOutName (&mzRequest[6]);
         CString sPrivate (fOutName.Private());
-        mbWaitPrep = (sPrivate.Left(4) == "prep");
-        if (!mbWaitPrep)
-            msImagePattern += "-img%03d";
+        msImagePattern += "-img%03d";
 
         msImagePattern += ".dat";
-        if (mpfLog)
-            fprintf (mpfLog, "msImagePattern %s\n\n", (const char *)msImagePattern);
+        mLogger.Log("msImagePattern", (const char *)msImagePattern);
 
         msNextImageName = "";
         miNextImage = 0;
@@ -349,17 +311,13 @@ void CPipeIF::ProcessMessage (void)
     }
 	else if (_stricmp(mzRequest, "save_state") == 0)
 	{
-		if (mpfLog)
-			fprintf(mpfLog, "Handling <save_state>\n");
+        mLogger.Log("Handling <save_state>");
         CString sName;
         bool bOk = GetFirstSpecialName(sName);
         if (bOk)
             gScreens.SaveStateToClientFile(sName);
 		else
-		{
-			if (mpfLog)
-				fprintf(mpfLog, "Handling <save_state> GetFirstFileName failed\n");
-		}
+            mLogger.Log("Handling <save_state> GetFirstFileName failed");
 	}
     else
     {
@@ -373,50 +331,12 @@ void CPipeIF::ProcessMessage (void)
             mFilesList.AddTail(new CString(mzRequest));
     }
 }
-
-
-bool CPipeIF::WaitPrep(void)
-{
-    int nSleep = 0;
-    ULONG64 len = CMyWindows::GetFileLength(msNextImageName);
-    while ((len < 10000000) && (nSleep < 90000))
-    {
-        Sleep(100);
-        nSleep += 100;
-        len = CMyWindows::GetFileLength(msNextImageName);
-    }
-    if (mpfLog)
-    {
-        fprintf (mpfLog, "10M arrived? %I64d\n", len);
-        fflush (mpfLog);
-    }
-    FILE *pf = MyFOpen (msNextImageName, "rb");
-    while (!pf)
-    {
-        static int count = 0;
-        if (!count++ && mpfLog)
-        {
-            fprintf (mpfLog, "Wait for fopen...\n");
-            fflush (mpfLog);
-        }
-        pf = MyFOpen (msNextImageName, "rb");
-    }
-    fclose (pf);
-    if (mpfLog)
-    {
-        fprintf (mpfLog, "fopen succeeded\n");
-        fflush (mpfLog);
-    }
-    return true;
-}
-
 void CPipeIF::UpdateObjects(void)
 {
     CString sName;
     while (GetFirstFileName(sName))
     {
-		if (mpfLog)
-			fprintf (mpfLog, "<UpdateObjects> sName %s\n", (const char*)sName);
+		mLogger.Log ("<UpdateObjects> sName %s", (const char*)sName);
         if (sName.Left(2) == "::")
             sName = sName.Right(sName.GetLength() - 2);
         if (isdigit(sName[0]))
@@ -425,8 +345,7 @@ void CPipeIF::UpdateObjects(void)
             CNamedObject *pObject = CNamedObject::GetById(id);
             if (pObject)
 			{
-				if (mpfLog)
-					fprintf (mpfLog, "<UpdateObjects> object %s\n", (const char*)pObject->Name());
+                mLogger.Log("<UpdateObjects> object %s", (const char*)pObject->Name());
                 pObject->UpdateYourself();
 			}
         }
@@ -605,11 +524,7 @@ void CPipeIF::OnDisplayImage(bool bReplace)
 	{
 		if (mNextFileUseSpecialPos)
 			CFileNamePattern::SetNextFileUseSpecialPos(mNextFileUseSpecialPos);
-		if (mpfLog)
-		{
-			fprintf (mpfLog, "%s\n", (const char*)sMsg);
-			fflush (mpfLog);
-		}
+		mLogger.Log(sMsg);
 		gScreens.miPipeMessageToHandle = miMessage;
         mpViewer->InitiateSetDisplayFiles();
 		/*if (mpfLog)
