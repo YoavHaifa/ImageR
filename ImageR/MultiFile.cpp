@@ -679,7 +679,7 @@ bool CMultiFile::DoLoadVolume()
 			return false;
 		}
 
-		mpVolume->mnLoaded++;
+		//mpVolume->mnLoaded++;
         int ii = iLoadRelative + 1;
         if ((gScreens.mVolumeRefreshInterval && (ii % gScreens.mVolumeRefreshInterval == 0)) 
 			|| (ii == nToLoad))
