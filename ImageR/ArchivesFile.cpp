@@ -97,8 +97,8 @@ bool CArchivesFile::DoUpdatePageData()
 	static int count = 0;
 	CMyTracer myTracer("CArchivesFile::DoUpdatePageData", ++count);
 
-	while (mbFastLoadFromVolume && mbLoadingVolume)
-		Sleep(10);
+	//while (mbFastLoadFromVolume && mbLoadingVolume)
+	//	Sleep(10);
 
 	if (umbEnableFastLoadFromVolume)
 	{

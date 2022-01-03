@@ -22,4 +22,5 @@ private:
 public:
     void SaveState(class CXMLDump & xmlDump);
     virtual void SetFromXml(class CXMLParseNode * pPositionXml);
+    virtual bool AllowsSync();
 };

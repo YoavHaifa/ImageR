@@ -21,7 +21,10 @@ CObliquePosition::CObliquePosition(CObliquePosition &other)
 CObliquePosition::~CObliquePosition(void)
 {
 }
-
+bool CObliquePosition::AllowsSync()
+{
+    return false;
+}
 bool CObliquePosition::SetType(COblique::EOblType eType, int iLast)
 {
     if (meType == eType)

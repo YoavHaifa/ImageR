@@ -2896,3 +2896,4 @@ void CScreens::ExportGraphicDataToExcel(void)
 
 	g2e.Print();
 }
+
