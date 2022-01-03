@@ -203,6 +203,8 @@ private:
 	bool mbDisablePaint;
 	void OnNewMultiPos(CMetaData *pCurrentData);
 	bool mbSetNewPositionOnSameSeries;
+    int mnScrollsSinceLastPaint;
+    bool mbDebugScroll;
 
 public:
 	bool MultiDimScroll(int iDim, bool bForward);

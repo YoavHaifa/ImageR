@@ -84,6 +84,10 @@ CScreens::CScreens(void)
 , mbUpdateStatusBarOnNextPaint(false)
 , mbCommonDisplayWidth(true)
 , mnCommonDisplayWidth(1)
+, mnScrollsSinceLastPaint(0)
+, mbDebugScroll(false)
+, mpGEWithContextMenu(NULL)
+, mpImageView(NULL)
 {
 	mRButtonDownPoint.x = -1000;
 	mRButtonDownPoint.y = -1000;
@@ -750,6 +754,8 @@ bool CScreens::MultiDimScroll(int iDim, bool bForward)
 
 	bool bPropagate = false;
 	bool bChange = pCurrentData->MultiDimScroll(iDim, bForward, &bPropagate);
+	if (mpfLog && mbDebugScroll)
+		fprintf(mpfLog, "<MultiDimScroll> iDim %d, bForward %d -> bChange %d\n", iDim, (int)bForward, (int)bChange);
 	if (bChange && bPropagate)
 	{
 		if (mpCurrentDR->GetNData() > 1)
@@ -770,6 +776,11 @@ bool CScreens::MultiDimScroll(int iDim, bool bForward)
 }
 bool CScreens::ScrollInImagesSeries(CPoint point, int zDelta)
 {
+	if (mnScrollsSinceLastPaint++ > 5)
+		return false;
+
+	if (mpfLog && mbDebugScroll)
+		fprintf(mpfLog, "<ScrollInImagesSeries> zDelta %d\n", zDelta);
 	if (!mbAllowPaging)
 		return false;
 
@@ -1525,6 +1536,7 @@ void CScreens::Paint()
 			UpdateDataCheck();
 		Refresh();
 	}
+	mnScrollsSinceLastPaint = 0;
 }
 void CScreens::PrintStatusInBar(ESatusBarFields eField, const char *zText)
 {
