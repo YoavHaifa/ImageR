@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.5.0");
+CString CScreens::umsVersion("V1.5.1");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -88,6 +88,7 @@ CScreens::CScreens(void)
 , mbDebugScroll(false)
 , mpGEWithContextMenu(NULL)
 , mpImageView(NULL)
+, mFastScrollFactor(5)
 {
 	mRButtonDownPoint.x = -1000;
 	mRButtonDownPoint.y = -1000;
@@ -776,7 +777,7 @@ bool CScreens::MultiDimScroll(int iDim, bool bForward)
 }
 bool CScreens::ScrollInImagesSeries(CPoint point, int zDelta)
 {
-	if (mnScrollsSinceLastPaint++ > 5)
+	if (mnScrollsSinceLastPaint > mFastScrollFactor)
 		return false;
 
 	if (mpfLog && mbDebugScroll)
@@ -785,10 +786,15 @@ bool CScreens::ScrollInImagesSeries(CPoint point, int zDelta)
 		return false;
 
 	bool bChange = false;
-    if (!SetCurrentDR(point, bChange))
+	if (!SetCurrentDR(point, bChange))
+	{
+		mnScrollsSinceLastPaint = 0;
         return bChange;
+	}
 
 	bChange = MultiDimScroll (0, zDelta < 0);
+	if (bChange)
+		mnScrollsSinceLastPaint++;
     return bChange;
 }
 bool CScreens::ScrollByMouse(CPoint point)
@@ -2770,6 +2776,7 @@ void CScreens::ReadRegistry(CMyRegistry &myReg)
 	myReg.Get("bSetNewPositionOnSameSeries", mbSetNewPositionOnSameSeries);
 	myReg.Get("bDisplayMinMaxAtWindowStatus", mbDisplayMinMaxAtWindowStatus);
 	myReg.Get("bCommonDisplayWidth", mbCommonDisplayWidth);
+	myReg.Get("FastScrollFactor", mFastScrollFactor);
 
 	bool bDebugColorMap = 0;
 	if (myReg.Get("bDebugColorMap", bDebugColorMap))
@@ -2896,4 +2903,3 @@ void CScreens::ExportGraphicDataToExcel(void)
 
 	g2e.Print();
 }
-

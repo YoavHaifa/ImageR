@@ -305,6 +305,9 @@ public:
 	void OpenLogFile(void);
 	void OnGEDeleted(CGraphicElement *pGE);
 	void ExportGraphicDataToExcel(void);
+
+    // Adjustable configuration values
+    int mFastScrollFactor;
 };
 
 extern CScreens gScreens;
