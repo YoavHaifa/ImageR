@@ -117,6 +117,7 @@ void CPipeIF::ProcessMessage (void)
 {
 	mLogger.Log("<ProcessMessage>", mzRequest);
 
+    /*
     if (_strnicmp(mzRequest, "-cirs ", 6) == 0)
     {
         mnMaxToDisplay = 1;
@@ -139,8 +140,8 @@ void CPipeIF::ProcessMessage (void)
             mbWaitInThread = true;
             CMyWindows::CreateThread (StaticWaitImageThread, this);
         }
-    }
-    else if (_stricmp(mzRequest, "exit") == 0)
+    }*/
+    if (_stricmp(mzRequest, "exit") == 0)
     {
         mpViewer->OnFileExit1();
     }
@@ -191,6 +192,8 @@ void CPipeIF::ProcessMessage (void)
 		bool bOk = GetFirstFileName(sfName);
 		if (bOk)
 		{
+            if (sfName.Left(2) = "::")
+                sfName = sfName.Right(sfName.GetLength() - 2);
 			CFileFactory::SetReplaceFileName(sfName);
 			OnDisplayImage(true);
 		}

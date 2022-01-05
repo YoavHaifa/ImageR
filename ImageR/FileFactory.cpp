@@ -8,6 +8,7 @@
 //#include "..\..\yUtils\MyDicom.h"
 #include "..\..\yUtils\MyWindows.h"
 #include "..\..\yUtils\XMLParse.h"
+#include "..\..\yUtils\FileLogger.h"
 #include "FloatPrep.h"
 #include "DisplayRectangle.h"
 #include "ProcImage.h"
@@ -63,6 +64,9 @@ CFileFactory::~CFileFactory(void)
 }
 CMetaData * CFileFactory::CreateFileObject(CXMLParseNode *pMetaDataXml)
 {
+    CFileLogger fLog; // ("FileFactory_CreateFileObject");
+    fLog.Log("pMetaDataXml", pMetaDataXml->msName);
+
     mpMetaDataXml = pMetaDataXml;
 
     CString sClass, sName;
@@ -97,9 +101,22 @@ CMetaData * CFileFactory::CreateFileObject(CXMLParseNode *pMetaDataXml)
 
 	else if (pObjectXml->GetValue("name", sName))
 	{
+        fLog.Log("name", sName);
 		if (!umsReplaceFileName.IsEmpty())
 		{
-			sName = umsReplaceFileName;
+            fLog.Log("umsReplaceFileName", umsReplaceFileName);
+            if (CFileName::Exist(umsReplaceFileName))
+			    sName = umsReplaceFileName;
+            else
+            {
+                CString sPrivate = CFileName::GetPrivate(sName);
+                CString sPath = CFileName::GetPath(sName);
+                CString sPathPath = CFileName::GetPath(sPath);
+                CString sTry(sPathPath + "\\" + umsReplaceFileName + "\\" + sPrivate);
+                fLog.Log("sTry", sTry);
+                if (CFileName::Exist(sTry))
+                    sName = sTry;
+            }
 			umsReplaceFileName = "";
 		}
 		pData = TryCreateFileObject(sName);
