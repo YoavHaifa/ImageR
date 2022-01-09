@@ -369,6 +369,7 @@ public:
 	void DeleteVolume();
 	static void ToggleEnableFastLoadFromVolume();
 	static bool umbEnableFastLoadFromVolume;
+    bool IsLoadingVolume() { return mbLoadingVolume; }
 
 protected:
 	static DWORD WINAPI StaticLoadVolume(void* p);

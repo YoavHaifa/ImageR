@@ -388,6 +388,9 @@ bool CMetaData::ForceUpdatePageData(void)
 }
 bool CMetaData::UpdatePageData()
 {
+	if (mbLoadingVolume)
+		return false;
+
 	CMyCriticalSpan span(mCriticalUpdate,"UpdatePageData");
 
 	static int count = 0;
@@ -605,7 +608,6 @@ bool CMetaData::DoLoadVolume()
 	}
     if (mpPageData)
         mpPageData->mbUpdateFailed = true;
-	mbLoadingVolume = false;
 	return false;
 }
 bool CMetaData::StartLoadVolume ()
@@ -613,7 +615,6 @@ bool CMetaData::StartLoadVolume ()
     if (!mpVolume)
     {
         //int nPages = GetNPages();
-		mbLoadingVolume = true;
         mpVolume = CVolume::GetNew(msName + "Vol", mDataType, mnLinesInPage, mnCols,
             GetPosition());
         if (!mpVolume)
@@ -625,7 +626,10 @@ bool CMetaData::StartLoadVolume ()
 DWORD WINAPI CMetaData::StaticLoadVolume(void *p)
 {
     CMetaData *pData = (CMetaData *)p;
-    return pData->DoLoadVolume();
+	pData->mbLoadingVolume = true;
+	pData->DoLoadVolume();
+	pData->mbLoadingVolume = false;
+	return 0;
 }
 void * CMetaData::GetPageData(void)
 {

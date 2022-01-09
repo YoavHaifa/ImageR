@@ -642,17 +642,11 @@ void CMultiFile::ReorderFiles(int iFirst, int iLast, int step, int iOut, int iOu
 bool CMultiFile::DoLoadVolume()
 {
 	if (!mpVolume)
-	{
-		mbLoadingVolume = false;
 		return false;
-	}
 
     unsigned char *pVolumePage = (unsigned char *) mpVolume->GetPageVP(GetPosition()->miFirst);
 	if (!pVolumePage)
-	{
-		mbLoadingVolume = false;
         return false;
-	}
 
     int nToLoad = GetNPages();
 	mpVolume->mnLoaded = 0;
@@ -674,10 +668,7 @@ bool CMultiFile::DoLoadVolume()
 		int iLoadRelative = pPos->GetCurrentRelative();
 
 		if (!DoLoadVolumeImage(iLoadRelative, pVolumePage))
-		{
-			mbLoadingVolume = false;
 			return false;
-		}
 
 		//mpVolume->mnLoaded++;
         int ii = iLoadRelative + 1;
@@ -698,7 +689,7 @@ bool CMultiFile::DoLoadVolume()
         fprintf (mpfLog, "<CArchivesFile::DoLoadVolume> %d loaded\n", nToLoad);
         fflush (mpfLog);
     }
-	mbLoadingVolume = false;
+	mbLoadingVolume = true;
 	gScreens.Refresh(); // Re-display original current image
     return true;
 }

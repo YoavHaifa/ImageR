@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.5.1");
+CString CScreens::umsVersion("V1.5.2");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -777,6 +777,10 @@ bool CScreens::MultiDimScroll(int iDim, bool bForward)
 }
 bool CScreens::ScrollInImagesSeries(CPoint point, int zDelta)
 {
+	CMetaData* pData = GetCurrentData();
+	if (pData && pData->IsLoadingVolume())
+		return false;
+
 	if (mnScrollsSinceLastPaint > mFastScrollFactor)
 		return false;
 
@@ -1360,11 +1364,15 @@ bool CScreens::OnMouseMove(UINT nFlags, CPoint point)
 	            bChanged = UpdateGraphicsOnMouseMove(point);
 			else if (mpCurrentDR)
 			{
-				CPoint delta;
-				delta.x = point.x - mPrevPoint.x;
-				delta.y = point.y - mPrevPoint.y;
-				if (!mpCurrentDR->SpecialMouseScroll(delta, bChanged))
-					bChanged = ScrollByMouse (point);
+				CMetaData* pData = mpCurrentDR->GetCurrentData();
+				if (pData && !pData->IsLoadingVolume())
+				{
+					CPoint delta;
+					delta.x = point.x - mPrevPoint.x;
+					delta.y = point.y - mPrevPoint.y;
+					if (!mpCurrentDR->SpecialMouseScroll(delta, bChanged))
+						bChanged = ScrollByMouse(point);
+				}
 			}
 		}
     }
