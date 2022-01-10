@@ -186,14 +186,24 @@ void CPipeIF::ProcessMessage (void)
 	{
 		OnDisplayImage(true);
 	}
+    else if (_stricmp(mzRequest, "set_replace_root") == 0)
+    {
+        CString sOrigRoot, sNewRoot;
+        bool bOk = GetFirstFileName(sOrigRoot);
+        bOk |= GetFirstFileName(sNewRoot);
+        if (bOk)
+        {
+            RemovePrefix(sOrigRoot);
+			CFileFactory::SetReplaceRoot(sOrigRoot, sNewRoot);
+        }
+   }
 	else if (_stricmp(mzRequest, "load_state_and_replace") == 0)
 	{
 		CString sfName;
 		bool bOk = GetFirstFileName(sfName);
 		if (bOk)
 		{
-            if (sfName.Left(2) = "::")
-                sfName = sfName.Right(sfName.GetLength() - 2);
+            RemovePrefix(sfName);
 			CFileFactory::SetReplaceFileName(sfName);
 			OnDisplayImage(true);
 		}
@@ -340,8 +350,7 @@ void CPipeIF::UpdateObjects(void)
     while (GetFirstFileName(sName))
     {
 		mLogger.Log ("<UpdateObjects> sName %s", (const char*)sName);
-        if (sName.Left(2) == "::")
-            sName = sName.Right(sName.GetLength() - 2);
+        RemovePrefix(sName);
         if (isdigit(sName[0]))
         {
             int id = atoi(sName);
@@ -359,8 +368,7 @@ bool CPipeIF::GetFirstSpecialName(CString & sName)
     if (!GetFirstFileName(sName))
         return false;
 
-    if (sName.Left(2) == "::")
-        sName = sName.Right(sName.GetLength() - 2);
+    RemovePrefix(sName);
     return true;
 }
 bool CPipeIF::GetFirstFloat(float & floatValue)
@@ -386,8 +394,7 @@ void CPipeIF::SendGraphicCommand(EGraphicCommand eGCom)
     CString sName;
     while (GetFirstFileName(sName))
     {
-        if (sName.Left(2) == "::")
-            sName = sName.Right(sName.GetLength() - 2);
+        RemovePrefix(sName);
         gScreens.DoGraphicCommand(eGCom, sName);
     }
 }
@@ -538,4 +545,9 @@ void CPipeIF::OnDisplayImage(bool bReplace)
 		CFileNamePattern::SetNextFileUseSpecialPos(0);
 		mNextFileUseSpecialPos = 0;
 	}
+}
+void CPipeIF::RemovePrefix(CString& s)
+{
+    if (s.Left(2) = "::")
+        s = s.Right(s.GetLength() - 2);
 }

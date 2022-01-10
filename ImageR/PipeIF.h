@@ -22,6 +22,8 @@ protected:
 
 private:
     class CImageView *mpViewer;
+    void RemovePrefix(CString& s);
+
 public:
     CString msNextImageName;
     CString msImagePattern;

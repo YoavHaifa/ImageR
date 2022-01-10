@@ -9,6 +9,7 @@
 #include "..\..\yUtils\MyWindows.h"
 #include "..\..\yUtils\XMLParse.h"
 #include "..\..\yUtils\FileLogger.h"
+#include "..\..\yUtils\Path.h"
 #include "FloatPrep.h"
 #include "DisplayRectangle.h"
 #include "ProcImage.h"
@@ -33,6 +34,14 @@
 #endif
 
 CString CFileFactory::umsReplaceFileName;
+CString CFileFactory::umsOrigDataRoot;
+CString CFileFactory::umsNewDataRoot;
+
+void CFileFactory::SetReplaceRoot(const char* zOrigRoot, const char* zNewRoot)
+{
+    umsOrigDataRoot = zOrigRoot;
+    umsNewDataRoot = zNewRoot;
+}
 
 void CFileFactory::SetReplaceFileName(const char* zfName)
 {
@@ -102,6 +111,11 @@ CMetaData * CFileFactory::CreateFileObject(CXMLParseNode *pMetaDataXml)
 	else if (pObjectXml->GetValue("name", sName))
 	{
         fLog.Log("name", sName);
+        if (!umsOrigDataRoot.IsEmpty() && !umsNewDataRoot.IsEmpty() && CMyWindows::IsDirectory(umsNewDataRoot))
+        {
+            CPath::ReplaceRoot(sName, umsOrigDataRoot, umsNewDataRoot);
+        }
+
 		if (!umsReplaceFileName.IsEmpty())
 		{
             fLog.Log("umsReplaceFileName", umsReplaceFileName);

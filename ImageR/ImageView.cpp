@@ -182,7 +182,7 @@ bool CImageView::SetDisplayFiles(void)
 				else if (sName == "Diff")
 				{
 					if (gScreens.GetNDR() > 1)
-						OnAddDiff33993();
+						OnAddDiff();
 				}
 				else if (sName.Left(2) == "at")
 				{
@@ -292,11 +292,10 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_FILE_EXIT1, OnFileExit1)
-	//ON_COMMAND(ID_ADD_FILE, OnFileAdd)
+	ON_COMMAND(ID_ADD_FILE, &CImageView::OnAddFile)
 	ON_COMMAND(ID_SETTINGS_SETFULLROI, OnSettingsSetfullroi)
 	//ON_COMMAND(ID_SETTINGS_SETCURRENTROI, OnSettingsSetcurrentroi)
 	ON_COMMAND(ID_SETTINGS_SETSECONDWINDOW, OnWindowSpecialWindow)
-	//ON_COMMAND(ID_ADD_DIFF, OnAddDiff)
 	ON_COMMAND(ID_PRINT_EXCEL, OnPrintExcel)
 	//}}AFX_MSG_MAP
     ON_COMMAND(ID_PRINT_SCREENTOEXCEL, OnExportScreentoexcel)
@@ -332,7 +331,8 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
     ON_COMMAND(ID_GRAPHIC_ADDCURSOR, OnGraphicAddcursor)
     ON_COMMAND(ID_FILE_OPENDIRECTORY, OnFileOpendirectory)
     ON_COMMAND(ID_DICOM_PRINT, OnDicomPrint)
-    ON_COMMAND(ID_ADD_MIP, OnAddMip)
+	ON_COMMAND(ID_ADD_DIFF, &CImageView::OnAddDiff)
+	ON_COMMAND(ID_ADD_MIP, &CImageView::OnAddMip)
     //ON_COMMAND(ID_ADD_RATIO, OnAddRatio)
     ON_COMMAND(ID_GRAPHIC_SETCOLOR, OnGraphicSetcolor)
     ON_COMMAND(ID_MIP_SELECTSLICE, OnMipSelectslice)
@@ -422,13 +422,13 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 	ON_COMMAND(ID_SETTINGS_VERTICALZOOMFACTOR, &CImageView::OnSettingsVerticalzoomfactor)
 	ON_COMMAND(ID_GRAPHIC_SAVEDATATOEXCEL, &CImageView::OnGraphicSavedatatoexcel)
 	ON_COMMAND(ID_EXPORT_GRAPHICDATATOEXCEL, &CImageView::OnExportGraphicdatatoexcel)
-		ON_COMMAND(ID_ADD_FILE33992, &CImageView::OnAddFile33992)
-		ON_COMMAND(ID_ADD_DIFF33993, &CImageView::OnAddDiff33993)
-		ON_COMMAND(ID_ADD_CORONAL33994, &CImageView::OnAddCoronal33994)
-		ON_COMMAND(ID_ADD_MIP33995, &CImageView::OnAddMip33995)
-		ON_COMMAND(ID_ADD_SMOOTH33996, &CImageView::OnAddSmooth33996)
-		ON_COMMAND(ID_ADD_COMBINE33997, &CImageView::OnAddCombine33997)
-		ON_COMMAND(ID_Menu33998, &CImageView::OnAddRatio33998)
+		//ON_COMMAND(ID_ADD_FILE33992, &CImageView::OnAddFile33992)
+		//ON_COMMAND(ID_ADD_DIFF33993, &CImageView::OnAddDiff33993)
+		//ON_COMMAND(ID_ADD_CORONAL33994, &CImageView::OnAddCoronal33994)
+		//ON_COMMAND(ID_ADD_MIP33995, &CImageView::OnAddMip33995)
+		//ON_COMMAND(ID_ADD_SMOOTH33996, &CImageView::OnAddSmooth33996)
+		//ON_COMMAND(ID_ADD_COMBINE33997, &CImageView::OnAddCombine33997)
+		//ON_COMMAND(ID_Menu33998, &CImageView::OnAddRatio33998)
 		ON_COMMAND(ID_DICOM_EXPORTRASTERTODICOM, &CImageView::OnDicomExportrastertodicom)
 		ON_COMMAND(ID_DICOM_EXPORTTOMINIMALDICOM, &CImageView::OnDicomExporttominimaldicom)
 		ON_COMMAND(ID_ADD_CHANGEENDIAN, &CImageView::OnAddChangeendian)
@@ -625,7 +625,7 @@ BOOL CImageView::OnInitDialog()
 
 		if (mbStartDiff && msStartFiles.GetSize() > 1)
 		{
-			OnAddDiff33993();
+			OnAddDiff();
 		}
     }
 
@@ -700,7 +700,11 @@ void CImageView::EditMenu(void)
         //prevState = pMenu->RemoveMenu(ID_PRINT_DUMPSLICE, MF_BYCOMMAND);
         //prevState = pMenu->RemoveMenu(ID_PRINT_DICOM, MF_BYCOMMAND);
         // Dicom
-    }
+		prevState = pMenu->RemoveMenu(ID_ADD_MIP, MF_BYCOMMAND);
+		prevState = pMenu->RemoveMenu(ID_ADD_COMBINE, MF_BYCOMMAND);
+		prevState = pMenu->RemoveMenu(ID_ADD_RATIO, MF_BYCOMMAND);
+		prevState = pMenu->RemoveMenu(ID_ADD_SMOOTH, MF_BYCOMMAND);
+	}
 
 	if (mbUseMenuController)	// "false" = don't run , "true" = run
 	{
@@ -1273,7 +1277,7 @@ void CImageView::OnAddDiffOrRatio(const char *zName)
 		if (pData && pData->IsHybrid())
 			OnFileOpendirectory();
 		else
-			OnAddFile33992();;
+			OnAddFile();;
 	}
 
 	int iDR = gScreens.GetIFreeOrNewDR();
@@ -2402,13 +2406,13 @@ void CImageView::OnExportGraphicdatatoexcel()
 {
 	gScreens.ExportGraphicDataToExcel();
 }
-void CImageView::OnAddFile33992()
+void CImageView::OnAddFile()
 {
 	CFileName fName;
 	if (SelectDataFile(fName))
 		AddFile(fName);
 }
-void CImageView::OnAddDiff33993()
+void CImageView::OnAddDiff()
 {
 	OnAddDiffOrRatio("Diff");
 }
@@ -2417,11 +2421,12 @@ void CImageView::OnAddCoronal33994()
 	CFileFactory factory(mpfLog);
 	factory.AddComputedData(CFileFactory::COMP_DATA_OBLIQUE);
 }
+/*
 void CImageView::OnAddMip33995()
 {
 	CFileFactory factory(mpfLog);
 	factory.AddComputedData(CFileFactory::COMP_DATA_MIP);
-}
+}*/
 void CImageView::OnAddSmooth33996()
 {
 	CFileFactory factory(mpfLog);

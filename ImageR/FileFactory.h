@@ -26,12 +26,8 @@ protected:
     CMetaData * TryCreateMemFileObject(const char * zfName);
     CMetaData * TryCreateFileObject(const char * zfName);
 	CMetaData * AnalyzeDicomOptions(void);
-    class CRawFile *CreateRawFile(void);
     class CMultiFile *InitAImgFile(void);
-    class CMultiFile *InitChessImages(void);
 
-    CMetaData * CreateTable(unsigned int byteOffset = 0);
-    class CAirTable *CreateAirTable(unsigned int byteOffset = 0);
 
     //bool CheckForMx8000Prep();
 
@@ -43,7 +39,9 @@ protected:
     CFileName mName;
     class CXMLParseNode *mpMetaDataXml;
 
-	static CString umsReplaceFileName;
+    static CString umsReplaceFileName;
+    static CString umsOrigDataRoot;
+    static CString umsNewDataRoot;
 
 public:
     void AddComputedData(EComputedDataType eType);
@@ -51,5 +49,6 @@ public:
     bool mbFileCreatedAndUsed;
     bool mbCloseLogFile;
 
-	static void SetReplaceFileName(const char* zfName);
+    static void SetReplaceRoot(const char* zOrigRoot, const char* zNewRoot);
+    static void SetReplaceFileName(const char* zfName);
 };

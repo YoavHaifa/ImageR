@@ -332,10 +332,10 @@ public:
 	afx_msg void OnSettingsVerticalzoomfactor();
 	afx_msg void OnGraphicSavedatatoexcel();
 	afx_msg void OnExportGraphicdatatoexcel();
-	afx_msg void OnAddFile33992();
-	afx_msg void OnAddDiff33993();
+	afx_msg void OnAddFile();
+	afx_msg void OnAddDiff();
 	afx_msg void OnAddCoronal33994();
-	afx_msg void OnAddMip33995();
+	//afx_msg void OnAddMip33995();
 	afx_msg void OnAddSmooth33996();
 	afx_msg void OnAddCombine33997();
 	afx_msg void OnAddRatio33998();
