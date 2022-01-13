@@ -212,8 +212,8 @@ void CMetaFile::close()
         if (mpTypedData)
         {
             if (mpTypedData->Min() < MIN_CT_VALUE || mpTypedData->Max() > MAX_CT_VALUE)
-                mbCtImage = false;
-        }
+				SetCtImage(false);
+		}
 	}
 }
 //--------------------------------------------------------------------

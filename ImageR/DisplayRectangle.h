@@ -217,4 +217,5 @@ public:
 	int AddGESToList(class CGraphicsToExcel &g2e, unsigned int listId);
 
 	static bool umbReverseRGBOrder;
+    bool mbMultiVariant;
 };

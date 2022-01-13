@@ -40,8 +40,11 @@ protected:
     class CXMLParseNode *mpMetaDataXml;
 
     static CString umsReplaceFileName;
+    static CString umsReplaceFileName2;
     static CString umsOrigDataRoot;
     static CString umsNewDataRoot;
+    static bool umbCreatingData2;
+    static class CMetaData* umpData2;
 
 public:
     void AddComputedData(EComputedDataType eType);
@@ -51,4 +54,7 @@ public:
 
     static void SetReplaceRoot(const char* zOrigRoot, const char* zNewRoot);
     static void SetReplaceFileName(const char* zfName);
+    static void SetReplaceFileName2(const char* zfName);
+    static CMetaData* GetData2() { return umpData2; }
+    static bool CreatingData2() { return umbCreatingData2; }
 };

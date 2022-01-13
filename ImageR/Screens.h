@@ -69,6 +69,7 @@ public:
 	static bool umbDisplayDisclaimer;
 
     class CImageView *mpImageView;
+    class CDisplayRectangle* GetCurrentDR() { return mpCurrentDR; }
 
 private:
     static CString umsScreenTitle;
@@ -168,6 +169,7 @@ public:
     void OnSizeSetStatusBar(int cx, int cy);
 
     void Paint(void);
+    bool FirstPaintFinished() { return mnPaints > 0; }
     void PrintStatusInBar(ESatusBarFields eField, const char *zText);
 
     virtual void Refresh(void);
@@ -205,6 +207,7 @@ private:
 	bool mbSetNewPositionOnSameSeries;
     int mnScrollsSinceLastPaint;
     bool mbDebugScroll;
+    int mnPaints;
 
 public:
 	bool MultiDimScroll(int iDim, bool bForward);

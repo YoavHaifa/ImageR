@@ -3,7 +3,7 @@
 
 
 #define MAX_CT_VALUE  5199  // 4095 + 1024 bias
-#define MIN_CT_VALUE  -1000
+#define MIN_CT_VALUE  -2000
 
 //#define MAX_DATA_SIZE 0x20000000
 

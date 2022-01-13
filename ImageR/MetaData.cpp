@@ -30,6 +30,7 @@
 #include "MultiPageLoader.h"
 #include "DataTypeDialog.h"
 #include "WindowDlg.h"
+#include "FileFactory.h"
 
 int CMetaData::umDebug = 0;
 static bool ubDebugZoom = false;
@@ -88,8 +89,9 @@ CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 , mbChangeEndian(false)
 , mbFastLoadFromVolume(false)
 , mbLoadingVolume(false)
+, mnPageLoads(0)
 {
-	mbCtImage = true;
+	SetCtImage(true);
     CFileName fName (zName);
 	TryToGetImageSizeFromName();
 
@@ -101,11 +103,22 @@ CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 		CXMLParseNode *pWindowXml = mpXmlNode->GetFirstDeep("WindowParams");
         if (pWindowXml)
         {
-            CNamedObject *pObject = CNamedObject::GetParsed(pWindowXml);
-            if (pObject)
-                SetCommonWindow((CWindowParams *)pObject);
-            else
-                SetCommonWindow (new CWindowParams(pWindowXml));
+			static CWindowParams* upWindowSave = NULL;
+			static bool ubOnce = false;
+
+			if (upWindowSave && CFileFactory::CreatingData2())
+			{
+				SetCommonWindow(upWindowSave);
+				upWindowSave = NULL;
+			}
+			else
+			{
+				CNamedObject *pObject = CNamedObject::GetParsed(pWindowXml);
+				if (pObject)
+					SetCommonWindow((CWindowParams *)pObject);
+				else
+					SetCommonWindow (new CWindowParams(pWindowXml));
+			}
 
 			CXMLParseNode *pSpecialWindowXml = mpXmlNode->GetFirstDeep("SpecialWindow");
 			if (pSpecialWindowXml)
@@ -114,15 +127,41 @@ CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 				SetSpecialWindow(new CWindowParams(pSpecialWindowDetails));
 				pSpecialWindowXml->GetValue("b_use_special_window",mbUseSpecialWindow);
 			}
-        }
+			if (!ubOnce)
+			{
+				upWindowSave = mpCommonWindowParams;
+				ubOnce = true;
+			}
+		}
 
         CXMLParseNode *pZoomXml = mpXmlNode->GetFirstDeep("zoom_params");
         if (pZoomXml)
         {
-            CZoomPanParams *pZoom = (CZoomPanParams *)CNamedObject::GetParsed(pZoomXml);
+			static CZoomPanParams* upZoomSave = NULL;
+			static bool ubOnce = false;
+			CZoomPanParams* pZoom = NULL;
+			CDisplayRectangle* pDR = gScreens.GetCurrentDR();
+			if (pDR && pDR->mbMultiVariant)
+			{
+				CMetaData* pPrev = pDR->GetCurrentData();
+				if (pPrev)
+					pZoom = pPrev->GetZoomParams();
+			}
+			else if (upZoomSave && CFileFactory::CreatingData2())
+			{
+				pZoom = upZoomSave;
+				upZoomSave = NULL;
+			}
+			if (!pZoom)
+				pZoom = (CZoomPanParams *)CNamedObject::GetParsed(pZoomXml);
             if (!pZoom)
                 pZoom = new CZoomPanParams(pZoomXml);
             SetCommonZoom (pZoom);
+			if (!ubOnce)
+			{
+				upZoomSave = pZoom;
+				ubOnce = true;
+			}
         }
     }
 }
@@ -226,7 +265,7 @@ void CMetaData::SetTypedDataHandler(EMyImageDataType eDataType)
 	SetDataType(eDataType);
 
     if ((mDataType != DATA_TYPE_SHORT) && (mDataType != DATA_TYPE_USHORT))
-        mbCtImage = false;
+        SetCtImage(false);
 
 	if (mDataType == DATA_TYPE_RGB)
 		mbDisplayStatistics = false;
@@ -523,8 +562,8 @@ bool CMetaData::UpdatePageData()
 	        mpTypedData->OnReadBytes(mpPageData->GetDataStart(), mpPageData->GetRealByteSize());
 
         if ((mpTypedData->Min() < MIN_CT_VALUE) || (mpTypedData->Max() > MAX_CT_VALUE))
-            mbCtImage = false;
-        if (!gScreens.mbEbwMode && !typedCount++)
+			SetCtImage(false);
+		if (!gScreens.mbEbwMode && !typedCount++)
         {
             if (mpTypedData->mnSummed > 0 && mpTypedData->mSum > -1.0f && mpTypedData->mSum < 1.0f)
             {
@@ -573,6 +612,7 @@ bool CMetaData::UpdatePageData()
     OnChange();
     if (umpfUpdatesLog)
         fflush (umpfUpdatesLog);
+	mnPageLoads++;
     return true;
 }
 void CMetaData::UpdateTexts(void)
@@ -626,6 +666,8 @@ bool CMetaData::StartLoadVolume ()
 DWORD WINAPI CMetaData::StaticLoadVolume(void *p)
 {
     CMetaData *pData = (CMetaData *)p;
+	while (!gScreens.FirstPaintFinished() || pData->mnPageLoads == 0)
+		Sleep(10);
 	pData->mbLoadingVolume = true;
 	pData->DoLoadVolume();
 	pData->mbLoadingVolume = false;
@@ -2168,6 +2210,8 @@ void CMetaData::ReadRegistry(CMyRegistry &myReg)
 	myReg.Get("MetaDataDebug", umDebug);
 	myReg.Get("bMultiTypeWindows", umbMultiTypeWindows);
 	myReg.Get("bDisplayImageOnZeroColor", umbDisplayImageOnZeroColor);
+	myReg.Get("bAllCT", umbAllCt);
+	myReg.Get("bAllNotCT", umbAllNotCt);
 
 	int colorTransparencyPC = 0;
 	if (myReg.Get("ColorTransparencyPC", colorTransparencyPC))
@@ -2255,15 +2299,14 @@ bool CMetaData::GetDataRangeText(CString &osText)
 void CMetaData::OpenWindowingGUI(void)
 {
 	CWindowParams *pWindowParams =GetWindowParams();
-    bool bCtImages = IsCtImage();
-    if (bCtImages)
+    if (mbCtImage)
         pWindowParams->SetRange (0, MAX_CT_VALUE);
     else
         pWindowParams->SetRange (Min(), Max());
 
     if (mpfLog)
         fprintf (mpfLog, "\n<OnParametersWindow> Window C%s %s W %s\n", 
-        bCtImages ? "t" : "", 
+			mbCtImage ? "t" : "",
         (const char *)pWindowParams->GetCenterText(), (const char *)pWindowParams->GetWidthText());
 
 	CWindowDlg *pNew = new CWindowDlg(this, pWindowParams);

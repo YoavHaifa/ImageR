@@ -197,18 +197,33 @@ void CPipeIF::ProcessMessage (void)
 			CFileFactory::SetReplaceRoot(sOrigRoot, sNewRoot);
         }
    }
-	else if (_stricmp(mzRequest, "load_state_and_replace") == 0)
-	{
-		CString sfName;
-		bool bOk = GetFirstFileName(sfName);
-		if (bOk)
-		{
+    else if (_stricmp(mzRequest, "load_state_and_replace") == 0)
+    {
+        CString sfName;
+        bool bOk = GetFirstFileName(sfName);
+        if (bOk)
+        {
             RemovePrefix(sfName);
-			CFileFactory::SetReplaceFileName(sfName);
-			OnDisplayImage(true);
-		}
-	}
-	else if (_stricmp(mzRequest, "display_colorer") == 0)
+            CFileFactory::SetReplaceFileName(sfName);
+            OnDisplayImage(true);
+        }
+    }
+    else if (_stricmp(mzRequest, "load_state_and_replace2") == 0)
+    {
+        CString sfName1;
+        CString sfName2;
+        bool bOk = GetFirstFileName(sfName1);
+        bOk &= GetFirstFileName(sfName2);
+        if (bOk)
+        {
+            RemovePrefix(sfName1);
+            RemovePrefix(sfName2);
+            CFileFactory::SetReplaceFileName(sfName1);
+            CFileFactory::SetReplaceFileName2(sfName2);
+            OnDisplayImage(true);
+        }
+    }
+    else if (_stricmp(mzRequest, "display_colorer") == 0)
     {
 		CString sfName;
 		bool bOk = GetFirstFileName(sfName);

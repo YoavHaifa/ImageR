@@ -187,8 +187,8 @@ void CDiffData::InitOnConstruction(void)
 	if (!pPlus)
 		return;
 
-    mbCtImage = false;
-    mnLinesInPage = pPlus->GetNLinesInPage();
+	SetCtImage(false, true /*force*/);
+	mnLinesInPage = pPlus->GetNLinesInPage();
     mnCols = pPlus->GetNCols();
     SetMmPerPixel(*pPlus);
 

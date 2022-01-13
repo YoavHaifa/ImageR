@@ -5,27 +5,28 @@ class CVolumetric :
     public virtual CMetaData
 {
 public:
-    CVolumetric(const char *zName, CMetaData *pData);
+    CVolumetric(const char *zName, class CDisplayRectangle *pSrcDR);
     CVolumetric(const char *zName, class CXMLParseNode *pXmlNode);
-    virtual ~CVolumetric(void);
+    virtual ~CVolumetric();
 
-    virtual CMetaData *GetSourceData(void){return mpVolumeData;}
-    virtual float GetCtBias (void) {return (mbCtImage && mpVolumeData) ? mpVolumeData->GetCtBias() : 0.0f;}
-    virtual bool IsVolumetric(void){return true;}
+    virtual CMetaData* GetSourceData();
+    CVolume* GetSourceVolume();
+    virtual float GetCtBias();
+    virtual bool IsVolumetric(){return true;}
     virtual void SaveState(class CXMLDump & xmlDump);
-    virtual bool ReadyForWindowFocus(void);
+    virtual bool ReadyForWindowFocus();
 
 protected:
-    CMetaData *mpVolumeData;
+    class CDisplayRectangle* mpSrcDR;
 
 public:
     bool mbSliceIncrementInitialized;
-    void InitOnConstruction(void);
-    bool VerifyMmPerPixelPage(void);
+    void InitOnConstruction();
+    bool VerifyMmPerPixelPage();
 protected:
 	bool mbInvertUpDown;
 public:
-	void InvertUpDown(void);
-	bool IsInvertedUpDown(void) {return mbInvertUpDown;}
+	void InvertUpDown();
+	bool IsInvertedUpDown() {return mbInvertUpDown;}
 	bool IsComputedFrom(CMetaData *pData);
 };

@@ -2,4 +2,5 @@
 	<bDebugTiming> false </bDebugTiming>
 	<FastScrollFactor> 5 </FastScrollFactor>
 	<bCyclicLeafing> true </bCyclicLeafing>
+	<bAllCT> true </bAllCT>
 </def>

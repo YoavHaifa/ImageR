@@ -33,9 +33,12 @@
 #include "VolumeRenderingIF.h"
 #endif
 
-CString CFileFactory::umsReplaceFileName;
+CString CFileFactory::umsReplaceFileName; // = "DLNR_NoSobel";
+CString CFileFactory::umsReplaceFileName2; // = "DLNR_prediction";
 CString CFileFactory::umsOrigDataRoot;
 CString CFileFactory::umsNewDataRoot;
+bool CFileFactory::umbCreatingData2 = false;
+CMetaData* CFileFactory::umpData2 = NULL;
 
 void CFileFactory::SetReplaceRoot(const char* zOrigRoot, const char* zNewRoot)
 {
@@ -45,7 +48,15 @@ void CFileFactory::SetReplaceRoot(const char* zOrigRoot, const char* zNewRoot)
 
 void CFileFactory::SetReplaceFileName(const char* zfName)
 {
-	umsReplaceFileName = zfName;
+    umsReplaceFileName = zfName;
+    umsReplaceFileName2 = "";
+    umpData2 = NULL;
+    umbCreatingData2 = false;
+}
+
+void CFileFactory::SetReplaceFileName2(const char* zfName)
+{
+    umsReplaceFileName2 = zfName;
 }
 
 CFileFactory::CFileFactory(FILE *pfLog)
@@ -73,7 +84,14 @@ CFileFactory::~CFileFactory(void)
 }
 CMetaData * CFileFactory::CreateFileObject(CXMLParseNode *pMetaDataXml)
 {
-    CFileLogger fLog; // ("FileFactory_CreateFileObject");
+    umpData2 = NULL;
+    CString sExtraFileName(_T(""));
+    CString sLog("FileFactory_CreateFileObject_XML");
+    if (!umsReplaceFileName.IsEmpty())
+        sLog = sLog + "_" + umsReplaceFileName;
+    if (!umsReplaceFileName2.IsEmpty())
+        sLog = sLog + "_" + umsReplaceFileName2;
+    CFileLogger fLog(sLog);
     fLog.Log("pMetaDataXml", pMetaDataXml->msName);
 
     mpMetaDataXml = pMetaDataXml;
@@ -127,9 +145,45 @@ CMetaData * CFileFactory::CreateFileObject(CXMLParseNode *pMetaDataXml)
                 CString sPath = CFileName::GetPath(sName);
                 CString sPathPath = CFileName::GetPath(sPath);
                 CString sTry(sPathPath + "\\" + umsReplaceFileName + "\\" + sPrivate);
-                fLog.Log("sTry", sTry);
+                CString sTry2;
+                if (!umsReplaceFileName2.IsEmpty())
+                    sTry2 = sPathPath + "\\" + umsReplaceFileName2 + "\\" + sPrivate;
                 if (CFileName::Exist(sTry))
+                {
+                    fLog.Log("sTry Exist", sTry);
                     sName = sTry;
+                    if (!sTry2.IsEmpty())
+                    {
+                        if (CFileName::Exist(sTry2))
+                        {
+                            fLog.Log("sTry2 Exist", sTry);
+                            sExtraFileName = sTry2;
+                        }
+                        else
+                        {
+                            fLog.Log("sTry2 Missing", sTry2);
+                            CMyWindows::MessBox(sTry2, "Missing File");
+                        }
+                    }
+                }
+                else
+                {
+                    fLog.Log("sTry Missing", sTry);
+                    CMyWindows::MessBox(sTry, "Missing File");
+                    if (!sTry2.IsEmpty())
+                    {
+                        if (CFileName::Exist(sTry2))
+                        {
+                            fLog.Log("sTry2 Exist", sTry);
+                            sName = sTry2;
+                        }
+                        else
+                        {
+                            fLog.Log("sTry2 Missing", sTry2);
+                            CMyWindows::MessBox(sTry2, "Missing File");
+                        }
+                    }
+                }
             }
 			umsReplaceFileName = "";
 		}
@@ -141,6 +195,25 @@ CMetaData * CFileFactory::CreateFileObject(CXMLParseNode *pMetaDataXml)
         pData->SetXmlParseNode(pMetaDataXml);
         pData->SetParseId(pObjectXml);
         pData->PostConstruct(pMetaDataXml);
+    }
+
+    if (!sExtraFileName.IsEmpty())
+    {
+        CDisplayRectangle* pDR = gScreens.GetCurrentDR();
+        if (pDR)
+            pDR->mbMultiVariant = true;
+
+        umbCreatingData2 = true;
+        fLog.Log("TryCreateFileObject", sExtraFileName);
+        umpData2 = TryCreateFileObject(sExtraFileName);
+        if (umpData2)
+        {
+            umpData2->SetXmlParseNode(pMetaDataXml);
+            umpData2->SetParseId(pObjectXml);
+            umpData2->PostConstruct(pMetaDataXml);
+            fLog.Log("Data Create", umpData2->msName);
+        }
+        umbCreatingData2 = false;
     }
 
 	return pData;
@@ -167,7 +240,7 @@ bool CFileFactory::CreateAndDisplayFileObject(const char * zfName, bool bNewDisp
                 CDisplayRectangle *pDR = gScreens.GetMipDR();
                 if (pDR)
                 {
-                    CVolTissue *pTissue = new CVolTissue(pData);
+                    CVolTissue *pTissue = new CVolTissue(pDR);
                     pTissue->SetLogFile(mpfLog);
                     pDR->AddColorer(pTissue);
 
@@ -573,7 +646,7 @@ void CFileFactory::AddComputedData(EComputedDataType eType)
 					else
                         pOblPos = pOtherOblPos;
                 }
-                COblique *pOblique = new COblique ((CMultiFile *)pData, pOblPos);
+                COblique *pOblique = new COblique (pDR, pOblPos);
                 gScreens.AddData(pOblique, nAdded++ == 0);
                 gScreens.Refresh();
                 if (!pOblPos)
@@ -597,7 +670,7 @@ void CFileFactory::AddComputedData(EComputedDataType eType)
                 gScreens.AddData(pMip, nAdded++ == 0);
                 gScreens.Refresh();
 #else
-                CMipVolume *pMip = new CMipVolume ((CMultiFile *)pData);
+                CMipVolume *pMip = new CMipVolume (pDR);
                 gScreens.AddData(pMip, nAdded++ == 0);
                 gScreens.Refresh();
 #endif

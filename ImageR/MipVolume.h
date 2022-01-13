@@ -7,7 +7,7 @@ class CMipVolume :
 	public CVolumetric, public CMip
 {
 public:
-    CMipVolume(CMetaData *pData);
+    CMipVolume(class CDisplayRectangle* pSrcDR);
     CMipVolume(class CXMLParseNode *pXmlNode);
 	virtual ~CMipVolume(void);
 

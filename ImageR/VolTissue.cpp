@@ -4,13 +4,14 @@
 #include "..\..\yUtils\MyWindows.h"
 #include "..\..\ImageRLib\TVolume.h"
 
-CVolTissue::CVolTissue(CMetaData *pData)
-: CMetaData(pData->msName + "_VolTissue")
-, CVolumetric (pData->msName + "_VolTissue", pData)
+CVolTissue::CVolTissue(CDisplayRectangle* pSrcDR)
+: CMetaData(pSrcDR->GetCurrentData()->msName + "_VolTissue")
+, CVolumetric (pSrcDR->GetCurrentData()->msName + "_VolTissue", pSrcDR)
 , miLastComputed(0)
 {
+    CMetaData* pVolumeData = GetSourceData();
     SetTypedDataHandler(DATA_TYPE_BOOL);
-    mColor = pData->mColor;
+    mColor = pVolumeData->mColor;
 }
 
 CVolTissue::~CVolTissue(void)
@@ -31,7 +32,7 @@ bool CVolTissue::UpdateColorer(class CDisplayRectangle &displayRect)
 }
 bool CVolTissue::ShouldUpdate(void)
 {
-    CVolume *pVolume = mpVolumeData->GetVolume();
+    CVolume *pVolume = GetSourceVolume();
     if (!pVolume)
         return false;
 
@@ -46,10 +47,11 @@ bool CVolTissue::DoUpdatePageData()
     if (!mpfLog)
         mpfLog = CMyWindows::FOpenLogFile (CNamedObject::GetUniqueName(msName));
 
-    if (mpVolumeData->msName.Find("BitVolume") >= 0)
+    CMetaData* pVolumeData = GetSourceData();
+    if (pVolumeData->msName.Find("BitVolume") >= 0)
         return false;
 
-    CVolume *pVolume = mpVolumeData->GetVolume();
+    CVolume *pVolume = GetSourceVolume();
     if (!pVolume)
         return false;
     VerifyMmPerPixelPage();
@@ -57,10 +59,10 @@ bool CVolTissue::DoUpdatePageData()
     mpPageData->Zero();
     bool *pOutLine = (bool *)mpPageData->GetDataStart();
 
-    int nImageLines = mpVolumeData->GetNLinesInPage();
-    int nImagePixels = mpVolumeData->GetNCols();
+    int nImageLines = pVolumeData->GetNLinesInPage();
+    int nImagePixels = pVolumeData->GetNCols();
     int nLinesToCompute = pVolume->mnLoaded;
-    int iFirstImage = mpVolumeData->GetVolume()->First();
+    int iFirstImage = pVolumeData->GetVolume()->First();
     if (mpfLog)
     {
         fprintf (mpfLog, "<CVolTissue::DoUpdatePageData> iFirstImage %d nLinesToCompute %d\n",
@@ -103,7 +105,7 @@ bool CVolTissue::DoUpdatePageData()
 
 bool CVolTissue::IsCommand(const char * zCommand)
 {
-    CVolume *pVolume = mpVolumeData->GetVolume();
+    CVolume *pVolume = GetSourceVolume();
     if (!pVolume)
         return false;
     CMyImage::SSharedMemHeader *pHeader = pVolume->GetHeader();
@@ -114,7 +116,7 @@ bool CVolTissue::IsCommand(const char * zCommand)
 
 bool * CVolTissue::GetImageMask(int iImage)
 {
-    CVolume *pVolume = mpVolumeData->GetVolume();
+    CVolume *pVolume = GetSourceVolume();
     if (!pVolume)
         return NULL;
     return (bool *)pVolume->GetPageVP(iImage);

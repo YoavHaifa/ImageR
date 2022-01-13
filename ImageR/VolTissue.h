@@ -5,7 +5,7 @@ class CVolTissue :
     public CVolumetric
 {
 public:
-    CVolTissue(CMetaData *pData);
+    CVolTissue(class CDisplayRectangle* pSrcDR);
     virtual ~CVolTissue(void);
 
     virtual bool ShouldUpdate(void);

@@ -14,7 +14,7 @@ public:
         OBL_LAST
     } EOblType;
 
-    COblique(class CMultiFile *pData, class CObliquePosition *pOblPos = NULL);
+    COblique(class CDisplayRectangle* pSrcDR, class CObliquePosition *pOblPos = NULL);
     COblique(class CXMLParseNode *pXmlNode);
     ~COblique(void);
 

@@ -379,4 +379,5 @@ protected:
 	bool mbVolumeIsShared;
 	bool mbFastLoadFromVolume;
 	bool mbLoadingVolume;
+    int mnPageLoads;
 };

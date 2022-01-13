@@ -13,9 +13,9 @@
 #include "MultiFile.h"
 #include "DisplayRectangle.h"
 
-COblique::COblique(CMultiFile *pData, CObliquePosition *pOblPos)
+COblique::COblique(CDisplayRectangle* pSrcDR, CObliquePosition *pOblPos)
 : CMetaData("Oblique")
-, CVolumetric ("Oblique", pData)
+, CVolumetric ("Oblique", pSrcDR)
 , mpOblPos(pOblPos)
 {
     InitOnConstruction();
@@ -33,8 +33,7 @@ COblique::~COblique(void)
 {
 	if (mpOblRefOnIm)
 	{
-		CDisplayRectangle* pDataDR = mpVolumeData->GetDR();
-		pDataDR->RemoveGraphicElement(mpOblRefOnIm);
+		mpSrcDR->RemoveGraphicElement(mpOblRefOnIm);
 	}
 }
 COblique::EOblType COblique::GetType (const char *zType)
@@ -107,7 +106,8 @@ void COblique::InitOnConstruction(CXMLParseNode *pXmlPositionNode)
         {
             mpOblPos = new CObliquePosition(pXmlPositionNode);
             SetPosition(mpOblPos);
-            SetLeafRange(0, mpVolumeData->GetNLinesInPage() - 1);
+            CMetaData* pVolumeData = GetSourceData();
+            SetLeafRange(0, pVolumeData->GetNLinesInPage() - 1);
             if (mpOblPos->GetType() == OBL_UNDEF)
             {
                 mpOblPos->miCurrent = mpOblPos->miLast / 2;
@@ -123,7 +123,7 @@ bool COblique::DoUpdatePageData()
     if (!mpfLog)
         mpfLog = CMyWindows::FOpenLogFile (CNamedObject::GetUniqueName(msName));
 
-    CVolume *pVolume = mpVolumeData->GetVolume();
+    CVolume *pVolume = GetSourceVolume();
     if (!pVolume)
         return false;
     VerifyMmPerPixelPage();
@@ -147,8 +147,9 @@ bool COblique::DoUpdatePageData()
     AddDualModeToName();
 
     int nLinesToCompute = pVolume->mnLoaded;
-    int iFirstImage = mpVolumeData->GetVolume()->First();
-    int iLastImage = mpVolumeData->GetVolume()->Last();
+    CVolume* pSourceVolume = GetSourceVolume();
+    int iFirstImage = pSourceVolume->First();
+    int iLastImage = pSourceVolume->Last();
     /*if (mpfLog)
     {
         fprintf (mpfLog, "<COblique::DoUpdatePageData> iFirstImage %d nLinesToCompute %d\n",
@@ -200,33 +201,36 @@ bool COblique::DoUpdatePageData()
 }
 void COblique::SetCoronal(void)
 {
-    if (!GetPos().SetType(OBL_CORONAL, mpVolumeData->GetNLinesInPage() - 1))
+    CMetaData* pVolumeData = GetSourceData();
+    if (!GetPos().SetType(OBL_CORONAL, pVolumeData->GetNLinesInPage() - 1))
 		return;
 
-	if (!mpVolumeData->IsSquare())
+	if (!pVolumeData->IsSquare())
 	{
-		SetLeafRange(0, mpVolumeData->GetNLinesInPage() - 1);
-		mnCols = mpVolumeData->GetNCols();
+		SetLeafRange(0, pVolumeData->GetNLinesInPage() - 1);
+		mnCols = pVolumeData->GetNCols();
 	}
     gScreens.Refresh();
 }
 void COblique::SetSagittal(void)
 {
-    if (!GetPos().SetType(OBL_SAGITTAL, mpVolumeData->GetNCols() - 1))
+    CMetaData* pVolumeData = GetSourceData();
+    if (!GetPos().SetType(OBL_SAGITTAL, pVolumeData->GetNCols() - 1))
 		return;
 
- 	if (!mpVolumeData->IsSquare())
+ 	if (!pVolumeData->IsSquare())
 	{
-		SetLeafRange(0, mpVolumeData->GetNCols() - 1);
-		mnCols = mpVolumeData->GetNLinesInPage();
+		SetLeafRange(0, pVolumeData->GetNCols() - 1);
+		mnCols = pVolumeData->GetNLinesInPage();
 	}
    gScreens.Refresh();
 }
 void COblique::OnAssignDR (void)
 {
 	// Create reference to image on the oblique
-	CGLine::umbCreatOnly2Points = true;
-	CObliqueRef *pImRefOnObl = new CObliqueRef(mpDR, false, this, mpVolumeData);
+    CMetaData* pVolumeData = GetSourceData();
+    CGLine::umbCreatOnly2Points = true;
+	CObliqueRef *pImRefOnObl = new CObliqueRef(mpDR, false, this, pVolumeData);
     CDataCoordinates *pFirst =  pImRefOnObl->GetFirstDataCoo();
     CDataCoordinates *pSecond =  pImRefOnObl->GetSecondDataCoo();
 	pFirst->fx = 5;
@@ -236,14 +240,14 @@ void COblique::OnAssignDR (void)
 	mpDR->AddGraphicElement(pImRefOnObl);
 
 	// Create reference to the oblique on the image
-	CDisplayRectangle *pDataDR = mpVolumeData->GetDR();
+	CDisplayRectangle *pDataDR = pVolumeData->GetDR();
 	CGLine::umbCreatOnly2Points = true;
-	mpOblRefOnIm = new CObliqueRef(pDataDR, true, this, mpVolumeData);
+	mpOblRefOnIm = new CObliqueRef(pDataDR, true, this, pVolumeData);
     pFirst =  mpOblRefOnIm->GetFirstDataCoo();
     pSecond = mpOblRefOnIm->GetSecondDataCoo();
 	pFirst->fx = 5;
-	pSecond->fx = (float)mpVolumeData->GetNCols() - 5;
-	pFirst->fy = (float)mpVolumeData->GetNLinesInPage() / 2;
-	pSecond->fy = (float)mpVolumeData->GetNLinesInPage() / 2;
+	pSecond->fx = (float)pVolumeData->GetNCols() - 5;
+	pFirst->fy = (float)pVolumeData->GetNLinesInPage() / 2;
+	pSecond->fy = (float)pVolumeData->GetNLinesInPage() / 2;
 	pDataDR->AddGraphicElement(mpOblRefOnIm);
 }

@@ -16,9 +16,9 @@
 
 int CMipVolume::umnMipVois = 0;
 
-CMipVolume::CMipVolume(CMetaData *pData)
+CMipVolume::CMipVolume(CDisplayRectangle* pSrcDR)
 : CMetaData("Mip")
-, CVolumetric ("Mip", pData)
+, CVolumetric ("Mip", pSrcDR)
 , mnImageLines(0)
 , mnImagePixels(0)
 , mpVOIMask(NULL)
@@ -49,10 +49,11 @@ void CMipVolume::InitOnConstruction(void)
 
     SetTypedDataHandler(DATA_TYPE_USHORT);
     SetNewPosition("mip", 1,1);
-    if (mpVolumeData)
+    CMetaData* pVolumeData = GetSourceData();
+    if (pVolumeData)
     {
-        mnImageLines = mpVolumeData->GetNLinesInPage();
-        mnImagePixels = mpVolumeData->GetNCols();
+        mnImageLines = pVolumeData->GetNLinesInPage();
+        mnImagePixels = pVolumeData->GetNCols();
     }
 }
 bool CMipVolume::ShouldUpdate()
@@ -89,7 +90,8 @@ bool CMipVolume::DoUpdatePageData()
     if (!umpfLog)
         umpfLog = CMyWindows::FOpenLogFile (CNamedObject::GetUniqueName(msName));
 
-    CVolume *pVolume = mpVolumeData->GetVolume();
+    CMetaData* pVolumeData = GetSourceData();
+    CVolume *pVolume = GetSourceVolume();
     if (!pVolume)
         return false;
     if (VerifyMmPerPixelPage())
@@ -155,7 +157,7 @@ bool CMipVolume::DoUpdatePageData()
 					mpVoiBounds = new CDataRoiLineBounds;
 					mpVoiBounds->AddCheck(mpVoi);
 				}
-				mpVoiBounds->Init(mpVolumeData->GetNLinesInPage(), mpVolumeData->GetNCols(),*mpVoi);
+				mpVoiBounds->Init(pVolumeData->GetNLinesInPage(), pVolumeData->GetNCols(),*mpVoi);
                 mipper.ProjectImageInRoi(pVolPage, pMipLine, mpVoiBounds);
 				CWindowParams *pWindowParams = GetWindowParams();
 				if (pWindowParams)

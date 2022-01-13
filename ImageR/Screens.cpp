@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.5.3");
+CString CScreens::umsVersion("V1.5.4");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -89,6 +89,7 @@ CScreens::CScreens(void)
 , mpGEWithContextMenu(NULL)
 , mpImageView(NULL)
 , mFastScrollFactor(5)
+, mnPaints(0)
 {
 	mRButtonDownPoint.x = -1000;
 	mRButtonDownPoint.y = -1000;
@@ -1551,6 +1552,7 @@ void CScreens::Paint()
 		Refresh();
 	}
 	mnScrollsSinceLastPaint = 0;
+	mnPaints++; 
 }
 void CScreens::PrintStatusInBar(ESatusBarFields eField, const char *zText)
 {
@@ -2911,3 +2913,4 @@ void CScreens::ExportGraphicDataToExcel(void)
 
 	g2e.Print();
 }
+

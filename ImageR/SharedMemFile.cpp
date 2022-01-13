@@ -159,8 +159,8 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
     {
         mnCols = (mpHeader->mnCols - 2) * 32;
         mnLinesInPage = mpHeader->mnLines - 2;
-        mbCtImage = false;
-        SetTypedDataHandler(DATA_TYPE_BOOL);
+		SetCtImage(false, true /*force*/);
+		SetTypedDataHandler(DATA_TYPE_BOOL);
     }
     else
     {
@@ -172,10 +172,7 @@ CSharedMemFile::CSharedMemFile(CFileMapping *pMapping, CMetaData *pOnData)
 		}
 		else
 	        mnLinesInPage = mpHeader->mnLines;
-		if (mpHeader->mVersion < 14)
-			mbCtImage = (mpHeader->mDataType == DATA_TYPE_USHORT);
-		else
-			mbCtImage = mpHeader->mbCtImage;
+		SetCtImage(mpHeader->mbCtImage, true /*bForce*/);
         SetTypedDataHandler(mpHeader->mDataType);
     }
 

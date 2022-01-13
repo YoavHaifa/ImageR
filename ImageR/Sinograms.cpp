@@ -174,7 +174,7 @@ CSinograms::CSinograms(class CXMLParseNode *pXmlNode)
 }
 void CSinograms::InitOnConstruction(void)
 {
-    mbCtImage = false;
+    SetCtImage(false, true /*bForce*/);
     if (mpImage)
     {
         mnLinesInPage = mpImage->GetNLinesInPage();
@@ -200,7 +200,7 @@ void CSinograms::InitOnConstruction(void)
         break;
 
     case SINO_CORRECTED_IMAGE:
-        mbCtImage = true;
+        SetCtImage(true);
         SetTypedDataHandler(DATA_TYPE_USHORT);
         AddCheck(mpSinograms);
         break;

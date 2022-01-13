@@ -70,8 +70,8 @@ CDisplayRectangle::CDisplayRectangle(FILE *pfLog, CXMLParseNode *pDRXml)
 , mnPaint(0)
 , mLastDrCoo(*this,0,0)
 , msUserDefinedTitle(_T(""))
-//, mId(0)
 , mnTitleLinesDisplayed(0)
+, mbMultiVariant(false)
 {
 	umId++;
 	if (pDRXml)
@@ -256,6 +256,13 @@ void CDisplayRectangle::InitDataFromXml(CXMLParseNode *pDataXml)
         CMetaData *pData = fileFactory.CreateFileObject(pMetaDataXml);
         if (pData)
             AddData(pData);
+
+		CMetaData* pData2 = CFileFactory::GetData2();
+		if (pData2)
+		{
+			mbMultiVariant = true;
+            AddData(pData2);
+		}
 
         pMetaDataXml = pDataXml->GetNext(NULL, pMetaDataXml);
     }

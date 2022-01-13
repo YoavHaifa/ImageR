@@ -4,19 +4,21 @@
 #include "..\..\yUtils\XMLDump.h"
 
 #include "Screens.h"
+#include "DisplayRectangle.h"
 
-CVolumetric::CVolumetric(const char *zName, CMetaData *pData)
+CVolumetric::CVolumetric(const char *zName, CDisplayRectangle* pSrcDR)
 : CMetaData(zName)
-, mpVolumeData(pData)
+, mpSrcDR(pSrcDR)
 , mbSliceIncrementInitialized(false)
 , mbInvertUpDown(false)
 {
     InitOnConstruction();
-    msName = mpVolumeData->GetShortName() + msName;
+    CMetaData* pVolumeData = mpSrcDR->GetCurrentData();
+    msName = pVolumeData->GetShortName() + msName;
 }
 CVolumetric::CVolumetric(const char *zName, class CXMLParseNode *pXmlNode)
 : CMetaData(zName)
-, mpVolumeData((CMetaData *)CNamedObject::GetParsed(pXmlNode, "volume_id"))
+, mpSrcDR((CDisplayRectangle*)CNamedObject::GetParsed(pXmlNode, "src_dr_id"))
 , mbSliceIncrementInitialized(false)
 , mbInvertUpDown(false)
 {
@@ -24,39 +26,70 @@ CVolumetric::CVolumetric(const char *zName, class CXMLParseNode *pXmlNode)
 }
 CVolumetric::~CVolumetric(void)
 {
-	mpVolumeData->DeleteVolume();
+	// mpVolumeData->DeleteVolume();
 }
 void CVolumetric::InitOnConstruction(void)
 {
+    CMetaData* pVolumeData = mpSrcDR->GetCurrentData();
     gScreens.mVolumeRefreshInterval = 1;
-    mpVolumeData->StartLoadVolume ();
-    mnLinesInPage = mpVolumeData->GetNVolumePages();
-    mnCols = mpVolumeData->GetNCols();
-    mMmPerPixelWidth = mpVolumeData->MmPerPixelWidth();
-    mbCtImage = mpVolumeData->IsCtImage();
-	mRescaleIntercept = mpVolumeData->mRescaleIntercept;
-	mRescaleSlope = mpVolumeData->mRescaleSlope;
+    pVolumeData->StartLoadVolume ();
+    mnLinesInPage = pVolumeData->GetNVolumePages();
+    mnCols = pVolumeData->GetNCols();
+    mMmPerPixelWidth = pVolumeData->MmPerPixelWidth();
+    SetCtImage(pVolumeData->IsCtImage(), true /*force*/);
+	mRescaleIntercept = pVolumeData->mRescaleIntercept;
+	mRescaleSlope = pVolumeData->mRescaleSlope;
 
-	if (mpVolumeData)
-		SetDataType(mpVolumeData->GetDataType());
+	if (pVolumeData)
+		SetDataType(pVolumeData->GetDataType());
 
-    CVolume *pVolume = mpVolumeData->GetVolume();
+    AddCheck(mpSrcDR);
+    CVolume *pVolume = pVolumeData->GetVolume();
     if (pVolume)
         AddCheck(pVolume);
+}
+CMetaData* CVolumetric::GetSourceData(void) 
+{
+    if (!mpSrcDR)
+        return NULL;
+    return mpSrcDR->GetCurrentData();
+}
+CVolume* CVolumetric::GetSourceVolume()
+{
+    CMetaData* pVolumeData = GetSourceData();
+    if (!pVolumeData)
+        return NULL;
+    CVolume *pVolume = pVolumeData->GetVolume();
+    if (!pVolume)
+    {
+        pVolumeData->StartLoadVolume();
+        pVolume = pVolumeData->GetVolume();
+        if (pVolume)
+            AddCheck(pVolume);
+    }
+    return pVolume;
+}
+float CVolumetric::GetCtBias(void)
+{
+    CMetaData* pVolumeData = GetSourceData();
+    if (mbCtImage && pVolumeData)
+        return pVolumeData->GetCtBias();
+    return 0.0f;
 }
 bool CVolumetric::VerifyMmPerPixelPage(void)
 {
     if (mbSliceIncrementInitialized)
         return false;
 
-    CVolume *pVolume = mpVolumeData->GetVolume();
+    CMetaData* pVolumeData = GetSourceData();
+    CVolume *pVolume = pVolumeData->GetVolume();
     if (pVolume && pVolume->mnLoaded > 1)
     {
-        SetMmPerPixel(mMmPerPixelWidth, mpVolumeData->MmPerPixelPage());
+        SetMmPerPixel(mMmPerPixelWidth, pVolumeData->MmPerPixelPage());
         mbSliceIncrementInitialized = true;
         if (mpfLog)
             fprintf (mpfLog, "<CVolumetric::VerifyMmPerPixelPage> %s volData %s mMmPerPixelHeight %f\n",
-			(const char*)msName, (const char*)mpVolumeData->msName, mMmPerPixelHeight);
+			(const char*)msName, (const char*)pVolumeData->msName, mMmPerPixelHeight);
         return true;
     }
     return false;
@@ -65,13 +98,13 @@ void CVolumetric::SaveState(class CXMLDump & xmlDump)
 {
     CXMLDumpScope graph("Volumetric",xmlDump);
     CMetaData::SaveState(xmlDump);
-    if (mpVolumeData)
-        xmlDump.Write("volume_id", mpVolumeData->mUId);
-	xmlDump.Write("b_invert_up_down", mbInvertUpDown);
+    if (mpSrcDR)
+        xmlDump.Write("src_dr_id", mpSrcDR->mUId);
+    xmlDump.Write("b_invert_up_down", mbInvertUpDown);
 }
 bool CVolumetric::ReadyForWindowFocus(void)
 {
-    CVolume *pVolume = mpVolumeData->GetVolume();
+    CVolume *pVolume = GetSourceVolume();
     if (pVolume && pVolume->mnLoaded > mnLinesInPage / 2)
         return true;
     return false;
@@ -84,5 +117,6 @@ void CVolumetric::InvertUpDown(void)
 }
 bool CVolumetric::IsComputedFrom(CMetaData *pData)
 {
-	return (mpVolumeData == pData);
+    CMetaData* pVolumeData = GetSourceData();
+    return (pVolumeData == pData);
 }
