@@ -262,6 +262,8 @@ void CDisplayRectangle::InitDataFromXml(CXMLParseNode *pDataXml)
 		{
 			mbMultiVariant = true;
             AddData(pData2);
+			if (mbMultiVariant)
+				ReportCurrentVariant();
 		}
 
         pMetaDataXml = pDataXml->GetNext(NULL, pMetaDataXml);
@@ -352,7 +354,9 @@ bool CDisplayRectangle::OnViewPrevfile(void)
 	CMetaData *pData = mDataList.GetAt(pos);
 	pData->PropagateMultiPos(mpCurrentData);
     mpCurrentData = pData;
-    OnChange();
+	if (mbMultiVariant)
+		ReportCurrentVariant();
+	OnChange();
     return true;
 }
 bool CDisplayRectangle::OnViewNextfile(void)
@@ -375,6 +379,8 @@ bool CDisplayRectangle::OnViewNextfile(void)
 	CMetaData *pData = mDataList.GetAt(pos);
 	pData->PropagateMultiPos(mpCurrentData);
     mpCurrentData = pData;
+	if (mbMultiVariant)
+		ReportCurrentVariant();
     OnChange();
     return true;
 }
@@ -2036,4 +2042,15 @@ int CDisplayRectangle::AddGESToList(CGraphicsToExcel &g2e, unsigned int listId)
         }
     }
 	return nAdded;
+}
+
+void CDisplayRectangle::ReportCurrentVariant()
+{
+	CString sName(mpCurrentData->msName);
+	CString sPath(CFileName::GetPath(sName));
+	CString sVariant(CFileName::GetPrivate(sPath));
+
+	CLogFile log("ImageR", "CurrentVariant");
+	if (log)
+		fprintf(log.mpf, sVariant);
 }

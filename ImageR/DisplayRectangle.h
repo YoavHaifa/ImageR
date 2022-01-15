@@ -218,4 +218,6 @@ public:
 
 	static bool umbReverseRGBOrder;
     bool mbMultiVariant;
+private:
+    void ReportCurrentVariant();
 };
