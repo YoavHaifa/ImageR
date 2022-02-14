@@ -344,5 +344,6 @@ public:
 	afx_msg void OnAddChangeendian();
 	afx_msg void OnDiffFindbesttransformation();
 	afx_msg void OnSettingsTogglefastloading();
+	afx_msg void OnExportHistogram();
 };
 

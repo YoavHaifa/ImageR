@@ -320,23 +320,19 @@
 #define ID_GRAPHIC_SAVEDATATOEXCEL      33989
 #define ID_EXPORT_GRAPHICDATATOEXCEL    33990
 #define ID_ADD                          33991
-//#define ID_ADD_FILE33992                33992
-//#define ID_ADD_DIFF33993                33993
-//#define ID_ADD_CORONAL33994             33994
-//#define ID_ADD_COMBINE33997             33997
-//#define ID_Menu33998                    33998
 #define ID_DICOM_EXPORTRASTERTODICOM    33999
 #define ID_DICOM_EXPORTTOMINIMALDICOM   34000
 #define ID_ADD_CHANGEENDIAN             34001
 #define ID_DIFF_FINDBESTTRANSFORMATION  34002
 #define ID_SETTINGS_TOGGLEFASTLOADING   34003
+#define ID_EXPORT_HISTOGRAM             34004
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1028
-#define _APS_NEXT_COMMAND_VALUE         34004
+#define _APS_NEXT_COMMAND_VALUE         34005
 #define _APS_NEXT_CONTROL_VALUE         2099
 #define _APS_NEXT_SYMED_VALUE           2200
 #endif

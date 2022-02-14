@@ -365,15 +365,19 @@ public:
 
 	// Control loaded volume
 public:
-	bool StartLoadVolume(void);
-	void DeleteVolume();
+    bool LoadVolume(void);
+    bool StartLoadVolume(void);
+    void DeleteVolume();
 	static void ToggleEnableFastLoadFromVolume();
 	static bool umbEnableFastLoadFromVolume;
     bool IsLoadingVolume() { return mbLoadingVolume; }
+    void ExportHistogram();
 
 protected:
-	static DWORD WINAPI StaticLoadVolume(void* p);
-	virtual bool DoLoadVolume();
+    static DWORD WINAPI StaticLoadVolume(void* p);
+    virtual bool DoLoadVolume();
+    static DWORD WINAPI StaticExportHistogram(void* p);
+    void DoExportHistogram();
 
 	class CVolume* mpVolume;
 	bool mbVolumeIsShared;

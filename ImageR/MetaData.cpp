@@ -13,6 +13,7 @@
 #include "..\..\yUtils\NameGetDialog.h"
 #include "..\..\yUtils\MyMath.h"
 #include "..\..\yUtils\MyDicomWriter.h"
+#include "..\..\yUtils\Histogram.h"
 
 #include "..\..\ImageRLib\Zoomer.h"
 #include "..\..\ImageRLib\ImageStatistics.h"
@@ -649,6 +650,14 @@ bool CMetaData::DoLoadVolume()
     if (mpPageData)
         mpPageData->mbUpdateFailed = true;
 	return false;
+}
+bool CMetaData::LoadVolume(void)
+{
+	StartLoadVolume();
+	Sleep(1000);
+	while (mbLoadingVolume)
+		Sleep(100);
+	return true;
 }
 bool CMetaData::StartLoadVolume ()
 {
@@ -2511,4 +2520,54 @@ void CMetaData::SetSyncPosition()
 {
 	mMultiPosition.SetSyncPosition();
 }
+void CMetaData::ExportHistogram()
+{
+	CMyWindows::CreateThread(StaticExportHistogram, this);
+}
+DWORD WINAPI CMetaData::StaticExportHistogram(void* p)
+{
+	CMetaData* pData = (CMetaData*)p;
+	pData->DoExportHistogram();
+	return 0;
+}
+void CMetaData::DoExportHistogram()
+{
+	LoadVolume();
 
+	//if (mpVolume)
+	//	CMyWindows::MessBox("Volume Loaded", "Note");
+
+	unsigned short* pVol = (unsigned short*)mpVolume->GetPageRelativeVP(0);
+	int nInImage = mnCols * mnLinesInPage;
+	int nPages = GetNPages();
+	int n = nInImage * nPages;
+
+	unsigned short minVal = 0;
+	unsigned short maxVal = pVol[0];
+	for (int i = 0; i < n; i++)
+	{
+		if (pVol[i] > maxVal)
+			maxVal = pVol[i];
+	}
+
+	//char zBuf[128];
+	//sprintf_s(zBuf, sizeof(zBuf), "Data range %d - %d", minVal, maxVal);
+	//CMyWindows::MessBox(zBuf, "Note");
+
+	CString sPath(CFileName::GetPath(msName));
+	CString sDir(CFileName::GetPrivate(sPath));
+	CString sName(sDir + " full detail");
+
+	// Full detail histogram
+	CHistogram hist((const char*)sName, maxVal + 2);
+	hist.Compute((const short*)pVol, n);
+	CString sfName = hist.PrintCSV();
+
+	// Unite every 10 values
+	CString sName10(sDir + " div by 10");
+	CHistogram hist10((const char*)sName10, (maxVal + 9) / 10 + 2);
+	hist10.ComputeDiv((const short*)pVol, n, 10);
+	hist10.PrintCSV();
+
+	CMyWindows::MessBox(sfName, "Histogram Ready");
+}

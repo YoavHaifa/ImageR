@@ -434,6 +434,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_ADD_CHANGEENDIAN, &CImageView::OnAddChangeendian)
 		ON_COMMAND(ID_DIFF_FINDBESTTRANSFORMATION, &CImageView::OnDiffFindbesttransformation)
 		ON_COMMAND(ID_SETTINGS_TOGGLEFASTLOADING, &CImageView::OnSettingsTogglefastloading)
+		ON_COMMAND(ID_EXPORT_HISTOGRAM, &CImageView::OnExportHistogram)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -2474,4 +2475,13 @@ void CImageView::OnAddChangeendian()
 void CImageView::OnSettingsTogglefastloading()
 {
 	CMetaData::ToggleEnableFastLoadFromVolume();
+}
+
+void CImageView::OnExportHistogram()
+{
+	CMetaData* pData = gScreens.GetCurrentData();
+	if (pData)
+	{
+		pData->ExportHistogram();
+	}
 }
