@@ -1925,7 +1925,7 @@ void CImageView::OnSaveStateForClient(void)
 }
 void CImageView::OnBroadPos(void)
 {
-	CPosition::SetBroadcats();
+	CPosition::SetBroadcast();
 }
 void CImageView::OnLoadToCurrentDR(void)
 {

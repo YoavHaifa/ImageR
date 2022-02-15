@@ -172,7 +172,7 @@ void CPipeIF::ProcessMessage (void)
     }
     else if (_stricmp(mzRequest, "broadcast_position") == 0)
     {
-		CPosition::SetBroadcats();
+		CPosition::SetBroadcast();
     }
     else if (_stricmp(mzRequest, "broadcast_left_mouse_up") == 0)
     {
