@@ -1518,7 +1518,11 @@ bool CMetaData::TryToGetImageSizeFromName(void)
     CFileName fName(msName);
     CString sPrivate(fName.Private());
 
-    if (CMyWindows::GetValueFromString(sPrivate, "_matrix", mnCols))
+	if (CMyWindows::GetValueFromString(sPrivate, "_matrix", mnCols))
+	{
+		mnLinesInPage = mnCols;
+	}
+	else if (CMyWindows::GetValueFromString(sPrivate, "_mat", mnCols))
 	{
 		mnLinesInPage = mnCols;
 	}
@@ -2542,7 +2546,7 @@ void CMetaData::DoExportHistogram()
 	int nPages = GetNPages();
 	int n = nInImage * nPages;
 
-	unsigned short minVal = 0;
+	//unsigned short minVal = 0;
 	unsigned short maxVal = pVol[0];
 	for (int i = 0; i < n; i++)
 	{
