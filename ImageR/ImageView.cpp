@@ -47,6 +47,7 @@
 #include "ContextMenu.h"
 #include "WindowDlg.h"
 #include "Oblique.h"
+#include "ProcImage.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -422,13 +423,6 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 	ON_COMMAND(ID_SETTINGS_VERTICALZOOMFACTOR, &CImageView::OnSettingsVerticalzoomfactor)
 	ON_COMMAND(ID_GRAPHIC_SAVEDATATOEXCEL, &CImageView::OnGraphicSavedatatoexcel)
 	ON_COMMAND(ID_EXPORT_GRAPHICDATATOEXCEL, &CImageView::OnExportGraphicdatatoexcel)
-		//ON_COMMAND(ID_ADD_FILE33992, &CImageView::OnAddFile33992)
-		//ON_COMMAND(ID_ADD_DIFF33993, &CImageView::OnAddDiff33993)
-		//ON_COMMAND(ID_ADD_CORONAL33994, &CImageView::OnAddCoronal33994)
-		//ON_COMMAND(ID_ADD_MIP33995, &CImageView::OnAddMip33995)
-		//ON_COMMAND(ID_ADD_SMOOTH33996, &CImageView::OnAddSmooth33996)
-		//ON_COMMAND(ID_ADD_COMBINE33997, &CImageView::OnAddCombine33997)
-		//ON_COMMAND(ID_Menu33998, &CImageView::OnAddRatio33998)
 		ON_COMMAND(ID_DICOM_EXPORTRASTERTODICOM, &CImageView::OnDicomExportrastertodicom)
 		ON_COMMAND(ID_DICOM_EXPORTTOMINIMALDICOM, &CImageView::OnDicomExporttominimaldicom)
 		ON_COMMAND(ID_ADD_CHANGEENDIAN, &CImageView::OnAddChangeendian)
@@ -704,7 +698,7 @@ void CImageView::EditMenu(void)
 		prevState = pMenu->RemoveMenu(ID_ADD_MIP, MF_BYCOMMAND);
 		prevState = pMenu->RemoveMenu(ID_ADD_COMBINE, MF_BYCOMMAND);
 		prevState = pMenu->RemoveMenu(ID_ADD_RATIO, MF_BYCOMMAND);
-		prevState = pMenu->RemoveMenu(ID_ADD_SMOOTH, MF_BYCOMMAND);
+		//prevState = pMenu->RemoveMenu(ID_ADD_SMOOTH, MF_BYCOMMAND);
 	}
 
 	if (mbUseMenuController)	// "false" = don't run , "true" = run
@@ -1740,6 +1734,10 @@ void CImageView::OnGraphicRename()
 }
 void CImageView::OnAddSmooth()
 {
+	float smoothFactor = 1;
+	if (CNameGetDialog::GetFloatValue("Get Smooth Factor", smoothFactor))
+		CProcImage::SetSmoothFactor(smoothFactor);
+
     CFileFactory factory(mpfLog);
     factory.AddComputedData(CFileFactory::COMP_DATA_SMOOTH);
 }
@@ -2421,17 +2419,6 @@ void CImageView::OnAddCoronal33994()
 {
 	CFileFactory factory(mpfLog);
 	factory.AddComputedData(CFileFactory::COMP_DATA_OBLIQUE);
-}
-/*
-void CImageView::OnAddMip33995()
-{
-	CFileFactory factory(mpfLog);
-	factory.AddComputedData(CFileFactory::COMP_DATA_MIP);
-}*/
-void CImageView::OnAddSmooth33996()
-{
-	CFileFactory factory(mpfLog);
-	factory.AddComputedData(CFileFactory::COMP_DATA_SMOOTH);
 }
 void CImageView::OnAddCombine33997()
 {
