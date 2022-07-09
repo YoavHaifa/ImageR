@@ -72,7 +72,7 @@ CVolume* CVolumetric::GetSourceVolume()
 float CVolumetric::GetCtBias(void)
 {
     CMetaData* pVolumeData = GetSourceData();
-    if (mbCtImage && pVolumeData)
+    if (IsCtImage() && pVolumeData)
         return pVolumeData->GetCtBias();
     return 0.0f;
 }

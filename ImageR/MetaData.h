@@ -33,7 +33,7 @@ public:
     bool SetNewPosition(const char * zName, int iFirst, int iLast, CXMLParseNode *pMetaDataXml = NULL);
 
     bool ComputeStatistics(CTImage<bool> &mask, SStatistics &oStat);
-    bool IsRealCtImage (void) {return mbCtImage && (mRescaleSlope == 1);}
+    bool IsRealCtImage (void) {return IsCtImage() && (mRescaleSlope == 1);}
     bool UseIntegerWindowStatus (void);
 
     static int umDebug;
@@ -59,7 +59,7 @@ public:
     //virtual bool read_image (int , class MyImage &){return false;}
 	virtual bool set_i (int ){return true;}
     virtual CString GetPageText (void) {return CString("P");}
-    virtual int GetSpecTextSize(void){return mbCtImage ? 55 : 0;}
+    virtual int GetSpecTextSize(void){return IsCtImage() ? 55 : 0;}
     virtual int GetDataTextSize(void){return 60;}
 
     virtual void PrintReadingHeaders(void){};
@@ -162,7 +162,6 @@ public:
     float Max();
     float Range();
     SRoi &GetLoadRoi(void) {return mLoadRoi;}
-	virtual bool IsDiff () {return false;}
 	virtual bool IsShared () {return false;}
 	virtual int n_diff (void) {return 0;}
 
@@ -372,6 +371,7 @@ public:
 	static bool umbEnableFastLoadFromVolume;
     bool IsLoadingVolume() { return mbLoadingVolume; }
     void ExportHistogram();
+    void ToggleCTMode();
 
 protected:
     static DWORD WINAPI StaticLoadVolume(void* p);

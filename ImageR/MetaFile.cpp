@@ -61,7 +61,7 @@ CMetaFile::~CMetaFile(void)
 }
 float CMetaFile::GetCtBias (void) 
 {
-	if (!mbCtImage)
+	if (!IsCtImage())
 		return 0.0f;
 
 	if (!mbCtBiasSet)

@@ -345,5 +345,7 @@ public:
 	afx_msg void OnDiffFindbesttransformation();
 	afx_msg void OnSettingsTogglefastloading();
 	afx_msg void OnExportHistogram();
+	afx_msg void OnTogglectmodeOncurrentimage();
+	afx_msg void OnTogglectmodeOnall();
 };
 

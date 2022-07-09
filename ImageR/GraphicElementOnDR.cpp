@@ -542,6 +542,7 @@ void CGraphicElementOnDR::SaveStateForGE(class CXMLDump & xmlDump)
 		xmlDump.Write("data", pData->Name());
 		float value = GetDataValue(pData, 0);
 		xmlDump.Write("value", value);
+
 		float dispValue = pData->Rescale(value);
 		xmlDump.Write("dvalue", dispValue);
 		if (!msImageText.IsEmpty())

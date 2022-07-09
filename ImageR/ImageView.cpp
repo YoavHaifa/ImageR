@@ -429,6 +429,8 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_DIFF_FINDBESTTRANSFORMATION, &CImageView::OnDiffFindbesttransformation)
 		ON_COMMAND(ID_SETTINGS_TOGGLEFASTLOADING, &CImageView::OnSettingsTogglefastloading)
 		ON_COMMAND(ID_EXPORT_HISTOGRAM, &CImageView::OnExportHistogram)
+		ON_COMMAND(ID_TOGGLECTMODE_ONCURRENTIMAGE, &CImageView::OnTogglectmodeOncurrentimage)
+		ON_COMMAND(ID_TOGGLECTMODE_ONALL, &CImageView::OnTogglectmodeOnall)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -2470,5 +2472,25 @@ void CImageView::OnExportHistogram()
 	if (pData)
 	{
 		pData->ExportHistogram();
+	}
+}
+
+void CImageView::OnTogglectmodeOncurrentimage()
+{
+	CMetaData* pData = gScreens.GetCurrentData();
+	if (pData)
+	{
+		pData->ToggleCTMode();
+		gScreens.Refresh();
+	}
+}
+
+void CImageView::OnTogglectmodeOnall()
+{
+	CMetaData* pData = gScreens.GetCurrentData();
+	if (pData)
+	{
+		CMetaDataBase::ToggleCTGlobal();
+		gScreens.ForceDataUpdate();
 	}
 }

@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.5.8");
+CString CScreens::umsVersion("V1.5.9");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -1775,7 +1775,19 @@ CString CScreens::SaveState(const char *zName, const char *zMessage)
 		xmlDump.Write("WINDOW_WIDTH", masSatusBarTexts[6]);
 		xmlDump.Write("WINDOW_CENTER", masSatusBarTexts[7]);
 	}
-    return sfName;
+	xmlDump.Write("Version", umsVersion);
+	{
+		time_t curr_time;
+		tm curr_tm;
+		char date_time_string[256];
+		time(&curr_time);
+		//curr_tm = localtime(&curr_time);
+		localtime_s(&curr_tm, &curr_time);
+		strftime(date_time_string, 128, "%B %d, %Y,  %T", &curr_tm);
+		//strftime(time_string, 50, "Current time is %T", curr_tm);
+		xmlDump.Write("Day_and_Time", date_time_string);
+	}
+	return sfName;
 }
 void CScreens::SaveStateForUser(void)
 {

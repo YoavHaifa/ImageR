@@ -627,7 +627,7 @@ CString CSharedMemFile::GetPageDataText(int /*i*/)
 }
 float CSharedMemFile::GetCtBias (void)
 {
-	return mbCtImage ? CMyDicom::GetDefaultCtBias() : 0.0f;
+	return IsCtImage() ? CMyDicom::GetDefaultCtBias() : 0.0f;
 }
 bool CSharedMemFile::WantContextMenu(int &oiMenu)
 {

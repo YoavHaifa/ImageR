@@ -85,7 +85,7 @@ bool CGCursor::GetStatisticsString(CMetaData *pData, CString &sValue, class CGra
 			fprintf(mpfLog,"DISPLAY ON NON-OROGINAL DATA %s, value %f --> %f\n\n", (const char*)pData->Name(), save, value);
 	}
 
-	value = pData->Rescale(value);
+    value = pData->Rescale(value);
     //if (pData->IsCtImage())
     //    value += pData->GetCtBias();
     int iValue = (int)value;

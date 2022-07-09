@@ -2312,14 +2312,14 @@ bool CMetaData::GetDataRangeText(CString &osText)
 void CMetaData::OpenWindowingGUI(void)
 {
 	CWindowParams *pWindowParams =GetWindowParams();
-    if (mbCtImage)
+    if (IsCtImage())
         pWindowParams->SetRange (0, MAX_CT_VALUE);
     else
         pWindowParams->SetRange (Min(), Max());
 
     if (mpfLog)
         fprintf (mpfLog, "\n<OnParametersWindow> Window C%s %s W %s\n", 
-			mbCtImage ? "t" : "",
+			IsCtImage() ? "t" : "",
         (const char *)pWindowParams->GetCenterText(), (const char *)pWindowParams->GetWidthText());
 
 	CWindowDlg *pNew = new CWindowDlg(this, pWindowParams);
@@ -2574,4 +2574,10 @@ void CMetaData::DoExportHistogram()
 	hist10.PrintCSV();
 
 	CMyWindows::MessBox(sfName, "Histogram Ready");
+}
+void CMetaData::ToggleCTMode()
+{ 
+	umbCtIsGlobal = false;
+	mbCtImage = !mbCtImage;
+	OnChange();
 }

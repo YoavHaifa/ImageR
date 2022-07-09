@@ -155,7 +155,7 @@ CString CWindowParams::GetCenterText ()
 {
     bool bUseInt = mpCurrentData && mpCurrentData->UseIntegerWindowStatus();
     float center = mCenter;
-	if (mpCurrentData)
+	if (mpCurrentData && mpCurrentData->IsCtImage())
 		center = mpCurrentData->Rescale(center);
 
     return Value2StringByScale (center, bUseInt);
