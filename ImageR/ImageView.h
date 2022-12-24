@@ -303,7 +303,7 @@ public:
 	afx_msg void OnPrintStatistics();
 	afx_msg void OnAddCombine();
 	afx_msg void OnGraphicDisplaystatistics();
-	afx_msg void OnPrintDumpcoronals();
+	afx_msg void OnExportDumpcoronals();
 	afx_msg void OnSettingsSecondleafindex();
 	afx_msg void OnSettingsVertical();
 	afx_msg void OnSettingsNcolumns();
@@ -347,5 +347,6 @@ public:
 	afx_msg void OnExportHistogram();
 	afx_msg void OnTogglectmodeOncurrentimage();
 	afx_msg void OnTogglectmodeOnall();
+	afx_msg void OnExportDumpsagittals();
 };
 

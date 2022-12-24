@@ -258,8 +258,10 @@ protected:
 	bool GetDumpName(CString &sName, const char *zExtension);
 	void DumpAllPageData(const char *zUserName);
 	void DumpAllPageDataCoronals(const char *zUserName);
-	void DumpAllPageDataCoronalsMultiFile(const char *zUserName);
-	bool GetInitialZoom(float &oZoomFactor, EZoomMode * poeMode = NULL);
+    void DumpAllPageDataSagittals(const char *zUserName);
+    void DumpAllPageDataCoronalsMultiFile(const char* zUserName);
+    void DumpAllPageDataSagittalsMultiFile(const char* zUserName);
+    bool GetInitialZoom(float &oZoomFactor, EZoomMode * poeMode = NULL);
 
 	bool mbMultiPageDisplay;
 	class CMultiPageLoader *mpMultiPageLoader;
@@ -319,8 +321,9 @@ public:
 	bool TryToGetImageSizeFromName(void);
 	void DumpSlice(bool bAll = false, bool bUncompressDicom = false);
 	void DumpSlicesSubSet();
-	void DumpCoronals(void);
-	void PrintStatistics(void);
+    void DumpCoronals(void);
+    void DumpSagittals(void);
+    void PrintStatistics(void);
 	void PrintStatisticsAvi(void);
 	void PrintStatisticsDiff(CMetaData *pOther);
 	bool ZoomedRasterIsReady(void);

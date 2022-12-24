@@ -1642,9 +1642,9 @@ void CMetaData::DumpAllPageData(const char *zUserName)
 	sprintf_s(zBuf, "%d slices saved to file <%s>", nSaved, (const char*)sName);
 	CMyWindows::MessBox(zBuf, "Dump Finished");
 }
-void CMetaData::DumpAllPageDataCoronals(const char *zUserName)
+void CMetaData::DumpAllPageDataCoronals(const char* zUserName)
 {
-	CPosition *pPos = GetPosition();
+	CPosition* pPos = GetPosition();
 	int nOutputLines = pPos->GetNFiles();
 	if (nOutputLines > 1024)
 	{
@@ -1653,14 +1653,14 @@ void CMetaData::DumpAllPageDataCoronals(const char *zUserName)
 	}
 
 	CString sName(mpPageData->GetDumpName(zUserName, nOutputLines));
-	FILE * pf = MyFOpenWithErrorBox (sName, "wb", "file to Dump Slices");
+	FILE* pf = MyFOpenWithErrorBox(sName, "wb", "file to Dump Slices");
 	if (!pf)
 		return;
 
 	unsigned int lineSize = mpPageData->GetLineByteSize();
 	__int64 outputPageSize = (__int64)lineSize * nOutputLines;
 
-	CMyProgress progress(1,(short)nOutputLines);
+	CMyProgress progress(1, (short)nOutputLines);
 
 	char zBuf[512];
 	int nSaved = 0;
@@ -1673,15 +1673,15 @@ void CMetaData::DumpAllPageDataCoronals(const char *zUserName)
 		if (!UpdatePageData())
 			break;
 
-		__int64 offset =  nSaved * lineSize;
-		char *pData = (char *)mpPageData->GetDataStart();
+		__int64 offset = nSaved * lineSize;
+		char* pData = (char*)mpPageData->GetDataStart();
 		for (int iLine = 0; iLine < mnLinesInPage; iLine++)
 		{
-			_fseeki64(pf,offset,SEEK_SET);
-			size_t nWritten = fwrite(pData,1,lineSize,pf);
+			_fseeki64(pf, offset, SEEK_SET);
+			size_t nWritten = fwrite(pData, 1, lineSize, pf);
 			if (nWritten < lineSize)
 			{
-				CMyWindows::MessBox("Failed to write to disk","Dump Error");
+				CMyWindows::MessBox("Failed to write to disk", "Dump Error");
 				bFailed = true;
 				break;
 			}
@@ -1693,10 +1693,75 @@ void CMetaData::DumpAllPageDataCoronals(const char *zUserName)
 		nSaved++;
 		sprintf_s(zBuf, "Saved %3d", nSaved);
 		CMyWindows::PrintStatus(zBuf);
-	} 
-	fclose (pf);
+	}
+	fclose(pf);
 	sprintf_s(zBuf, "%d slices saved to file <%s>", nSaved, (const char*)sName);
 	CMyWindows::MessBox(zBuf, "Dump Finished");
+}
+void CMetaData::DumpAllPageDataSagittals(const char* zUserName)
+{
+	CPosition* pPos = GetPosition();
+	int nOutputLines = pPos->GetNFiles();
+	/*
+	if (nOutputLines > 1024)
+	{
+		DumpAllPageDataSagittalsMultiFile(zUserName);
+		return;
+	}*/
+
+	//CString sName(mpPageData->GetDumpName(zUserName, nOutputLines));
+
+	//unsigned int colSize = mpPageData->GetColByteSize();
+	//__int64 outputPageSize = (__int64)colSize * nOutputLines;
+
+	CMyProgress progress(1, (short)nOutputLines);
+
+	char zBuf[512];
+	int nSaved = 0;
+	//bool bFailed = false;
+	CTVolume<float>  vol("Sagittals");
+	vol.SetVolumeSize(nOutputLines, mnLinesInPage, 0, mnCols - 1);
+	int iInputImage = 0;
+
+	for (int i = StartLoopI(); i >= 0; i = LoopNext())
+	{
+		progress.SetPos(nSaved);
+
+		mbPageUpdated = false;
+		if (!UpdatePageData())
+			break;
+
+		for (int iCol = 0; iCol < mnCols; iCol++)
+		{
+			float* pSagittal = (float *)vol.GetPageRelativeVP(iCol);
+			float *pSagittalLine = pSagittal + iInputImage * mnLinesInPage;
+
+			for (int iLine = 0; iLine < mnLinesInPage; iLine++)
+			{
+				pSagittalLine[iLine] = mpPageData->GetFloatValue(iLine, iCol);
+			}
+		}
+		nSaved++;
+		iInputImage++;
+		sprintf_s(zBuf, "Saved %3d", nSaved);
+		CMyWindows::PrintStatus(zBuf);
+	}
+
+	/*
+	FILE* pf = MyFOpenWithErrorBox(sName, "wb", "file to Dump Slices");
+	if (!pf)
+		return;
+	fclose(pf);*/
+	CString sDumpName;
+	CMyWindows::PrintStatus("Saving to file...");
+	if (vol.DumpVolume(zUserName, sDumpName))
+	{
+		sprintf_s(zBuf, "%d sagittals saved to file <%s>", nSaved, (const char*)sDumpName);
+		CMyWindows::MessBox(zBuf, "Dump Sagittals Finished");
+		CMyWindows::PrintStatus((const char*)sDumpName);
+	}
+	else
+		CMyWindows::MessBox("Dump Sagittals Failed", "SW Error");
 }
 void CMetaData::DumpAllPageDataCoronalsMultiFile(const char *zUserName)
 {
@@ -1868,6 +1933,20 @@ void CMetaData::DumpCoronals(void)
 		return;
 
 	DumpAllPageDataCoronals(sUserDefinedName);
+}
+void CMetaData::DumpSagittals(void)
+{
+	if (!mpPageData)
+	{
+		CMyWindows::MessBox("Page data not defined", "Dump Error");
+		return;
+	}
+
+	CString sUserDefinedName;
+	if (!GetDumpName(sUserDefinedName, "TImage"))
+		return;
+
+	DumpAllPageDataSagittals(sUserDefinedName);
 }
 void CMetaData::PrintStatistics(void)
 {

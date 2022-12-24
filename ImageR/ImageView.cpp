@@ -395,7 +395,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 	ON_COMMAND(ID_PRINT_STATISTICS, &CImageView::OnPrintStatistics)
 	ON_COMMAND(ID_ADD_COMBINE, &CImageView::OnAddCombine)
 	ON_COMMAND(ID_GRAPHIC_DISPLAYSTATISTICS, &CImageView::OnGraphicDisplaystatistics)
-	ON_COMMAND(ID_PRINT_DUMPCORONALS, &CImageView::OnPrintDumpcoronals)
+	ON_COMMAND(ID_PRINT_DUMPCORONALS, &CImageView::OnExportDumpcoronals)
 	ON_COMMAND(ID_SETTINGS_SECONDLEAFINDEX, &CImageView::OnSettingsSecondleafindex)
 	ON_COMMAND(ID_SETTINGS_VERTICAL, &CImageView::OnSettingsVertical)
 	ON_COMMAND(ID_SETTINGS_NCOLUMNS, &CImageView::OnSettingsNcolumns)
@@ -431,6 +431,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_EXPORT_HISTOGRAM, &CImageView::OnExportHistogram)
 		ON_COMMAND(ID_TOGGLECTMODE_ONCURRENTIMAGE, &CImageView::OnTogglectmodeOncurrentimage)
 		ON_COMMAND(ID_TOGGLECTMODE_ONALL, &CImageView::OnTogglectmodeOnall)
+		ON_COMMAND(ID_EXPORT_DUMPSAGITTALS, &CImageView::OnExportDumpsagittals)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -2133,11 +2134,18 @@ void CImageView::OnExportSavewindow()
 	if (screenImageIF.CaptureWindow(m_hWnd))
 		screenImageIF.Save();
 }
-void CImageView::OnPrintDumpcoronals()
+void CImageView::OnExportDumpcoronals()
 {
     CMetaData *pData = gScreens.GetCurrentData();
     if (pData) 
 		pData->DumpCoronals();
+}
+
+void CImageView::OnExportDumpsagittals()
+{
+    CMetaData *pData = gScreens.GetCurrentData();
+    if (pData) 
+		pData->DumpSagittals();
 }
 void CImageView::OnPrintStatistics()
 {
@@ -2494,3 +2502,4 @@ void CImageView::OnTogglectmodeOnall()
 		gScreens.ForceDataUpdate();
 	}
 }
+
