@@ -120,10 +120,8 @@ protected:
 	afx_msg void OnFileRecentfiles6();
 
 	afx_msg void OnClose();
-	//afx_msg void OnFileAdd();
 	afx_msg void OnSettingsSetfullroi();
 	afx_msg void OnWindowSpecialWindow();
-	//afx_msg void OnAddDiff();
 	afx_msg void OnPrintExcel();
     afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	//}}AFX_MSG
@@ -196,7 +194,7 @@ public:
     afx_msg void OnViewCardiacdata();
     bool mbViewCardiac;
     afx_msg void OnSettingsSelectimagesbyparameters();
-    afx_msg void OnFileAddcoronal();
+    afx_msg void OnAddcoronal();
     afx_msg void OnViewTogglecolors();
     void OnInitMenuPopup(CMenu *pPopup);
     afx_msg void OnRawDefinedetectorasbad();

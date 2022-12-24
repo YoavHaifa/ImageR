@@ -90,6 +90,7 @@ CMetaData::CMetaData(const char *zName, CXMLParseNode *pXmlNode)
 , mbChangeEndian(false)
 , mbFastLoadFromVolume(false)
 , mbLoadingVolume(false)
+, mbUpdateForLoadingVolume(false)
 , mnPageLoads(0)
 {
 	SetCtImage(true);
@@ -428,7 +429,7 @@ bool CMetaData::ForceUpdatePageData(void)
 }
 bool CMetaData::UpdatePageData()
 {
-	if (mbLoadingVolume)
+	if (mbLoadingVolume && !mbUpdateForLoadingVolume)
 		return false;
 
 	CMyCriticalSpan span(mCriticalUpdate,"UpdatePageData");

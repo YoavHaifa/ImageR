@@ -311,7 +311,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
     ON_COMMAND(ID_SETTINGS_SELECTIMAGESBYPARAMETERS, OnSettingsSelectimagesbyparameters)
     ON_COMMAND(ID_VIEW_PREV, OnViewPrevfile)
     ON_COMMAND(ID_VIEW_NEXT, OnViewNextfile)
-    ON_COMMAND(ID_ADD_CORONAL, OnFileAddcoronal)
+    ON_COMMAND(ID_ADD_CORONAL, OnAddcoronal)
     ON_COMMAND(ID_VIEW_TOGGLECOLORS, OnViewTogglecolors)
     ON_COMMAND(ID_OBLIQUE_SETCORONAL, OnObliqueSetcoronal)
     ON_COMMAND(ID_OBLIQUE_SETSAGITTAL, OnObliqueSetsagittal)
@@ -1247,22 +1247,6 @@ void CImageView::OnFileExit1()
 {
 	exit (0);
 }
-/*
-void CImageView::OnFileAdd() 
-{
-    CFileName fName;
-    if (SelectDataFile (fName))
-        AddFile (fName);
-} */
-/*
-void CImageView::OnAddDiff() 
-{
-    OnAddDiffOrRatio("Diff");
-} 
-void CImageView::OnAddRatio()
-{
-    OnAddDiffOrRatio("Ratio");
-} */
 void CImageView::OnAddCombine()
 {
     OnAddDiffOrRatio("Combine");
@@ -1299,7 +1283,7 @@ void CImageView::OnAddDiffOrRatio(const char *zName)
 
     gScreens.Refresh();
 }
-void CImageView::OnFileAddcoronal()
+void CImageView::OnAddcoronal()
 {
     CFileFactory factory(mpfLog);
     factory.AddComputedData(CFileFactory::COMP_DATA_OBLIQUE);

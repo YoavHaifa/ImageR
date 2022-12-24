@@ -18,6 +18,7 @@ public:
 	virtual void EditContextMenu(CMenu *pPopup);
 	virtual bool AddToTitleText(CString &iosTitle);
 	virtual int GetNPages (void) {return mnPages;}
+	virtual bool DoLoadVolume();
 
 protected:
 	char *mpPageHeader;
@@ -27,6 +28,9 @@ private:
     unsigned int mPageLenNeto;
     unsigned int mPageLenBruto;
 
+	void LoadPrologue();
+	bool SetOffset(ULONGLONG offset);
+	DWORD ReadPage(unsigned char* pDest);
     bool TryToGetImageSizeFromXml(void);
     bool GuessMatrix(void);
 	void GetInfoFromXMLHeader();

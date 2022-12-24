@@ -654,7 +654,7 @@ bool CMultiFile::DoLoadVolume()
     //unsigned int pageSize = pageLen * sizeof(pVolumePage[0]);
     if (mpfLog)
     {
-        fprintf (mpfLog, "<CArchivesFile::DoLoadVolume> Start Loading %d\n", nToLoad);
+        fprintf (mpfLog, "<CMultiFile::DoLoadVolume> Start Loading %d\n", nToLoad);
         fflush (mpfLog);
     }
 
@@ -668,7 +668,12 @@ bool CMultiFile::DoLoadVolume()
 		int iLoadRelative = pPos->GetCurrentRelative();
 
 		if (!DoLoadVolumeImage(iLoadRelative, pVolumePage))
+		{
+			CString s;
+			s.Format("%s Failed to load relative page %d", Name(), iLoadRelative);
+			CMyWindows::MessBox(s, "Load Volume Error");
 			return false;
+		}
 
 		//mpVolume->mnLoaded++;
         int ii = iLoadRelative + 1;
@@ -686,7 +691,7 @@ bool CMultiFile::DoLoadVolume()
     }
     if (mpfLog)
     {
-        fprintf (mpfLog, "<CArchivesFile::DoLoadVolume> %d loaded\n", nToLoad);
+        fprintf (mpfLog, "<CMultiFile::DoLoadVolume> %d loaded\n", nToLoad);
         fflush (mpfLog);
     }
 	mbLoadingVolume = true;
@@ -696,7 +701,10 @@ bool CMultiFile::DoLoadVolume()
 bool CMultiFile::DoLoadVolumeImage(int /*iLoad*/,void * pVolumePage)
 {
 	mbPageUpdated = false;
-	if (!UpdatePageData())
+	mbUpdateForLoadingVolume = true;
+	bool bOK = UpdatePageData();
+	mbUpdateForLoadingVolume = false;
+	if (!bOK)
 		return false;
 
 	if (!mpPageData->CopyRasterTo(pVolumePage))
