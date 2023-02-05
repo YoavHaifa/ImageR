@@ -458,6 +458,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
 {
     if (!CFileName::Exist(zfName))
     {
+        CMyWindows::MessBox(zfName, "File doesn't exist");
         if (mpfLog)
         {
             fprintf (mpfLog, "<CFileFactory::TryCreateFileObject> %s - File doesn't exist!\n", zfName);
@@ -465,6 +466,18 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
         }
         return false;
     }
+    ULONG64 fileLenBytes = CFileName::GetFileLength(zfName);
+    if (fileLenBytes == 0)
+    {
+        CMyWindows::MessBox(zfName, "File is empty");
+        if (mpfLog)
+        {
+            fprintf (mpfLog, "<CFileFactory::TryCreateFileObject> %s - File is empty!\n", zfName);
+            fflush (mpfLog);
+        }
+        return false;
+    }
+
 	// Copy Name to place
 	char zLongFileName[1024];
     zLongFileName[0] = 0;
@@ -538,6 +551,20 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
 	CMetaData *pDicomBasedData = AnalyzeDicomOptions();
 	if (pDicomBasedData)
 		return pDicomBasedData;
+
+    // Assuming the file should contain raster - Check for file length
+    if (fileLenBytes < 10000)
+    {
+        CString s;
+        s.Format("Warning: File %s lingth is only %d bytes", zfName, (int)fileLenBytes);
+        CMyWindows::MessBox(s, "File might be too short");
+        if (mpfLog)
+        {
+            fprintf(mpfLog, "<CFileFactory::TryCreateFileObject> %s!\n", (const char *)s);
+            fflush(mpfLog);
+        }
+        return false;
+    }
 
 	// Look for file type
 	mbMultiFile = false;
