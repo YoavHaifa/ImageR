@@ -148,12 +148,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\yUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>yUtils.lib;ImageRLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\yUtils\$(Configuration)\;..\ImageRLib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy ..\MyUtils\$(Configuration)\MyUtils.dll $(OutDir)
-copy ..\MyImage\$(Configuration)\MyImageDll.dll $(OutDir)
+      <Command>copy ..\yUtils\$(Configuration)\yUtils.dll $(OutDir)
+copy ..\ImageRLib\$(Configuration)\ImageRLib.dll $(OutDir)
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -195,12 +195,12 @@ copy ..\ImageRLib\$(Platform)\$(Configuration)\ImageRLib.dll $(OutDir)
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>yUtils.lib;ImageRLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\yUtils\$(Configuration)\;..\ImageRLib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy ..\MyUtils\$(Configuration)\MyUtils.dll $(OutDir)
-copy ..\MyImage\$(Configuration)\MyImageDll.dll $(OutDir)
+      <Command>copy ..\yUtils\$(Configuration)\yUtils.dll $(OutDir)
+copy ..\ImageRLib\$(Configuration)\ImageRLib.dll $(OutDir)
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -243,13 +243,12 @@ copy ..\ImageRLib\$(Platform)\$(Configuration)\ImageRLib.dll $(OutDir)
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>yUtils.lib;ImageRLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\yUtils\$(Configuration)\;..\ImageRLib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy ..\MyUtils\Debug\MyUtils.dll $(OutDir)
-copy ..\MyImage\Debug\MyImageDll.dll $(OutDir)
-copy D:\Views\GRAD\ViewingInfra\Src\VR2Solution\vr2.dll $(OutDir)
+      <Command>copy ..\yUtils\Debug\yUtils.dll $(OutDir)
+copy ..\ImageRLib\Debug\ImageRLib.dll $(OutDir)
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -267,26 +266,25 @@ copy D:\Views\GRAD\ViewingInfra\Src\VR2Solution\vr2.dll $(OutDir)
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>yUtils.lib;ImageRLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\yUtils\$(Configuration)\;..\ImageRLib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy ..\MyUtils\Debug\MyUtils.dll $(OutDir)
-copy ..\MyImage\Debug\MyImageDll.dll $(OutDir)
-copy D:\Views\GRAD\ViewingInfra\Src\VR2Solution\vr2.dll $(OutDir)
+      <Command>copy ..\yUtils\Debug\yUtils.dll $(OutDir)
+copy ..\ImageRLib\Debug\ImageRLib.dll $(OutDir)
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <Link>
-      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>yUtils.lib;ImageRLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\yUtils\$(Configuration)\;..\ImageRLib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
     <Link>
-      <AdditionalDependencies>MyUtils.lib;MyImageDll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\MyUtils\$(Configuration)\;..\MyImage\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>yUtils.lib;ImageRLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\yUtils\$(Configuration)\;..\ImageRLib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

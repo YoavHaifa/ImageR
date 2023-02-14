@@ -195,7 +195,8 @@ public:
 	bool mbShouldBroadcastIfLoosingMouse;
 	bool SpecialMouseScroll(CPoint point, bool & obChanged);
 	bool mbUseColorMap;
-	void OnGraphicDisplayStatistics(void);
+	void OnGraphicDisplayStatistics();
+    void OnGraphicFreeze();
 	void OnMultiDimScroll(int iDim);
 	bool FillGrayRaster(CMetaData *pData, CTImage<unsigned char> &grayRaster, bool bColorer = false);
 	CTImage<unsigned char> &GetGrayRasterForColorer(void);

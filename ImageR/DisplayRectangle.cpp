@@ -1496,6 +1496,14 @@ void CDisplayRectangle::OnGraphicDisplayStatistics(void)
 	pGE->ToggleDisplayStatistics();
 	gScreens.Refresh();
 }
+void CDisplayRectangle::OnGraphicFreeze()
+{
+    if (!mpCurrentGE)
+		return;
+	CGraphicElement *pGE = mpCurrentGE->GetGE();
+	pGE->ToggleFreezed();
+	//gScreens.Refresh();
+}
 void CDisplayRectangle::AddRefBetween(CDisplayRectangle * pOtherDR)
 {
     if (mpCurrentData && pOtherDR->mpCurrentData)

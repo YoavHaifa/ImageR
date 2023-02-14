@@ -346,5 +346,6 @@ public:
 	afx_msg void OnTogglectmodeOncurrentimage();
 	afx_msg void OnTogglectmodeOnall();
 	afx_msg void OnExportDumpsagittals();
+	afx_msg void OnGraphicFreeze();
 };
 

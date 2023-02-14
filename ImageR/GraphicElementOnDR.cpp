@@ -142,7 +142,7 @@ CGPoint *CGraphicElementOnDR::FindPointNear(CDRCoordinates &drCoo, int *pDistanc
 }
 bool CGraphicElementOnDR::Drag(CSize size)
 {
-	if (mpGE->mbDisableDrag)
+	if (mpGE->mbDisableDrag || mpGE->mbFreezed)
 		return false;
 
     GetPointsMap();

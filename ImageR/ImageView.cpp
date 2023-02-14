@@ -432,6 +432,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_TOGGLECTMODE_ONCURRENTIMAGE, &CImageView::OnTogglectmodeOncurrentimage)
 		ON_COMMAND(ID_TOGGLECTMODE_ONALL, &CImageView::OnTogglectmodeOnall)
 		ON_COMMAND(ID_EXPORT_DUMPSAGITTALS, &CImageView::OnExportDumpsagittals)
+		ON_COMMAND(ID_GRAPHIC_FREEZE, &CImageView::OnGraphicFreeze)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -1712,6 +1713,12 @@ void CImageView::OnGraphicDisplaystatistics()
     CDisplayRectangle *pDR = gScreens.GetCurrentDisplayRectangle();
     if (pDR)
         pDR->OnGraphicDisplayStatistics();
+}
+void CImageView::OnGraphicFreeze()
+{
+    CDisplayRectangle *pDR = gScreens.GetCurrentDisplayRectangle();
+    if (pDR)
+        pDR->OnGraphicFreeze();
 }
 void CImageView::OnGraphicRename()
 {

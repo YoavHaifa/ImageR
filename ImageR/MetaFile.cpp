@@ -288,7 +288,7 @@ void CMetaFile::ZeroNan()
 		for (int i = 0; i < pageLen; i++)
 		{
 			float value = pData[i];
-			if (_isnanf(value) || !_finitef(value))
+			if (_isnan(value) || !_finite(value))
 				pData[i] = 0;
 		}
 	}
