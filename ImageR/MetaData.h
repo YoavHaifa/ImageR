@@ -129,7 +129,6 @@ public:
     virtual int GetNFFS(void) {return 0;}
     virtual ULONGLONG GetOffsetBytes(void) {return 0;}
 	virtual void ReReadDicom(void){}
-    virtual float GetCtBias (void) {return 0.0f;}
     virtual ULONGLONG GetLength(void) {return 0;}
     virtual int GetSliceLenWithoutFooter(void) {return 0;}
     virtual void set_file_offset(ULONGLONG ) {};

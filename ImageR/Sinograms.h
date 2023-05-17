@@ -46,7 +46,7 @@ public:
     virtual bool DoUpdatePageData(void);
     virtual CString GetWindowName(void);
     virtual CString GetZoomName(void);
-    virtual float GetCtBias (void) {return (mbCtImage && mpImage) ? mpImage->GetCtBias() : 0.0f;}
+    virtual float GetBias (void) {return mpImage ? mpImage->GetBias() : 0.0f;}
     virtual bool ShouldUpdate(void);
     virtual void SaveState(class CXMLDump & xmlDump);
 

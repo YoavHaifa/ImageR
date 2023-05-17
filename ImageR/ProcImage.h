@@ -31,7 +31,7 @@ private:
     template <typename T>
     void PartSmooth(T *pRaster, const T *pSrcRaster, float factor);
     bool AllocateTempRaster(void);
-    virtual float GetCtBias (void) {return IsCtImage() && mpImage ? mpImage->GetCtBias() : 0.0f;}
+    virtual float GetBias (void) {return mpImage ? mpImage->GetBias() : 0.0f;}
 
 public:
 

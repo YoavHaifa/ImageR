@@ -625,7 +625,7 @@ CString CSharedMemFile::GetPageDataText(int /*i*/)
 		return CString(mpHeader->mzName);
 	return CString("");
 }
-float CSharedMemFile::GetCtBias (void)
+float CSharedMemFile::GetBias (void)
 {
 	return IsCtImage() ? CMyDicom::GetDefaultCtBias() : 0.0f;
 }

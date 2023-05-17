@@ -18,7 +18,7 @@ public:
 	virtual bool IsDicom (void) {return mpCurrentFile && mpCurrentFile->IsDicom();}
 	virtual class CMyDicom *GetDicom(void) {return mpCurrentFile ? mpCurrentFile->GetDicom() : NULL;}
 	virtual CMetaData *GetDataWithText(void);
-    virtual float GetCtBias (void) {return mpCurrentFile ? mpCurrentFile->GetCtBias() : 0.0f;}
+    virtual float GetBias () {return mpCurrentFile ? mpCurrentFile->GetBias() : 0.0f;}
     virtual int GetNPages (void) {return (int)mFileNamesList.GetSize();}
     virtual bool GetPageDataByIndex(CMyImage * pResultImage, int iImage, CString *psName = NULL);
     virtual bool Is(const char * zName);

@@ -86,8 +86,6 @@ bool CGCursor::GetStatisticsString(CMetaData *pData, CString &sValue, class CGra
 	}
 
     value = pData->Rescale(value);
-    //if (pData->IsCtImage())
-    //    value += pData->GetCtBias();
     int iValue = (int)value;
  
     char zBuf[256];

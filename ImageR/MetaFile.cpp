@@ -21,8 +21,6 @@ CMetaFile::CMetaFile(const char *zName, CXMLParseNode *pMetaDataXml)
 , mLength(0)
 , mbSpecPar (false)
 , mhFile (INVALID_HANDLE_VALUE)
-, mCtBias (CMyDicom::GetDefaultCtBias())
-, mbCtBiasSet (false)
 , mbDicomMatrix (false)
 , mPlanarConfig(0) // Keep RGB in 3 separate consecutive plans
 , mbDicomSetOnce(false)
@@ -58,21 +56,6 @@ CMetaFile::~CMetaFile(void)
 {
     if (mpDicom)
         delete mpDicom;
-}
-float CMetaFile::GetCtBias (void) 
-{
-	if (!IsCtImage())
-		return 0.0f;
-
-	if (!mbCtBiasSet)
-	{
-		if (mpDicom)
-		{
-			mCtBias = mpDicom->GetCtBias();
-			mbCtBiasSet = true;
-		}
-	}
-	return mCtBias;
 }
 bool CMetaFile::GetMmPerPixel(double &mmppWidth, double &mmppHeight)
 {

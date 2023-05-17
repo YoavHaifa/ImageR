@@ -69,11 +69,11 @@ CVolume* CVolumetric::GetSourceVolume()
     }
     return pVolume;
 }
-float CVolumetric::GetCtBias(void)
+float CVolumetric::GetBias(void)
 {
     CMetaData* pVolumeData = GetSourceData();
-    if (IsCtImage() && pVolumeData)
-        return pVolumeData->GetCtBias();
+    if (pVolumeData)
+        return pVolumeData->GetBias();
     return 0.0f;
 }
 bool CVolumetric::VerifyMmPerPixelPage(void)

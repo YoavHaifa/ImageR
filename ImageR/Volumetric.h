@@ -11,7 +11,7 @@ public:
 
     virtual CMetaData* GetSourceData();
     CVolume* GetSourceVolume();
-    virtual float GetCtBias();
+    virtual float GetBias();
     virtual bool IsVolumetric(){return true;}
     virtual void SaveState(class CXMLDump & xmlDump);
     virtual bool ReadyForWindowFocus();

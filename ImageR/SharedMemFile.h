@@ -15,7 +15,7 @@ public:
     // Colorer Interface
     virtual bool IsColorer(void);
     virtual bool UpdateColorer(class CDisplayRectangle &displayRect);
-	virtual float GetCtBias (void);
+	virtual float GetBias (void);
 
     virtual CString GetWindowName(void);
     virtual CString GetZoomName(void);

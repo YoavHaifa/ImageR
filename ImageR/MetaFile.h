@@ -24,15 +24,12 @@ public:
 	virtual bool open(void);
 	virtual void close(void);
 
-     
-    virtual float GetCtBias (void);
-	static const char caDATA_VIEW_PAR_FILE_NAME[];
+   	static const char caDATA_VIEW_PAR_FILE_NAME[];
     virtual ULONGLONG GetOffsetBytes(void) {return mOffsetBytes;}
     void SetOffsetBytes(ULONGLONG offset);
     virtual ULONGLONG GetLength(void) {return mLength;}
     virtual bool ShouldUpdate(void);
     virtual void OnStartUpdate (void);
-	//virtual bool GetBias(int &bias);
 	virtual bool GetMmPerPixel(double &mmppWidth, double &mmppHeight);
 
 
@@ -41,8 +38,6 @@ protected:
     virtual void OnOpen(void);
 
     virtual bool guess_matrix_and_offset(void){return false;}
-    float mCtBias;
-	bool mbCtBiasSet;
 
     class CMyDicom *mpDicom;
 	int mPlanarConfig;

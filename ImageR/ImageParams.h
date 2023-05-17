@@ -3,10 +3,12 @@
 #include "ImageViewDefs.h"
 #include "ViewParams.h"
 #include "resource.h"
+#include "..\..\yUtils\MyDialogEx.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CImageParams dialog
 
-class CImageParams : public CDialog
+class CImageParams : public CMyDialogEx
 {
 // Construction
 public:
@@ -28,7 +30,6 @@ public:
 
     // Implementation
 protected:
-	void set_int_param (int idc, int value);
 	int get_int_param (int idc, int minValue = 0, int defaultValue = 0);
 
 	// Generated message map functions
@@ -41,8 +42,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-    void get_params();
-    void set_params();
+    void GetParams();
+    void SetParams();
     bool check_params();
 
     float mnPages;
@@ -54,12 +55,13 @@ protected:
     template <typename T>
     void CreatePattern (T first, T delta, const char *zName);
 
-public:
     int mnLines;
     int mnCols;
     EMyImageDataType meDataType;
     void SetNPages(void);
     ULONGLONG mOffsetBytes;
     ULONGLONG mOffsetBytesSave;
+	float mBias;
+	float mBiasSave;
 };
 

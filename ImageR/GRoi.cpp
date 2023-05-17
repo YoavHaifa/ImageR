@@ -161,9 +161,6 @@ bool CGRoi::GetStatisticsString(CMetaData *pData, CString &sValue, class CGraphi
     float avg = pData->Rescale(stat.mAverage);
 	float std = pData->RescaleWidth(stat.mStandardDeviation);
 
-    //if (pData->IsCtImage())
-    //    avg += pData->GetCtBias();
-
     char zBuf[256];
     sprintf_s (zBuf, 256, "Ar %d Av %s std %s", 
 		area, (const char*)CMyWindows::FormatByScale(avg), (const char*)CMyWindows::FormatByScale(std));

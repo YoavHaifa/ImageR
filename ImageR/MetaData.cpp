@@ -748,9 +748,6 @@ CString CMetaData::GetStatisticsStringPerCoo(CDataCoordinates coo)
         return CString();
     if (!HasPageData())
         return CString();
-	//float bias = 0.0f;
-	//if (IsCtImage())
-	//	bias = GetCtBias();
     return mpPageData->GetStatisticsStringPerCoo (coo, this);  
 }
 CString CMetaData::GetSpecialString(CDataCoordinates coo)
@@ -763,7 +760,6 @@ CString CMetaData::GetSpecialString(CDataCoordinates coo)
         //unsigned short *pDataBuf = (unsigned short *)GetDataForDisplay (coo.Y(), coo.X());
         float value = mpPageData->GetFloatValue(coo.Y(), coo.X());
 		value = Rescale(value);
-        //short CtVal = (short)(value + GetCtBias() + 0.5f);
 		if (mRescaleIntercept == 1)
 		{
 			short CtVal = (short)(value + 0.5f);
@@ -1002,10 +998,10 @@ void CMetaData::SaveState(class CXMLDump & xmlDump)
         xmlDump.Write("mm_per_pix_width",mMmPerPixelWidth);
         xmlDump.Write("mm_per_pix_height",mMmPerPixelHeight);
     }
-	if (IsCtImage())
+	if (IsCtImage() || mbBiasSet)
 	{
-		float bias = GetCtBias();
-        xmlDump.Write("ct_bias", bias);
+		float bias = GetBias();
+        xmlDump.Write("data_bias", bias);
 	}
     if (mpVolume)
         mpVolume->SaveState(xmlDump);

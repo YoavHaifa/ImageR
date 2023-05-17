@@ -123,7 +123,7 @@ CString CRingID::GetDeltaStat(CMetaData *pData, CRingLevelInfo * pRli, int radiu
 		return CString("");
 	int area = stat.mn;
 	float sum = stat.mSum;
-	int ctBias = (int)pData->GetCtBias();
+	int ctBias = (int)pData->GetBias();
 
 	POSITION pos = mStatList.GetHeadPosition();
 	while (pos)

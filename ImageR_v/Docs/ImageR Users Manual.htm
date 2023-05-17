@@ -648,7 +648,7 @@ href="ImageR%20Users%20Manual_files/colorschememapping.xml">
 	mso-font-charset:0;
 	mso-generic-font-family:roman;
 	mso-font-pitch:variable;
-	mso-font-signature:-536869121 1107305727 33554432 0 415 0;}
+	mso-font-signature:-536870145 1107305727 0 0 415 0;}
 @font-face
 	{font-family:Calibri;
 	panose-1:2 15 5 2 2 2 4 3 2 4;
@@ -743,7 +743,8 @@ p.MsoHeader, li.MsoHeader, div.MsoHeader
 	mso-fareast-font-family:"Times New Roman";
 	mso-fareast-theme-font:minor-fareast;}
 p.MsoFooter, li.MsoFooter, div.MsoFooter
-	{mso-style-priority:99;
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
 	mso-style-link:"Footer Char";
 	margin:0cm;
 	mso-pagination:widow-orphan;
@@ -846,6 +847,7 @@ span.HeaderChar
 	mso-bidi-font-family:"Times New Roman";}
 span.FooterChar
 	{mso-style-name:"Footer Char";
+	mso-style-noshow:yes;
 	mso-style-priority:99;
 	mso-style-unhide:no;
 	mso-style-locked:yes;
@@ -927,19 +929,14 @@ p.msopapdefault, li.msopapdefault, div.msopapdefault
 	font-family:"Calibri",sans-serif;
 	mso-ascii-font-family:Calibri;
 	mso-hansi-font-family:Calibri;
-	mso-bidi-font-family:Calibri;}
- /* Page Definitions */
- @page
-	{mso-footnote-separator:url("ImageR%20Users%20Manual_files/header.htm") fs;
-	mso-footnote-continuation-separator:url("ImageR%20Users%20Manual_files/header.htm") fcs;
-	mso-endnote-separator:url("ImageR%20Users%20Manual_files/header.htm") es;
-	mso-endnote-continuation-separator:url("ImageR%20Users%20Manual_files/header.htm") ecs;}
+	mso-bidi-font-family:Calibri;
+	mso-font-kerning:0pt;
+	mso-ligatures:none;}
 @page WordSection1
 	{size:595.3pt 841.9pt;
 	margin:72.0pt 72.0pt 72.0pt 72.0pt;
 	mso-header-margin:35.4pt;
 	mso-footer-margin:35.4pt;
-	mso-footer:url("ImageR%20Users%20Manual_files/header.htm") f1;
 	mso-paper-source:0;}
 div.WordSection1
 	{page:WordSection1;}
@@ -1208,7 +1205,7 @@ table.MsoTableGrid
 	font-family:"Calibri",sans-serif;}
 </style>
 <![endif]--><!--[if gte mso 9]><xml>
- <o:shapedefaults v:ext="edit" spidmax="1026"/>
+ <o:shapedefaults v:ext="edit" spidmax="1027"/>
 </xml><![endif]--><!--[if gte mso 9]><xml>
  <o:shapelayout v:ext="edit">
   <o:idmap v:ext="edit" data="1"/>
@@ -1224,10 +1221,10 @@ mso-ansi-language:EN-US'>ImageR User’s Manual</span><span lang=en-IL
 style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:#0C00'><o:p></o:p></span></h1>
 
 <p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Updated for
-version: v1.6.0</span><span lang=en-IL style='mso-ansi-language:#0C00'><o:p></o:p></span></p>
+version: v1.6.1</span><span lang=en-IL style='mso-ansi-language:#0C00'><o:p></o:p></span></p>
 
 <p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Date of
-latest update: Dec 24, 2022</span><span lang=en-IL style='mso-ansi-language:
+latest update: May 17, 2023</span><span lang=en-IL style='mso-ansi-language:
 #0C00'><o:p></o:p></span></p>
 
 <h2 style='margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN-US
@@ -1502,9 +1499,9 @@ lang=EN-US style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:
 EN-US'>Leafing between images</span><span lang=en-IL style='mso-fareast-font-family:
 "Times New Roman";mso-ansi-language:#0C00'><o:p></o:p></span></h3>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Note that ImageR,
-by default, is designed to work with series of images. Basically, there are two
-types of series:</span><span lang=en-IL style='mso-ansi-language:#0C00'><o:p></o:p></span></p>
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Note that
+ImageR, by default, is designed to work with series of images. Basically, there
+are two types of series:</span><span lang=en-IL style='mso-ansi-language:#0C00'><o:p></o:p></span></p>
 
 <p class=MsoListParagraph style='text-indent:-18.0pt'><span lang=EN-US
 style='font-family:Symbol;mso-ansi-language:EN-US'>·</span><span lang=EN-US
@@ -1532,8 +1529,8 @@ shows the index of the current image in the series and the number of images in
 the whole series. It may show something like “Page 1/280”. </span><span
 lang=en-IL style='mso-ansi-language:#0C00'><o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>You may note
-that the first field in the status bar sometimes disappear, so the “page” field
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>You may
+note that the first field in the status bar sometimes disappear, so the “page” field
 becomes the first. You may extend ImageR’s window horizontally to give more
 space to the status bar.</span><span lang=en-IL style='mso-ansi-language:#0C00'><o:p></o:p></span></p>
 
@@ -1669,11 +1666,51 @@ columns&gt;<o:p></o:p></span></p>
 mso-ansi-language:EN-US'>(But do it before the images are actually loaded in
 more columns).<o:p></o:p></span></p>
 
-<p class=MsoNormal style='page-break-after:avoid'><span lang=EN-US
-style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:EN-US;
-mso-no-proof:yes'><!--[if gte vml 1]><v:shapetype id="_x0000_t75" coordsize="21600,21600"
- o:spt="75" o:preferrelative="t" path="m@4@5l@4@11@9@11@9@5xe" filled="f"
- stroked="f">
+<p class=MsoNormal style='page-break-after:avoid'><!--[if mso & !supportInlineShapes & supportFields]><span
+style='mso-element:field-begin;mso-field-lock:yes'></span><span
+style='mso-spacerun:yes'> </span>SHAPE <span
+style='mso-spacerun:yes'> </span>\* MERGEFORMAT <span style='mso-element:field-separator'></span><![endif]--><!--[if gte vml 1]><v:rect
+ id="Picture_x0020_1" o:spid="_x0000_s1026" style='width:285.5pt;height:294pt;
+ visibility:visible;mso-wrap-style:square;mso-left-percent:-10001;
+ mso-top-percent:-10001;mso-position-horizontal:absolute;
+ mso-position-horizontal-relative:char;mso-position-vertical:absolute;
+ mso-position-vertical-relative:line;mso-left-percent:-10001;mso-top-percent:-10001;
+ v-text-anchor:top' o:gfxdata="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
+8wAAAD0FAAAAAA==
+" filled="f" stroked="f">
+ <o:lock v:ext="edit" aspectratio="t"/>
+ <w:wrap type="none"/>
+ <w:anchorlock/>
+</v:rect><![endif]--><!--[if gte vml 1]><v:shapetype id="_x0000_t75"
+ coordsize="21600,21600" o:spt="75" o:preferrelative="t" path="m@4@5l@4@11@9@11@9@5xe"
+ filled="f" stroked="f">
  <v:stroke joinstyle="miter"/>
  <v:formulas>
   <v:f eqn="if lineDrawn pixelLineWidth 0"/>
@@ -1691,11 +1728,10 @@ mso-no-proof:yes'><!--[if gte vml 1]><v:shapetype id="_x0000_t75" coordsize="216
  </v:formulas>
  <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
  <o:lock v:ext="edit" aspectratio="t"/>
-</v:shapetype><v:shape id="Picture_x0020_1" o:spid="_x0000_i1025" type="#_x0000_t75"
- style='width:285.75pt;height:294pt;visibility:visible;mso-wrap-style:square'>
- <v:imagedata src="ImageR%20Users%20Manual_files/image001.jpg" o:title=""/>
-</v:shape><![endif]--><![if !vml]><img width=381 height=392
-src="ImageR%20Users%20Manual_files/image002.jpg" v:shapes="Picture_x0020_1"><![endif]></span><span
+</v:shapetype><![endif]--><!--[if mso & !supportInlineShapes & supportFields]><v:shape
+ id="_x0000_i1025" type="#_x0000_t75" style='width:285.5pt;height:294pt'>
+ <v:imagedata croptop="-65520f" cropbottom="65520f"/>
+</v:shape><span style='mso-element:field-end'></span><![endif]--><span
 lang=en-IL style='mso-ansi-language:#0C00'><o:p></o:p></span></p>
 
 <p class=MsoCaption><span lang=en-IL style='mso-ansi-language:#0C00'>Figure </span><!--[if supportFields]><span
@@ -1717,9 +1753,9 @@ two images series in the same rectangle</span><span lang=en-IL
 style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:#0C00'><o:p></o:p></span></h2>
 
 <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
-mso-ansi-language:EN-US'>If you use &lt;File&gt;&lt;Open&gt; twice, by default the
-two series will load into the same display rectangle. To switch between the 2
-series, you may use &lt;ctrl-N&gt; (for “Next”) and &lt;ctrl-P&gt; (for
+mso-ansi-language:EN-US'>If you use &lt;File&gt;&lt;Open&gt; twice, by default
+the two series will load into the same display rectangle. To switch between the
+2 series, you may use &lt;ctrl-N&gt; (for “Next”) and &lt;ctrl-P&gt; (for
 “Prev”).<o:p></o:p></span></p>
 
 <p class=MsoNormal><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
@@ -1949,8 +1985,8 @@ style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:#0C00'><o:p><
   mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
   mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;line-height:105%'><span
-  lang=EN-US style='mso-ansi-language:EN-US'>Allow loading of saved state with 2
-  new variants of the data at the first rectangle <o:p></o:p></span></p>
+  lang=EN-US style='mso-ansi-language:EN-US'>Allow loading of saved state with
+  2 new variants of the data at the first rectangle <o:p></o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:6'>
@@ -2104,7 +2140,7 @@ style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:#0C00'><o:p><
   different kinds of images<o:p></o:p></span></p>
   </td>
  </tr>
- <tr style='mso-yfti-irow:11;mso-yfti-lastrow:yes'>
+ <tr style='mso-yfti-irow:11'>
   <td width=107 valign=top style='width:80.3pt;border:solid windowtext 1.0pt;
   border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0cm 5.4pt 0cm 5.4pt'>
@@ -2133,6 +2169,39 @@ style='mso-fareast-font-family:"Times New Roman";mso-ansi-language:#0C00'><o:p><
   lang=EN-US style='mso-ansi-language:EN-US'>Add “Dump Sagittals” option<o:p></o:p></span></p>
   </td>
  </tr>
+ <tr style='mso-yfti-irow:12;mso-yfti-lastrow:yes'>
+  <td width=107 valign=top style='width:80.3pt;border:solid windowtext 1.0pt;
+  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:105%'><span
+  lang=EN-US style='mso-ansi-language:EN-US'>V1.6.1<o:p></o:p></span></p>
+  </td>
+  <td width=107 valign=top style='width:80.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:105%'><span
+  lang=EN-US style='mso-ansi-language:EN-US'>Apr 10, 2023<o:p></o:p></span></p>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:105%'><span
+  lang=EN-US style='mso-ansi-language:EN-US'>May 17, 2023<o:p></o:p></span></p>
+  </td>
+  <td width=107 valign=top style='width:80.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:105%'><span
+  lang=EN-US style='mso-ansi-language:EN-US'>CT Imaging<o:p></o:p></span></p>
+  </td>
+  <td width=279 valign=top style='width:209.4pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;
+  mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:105%'><span
+  lang=EN-US style='mso-ansi-language:EN-US'>Smooth compare of Dicom and Binary<o:p></o:p></span></p>
+  <p class=MsoNormal style='margin-bottom:0cm;line-height:105%'><span
+  lang=EN-US style='mso-ansi-language:EN-US'>Simpler handling of Bias<o:p></o:p></span></p>
+  </td>
+ </tr>
 </table>
 
 <p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
@@ -2157,8 +2226,8 @@ flags can be defined either by registry or by an XML file. <o:p></o:p></span></p
 <p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Registry
 values come under [HKEY_LOCAL_MACHINE\SOFTWARE\ImageR]<o:p></o:p></span></p>
 
-<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The XML
-file should be named “ImageR.xml” and be placed in the same directory with
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>The XML file
+should be named “ImageR.xml” and be placed in the same directory with
 “ImageR.exe”.<o:p></o:p></span></p>
 
 <p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'>Image R

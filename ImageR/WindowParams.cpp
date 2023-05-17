@@ -455,8 +455,6 @@ bool CWindowParams::ReadInitialWindowFromRegistry(class CMetaData *pData)
         mCenter = (float)center;
 		if (pData)
 			mCenter = pData->Unscale(mCenter);
-		//if (pData && pData->IsCtImage())
-        //    mCenter -= pData->GetCtBias();
         nRead++;
     }
 

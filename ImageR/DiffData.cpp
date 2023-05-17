@@ -883,6 +883,8 @@ bool CDiffData::FindBestFit(void)
 	int iBest = -1;
 	double bestAvg = 1000000000;
 
+	int nSeen = 0;
+	int maxN = pSecData->GetNPages();
 	mbLookingForBestFit = true;
 	for (int i = pSecData->StartLoopI(); i >= 0; i = pSecData->LoopNext())
 	{
@@ -910,6 +912,12 @@ bool CDiffData::FindBestFit(void)
 		if (log)
 			fprintf(log.mpf,"\n");
 		progressBar.SetPos(i);
+		nSeen++;
+		if (nSeen > maxN)
+		{
+			CMyWindows::MessBox("<CDiffData::FindBestFit> went beyond loop limits", "SW Error");
+			break;
+		}
 	}
 
 	if (iBest >= 0)

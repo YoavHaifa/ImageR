@@ -22,8 +22,8 @@ static char THIS_FILE[] = __FILE__;
 
 
 CImageParams::CImageParams(CMultiDataFile *pFile,
-                           CWnd* pParent /*=NULL*/)
-	: CDialog(CImageParams::IDD, pParent)
+                           CWnd* pParent)
+	: CMyDialogEx(CImageParams::IDD, pParent)
     , mpFile (pFile)
     , mnLinesSave(pFile->GetNLinesInPage())
     , mnColsSave(pFile->GetNCols())
@@ -33,6 +33,8 @@ CImageParams::CImageParams(CMultiDataFile *pFile,
     , meDataType(pFile->GetDataType())
     , mOffsetBytesSave(pFile->GetOffsetBytes())
     , mOffsetBytes(pFile->GetOffsetBytes())
+    , mBiasSave(pFile->GetBias())
+    , mBias(pFile->GetBias())
 {
 	//{{AFX_DATA_INIT(CImageParams)
 		// NOTE: the ClassWizard will add member initialization here
@@ -63,7 +65,7 @@ BOOL CImageParams::OnInitDialog()
 {
   CDialog::OnInitDialog();
 
-  set_params();
+  SetParams();
   SetNPages();
 
   CWnd *pWnd = GetDlgItem(IDC_STATIC_FILE_LENGTH);
@@ -90,11 +92,13 @@ int CImageParams::get_int_param(int idc, int minValue, int defaultValue)
 
 //---------------------------------------------------------------------
 
-void CImageParams::get_params()
+void CImageParams::GetParams()
 {
 	mnLines = get_int_param (IDC_ROWS, 1, 512);
     mnCols = get_int_param (IDC_COLUMNS, 1, 512);
-    mnPages = (float)get_int_param (IDC_PAGES, 1, 1);
+    mnPages = (float)get_int_param(IDC_PAGES, 1, 1);
+    GetParameter(IDC_DATA_BIAS, mBias);
+    mpFile->SetBias(mBias);
 
     CComboBox *pBox = (CComboBox *)GetDlgItem(IDC_DTYPE);
     meDataType = EMyImageDataType(pBox->GetCurSel() + 1);
@@ -104,23 +108,13 @@ void CImageParams::get_params()
     pWnd->GetWindowText(zText, 127);
     mOffsetBytes =_atoi64(zText);
 }
-//----------------------------------------------------------
-void CImageParams::set_int_param(int idc, int value)
+void CImageParams::SetParams()
 {
-  char zText[32];
-  sprintf_s (zText, 32, "%d", value);
-  CWnd *pWnd = GetDlgItem (idc);
-  pWnd->SetWindowText (zText);
-}
+    SetParameter(IDC_ROWS, mpFile->GetNLinesInPage());
+    SetParameter(IDC_COLUMNS, mpFile->GetNCols());
 
-//----------------------------------------------------------
-
-void CImageParams::set_params()
-{
-    set_int_param (IDC_ROWS, mpFile->GetNLinesInPage());
-	set_int_param (IDC_COLUMNS, mpFile->GetNCols());
-
-	set_int_param (IDC_INCR, 0);
+    SetParameter(IDC_INCR, 0);
+    SetParameter(IDC_DATA_BIAS, mBias);
 
 
 	CWnd *pWnd = GetDlgItem (IDC_ROWS);
@@ -147,13 +141,14 @@ void CImageParams::OnCancel()
     mpFile->SetSize(mnLinesSave, mnColsSave);
     mpFile->SetTypedDataHandler(meDataTypeSave);
     mpFile->SetOffsetBytes(mOffsetBytesSave);
+    mpFile->SetBias(mBiasSave);
     SetNPages();
     gScreens.Refresh();
     CDialog::OnCancel();
 }
 void CImageParams::OnTry() 
 {
-    get_params();
+    GetParams();
 
     mpFile->SetSize(mnLines, mnCols);
     if (meDataType >= 0)
@@ -167,7 +162,7 @@ void CImageParams::OnTry()
 }
 void CImageParams::OnCreatePattern() 
 {
-    get_params();
+    GetParams();
     if (mnPages > 128)
         mnPages = 128;
 
