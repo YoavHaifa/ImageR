@@ -45,6 +45,7 @@ CMultiDataFile::CMultiDataFile(const char *zfName, CXMLParseNode *pMetaDataXml,
     CMetaData *pCurData = gScreens.GetCurrentData();
     if (pCurData)
         SetMmPerPixel(*pCurData);
+	Verify("<CMultiDataFile> On Construct");
 }
 
 CMultiDataFile::~CMultiDataFile(void)
@@ -140,8 +141,15 @@ bool CMultiDataFile::DoUpdatePageData(void)
 }
 bool CMultiDataFile::DoLoadVolume()
 {
+	Verify("<CMultiDataFile> DoLoadVolume");
+
 	if (!mpVolume)
 		return false;
+
+	int nToLoad = GetNPages();
+	if (nToLoad == 1)
+		return CMultiFile::DoLoadVolume();
+
 	LoadPrologue();
 
 	CPosition* pPos = GetPosition();
@@ -149,7 +157,6 @@ bool CMultiDataFile::DoLoadVolume()
 	if (!pVolumePage)
 		return false;
 
-	int nToLoad = GetNPages();
 	mpVolume->mnLoaded = 0;
 	ULONGLONG offset = mOffsetBytes;
 	if (mPageHeaderLength > 0)

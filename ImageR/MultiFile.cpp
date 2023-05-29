@@ -648,7 +648,8 @@ bool CMultiFile::DoLoadVolume()
 	if (!pVolumePage)
         return false;
 
-    int nToLoad = GetNPages();
+	CPosition* pPos = mMultiPosition.GetPosition(0);
+    int nToLoad = pPos->GetNFiles();
 	mpVolume->mnLoaded = 0;
     unsigned int pageLenBytes = mnLinesInPage * mnCols * mDataUnitSize;
     //unsigned int pageSize = pageLen * sizeof(pVolumePage[0]);
@@ -661,7 +662,6 @@ bool CMultiFile::DoLoadVolume()
 	//bool bLoop = StartLoop();
 	//int iFirst = mpVolume->GetIFirst();
 	//int iLast = mpVolume->GetILast();
-	CPosition* pPos = mMultiPosition.GetPosition(0);
 	for (int iLoad = StartLoopI(); iLoad >= 0 && iLoad < nToLoad; iLoad = LoopNext())
     {
 		//int iLoad = pPos->GetCurrent();
