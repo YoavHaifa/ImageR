@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# ImageR specila files
+*.RecentFiles.txt
+*/ImageR.exe
+*/ImageRLib.dll
+*/yUtils.dll
+
 # User-specific files
 *.rsuser
 *.suo
