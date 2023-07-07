@@ -433,6 +433,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_TOGGLECTMODE_ONALL, &CImageView::OnTogglectmodeOnall)
 		ON_COMMAND(ID_EXPORT_DUMPSAGITTALS, &CImageView::OnExportDumpsagittals)
 		ON_COMMAND(ID_GRAPHIC_FREEZE, &CImageView::OnGraphicFreeze)
+		ON_COMMAND(ID_ADD_ABSDIFF, &CImageView::OnAddAbsdiff)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -2416,6 +2417,10 @@ void CImageView::OnAddDiff()
 {
 	OnAddDiffOrRatio("Diff");
 }
+void CImageView::OnAddAbsdiff()
+{
+	OnAddDiffOrRatio("AbsDiff");
+}
 void CImageView::OnAddCoronal33994()
 {
 	CFileFactory factory(mpfLog);
@@ -2493,4 +2498,3 @@ void CImageView::OnTogglectmodeOnall()
 		gScreens.ForceDataUpdate();
 	}
 }
-

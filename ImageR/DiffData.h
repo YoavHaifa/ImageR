@@ -57,6 +57,8 @@ protected:
 	bool CompareTypedDataInt(TINP *pPlus, void *pMinus, void *pResult, int n);
 	bool CompareTypedDataFloat(float *pPlus, void *pMinus, void *pResult, int n);
 	bool CompareTypedDataDouble(double *pPlus, void *pMinus, double *pResult, int n);
+	//template <typename TINP>
+	//bool AbsTypedData(TINP* pResult, int n);
 
 	bool mbShouldScale;
 	CCompVector mScaledPlus;
@@ -67,6 +69,7 @@ public:
     void InitOnConstruction(void);
     bool mbRatio;
 	bool mbCombine;
+	bool mbAbs;
 	float mWeight1;
 	float mWeight2;
     void StartCompare();

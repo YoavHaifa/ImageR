@@ -43,7 +43,6 @@
 #define IDC_DTYPE                       2009
 #define IDC_BIAS                        2010
 #define IDC_SCROLLBAR_WIDTH             2010
-#define IDC_OFFS2                       2010
 #define IDC_DATA_BIAS                   2010
 #define IDC_FACTOR                      2011
 #define IDC_SCROLLBAR_CENTER            2011
@@ -333,13 +332,14 @@
 #define ID_TOGGLECTMODE_ONALL           34007
 #define ID_EXPORT_DUMPSAGITTALS         34008
 #define ID_GRAPHIC_FREEZE               34009
+#define ID_ADD_ABSDIFF                  34010
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1029
-#define _APS_NEXT_COMMAND_VALUE         34010
+#define _APS_NEXT_COMMAND_VALUE         34011
 #define _APS_NEXT_CONTROL_VALUE         2099
 #define _APS_NEXT_SYMED_VALUE           2200
 #endif

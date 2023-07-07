@@ -43,7 +43,7 @@ void T_vector_combine (TIN *pPlus, TIN *pMinus, TOUT *pResult, float w1, float w
 	}
 }
 template <typename TINP, typename TINM, typename TOUT>
-int T_vector_sub (TINP *pPlus, TINM *pMinus, TOUT *pResult, int n)
+int T_vector_sub(TINP* pPlus, TINM* pMinus, TOUT* pResult, int n)
 {
 	int nDiff = 0;
 	for (int i = 0; i < n; i++)
@@ -53,6 +53,21 @@ int T_vector_sub (TINP *pPlus, TINM *pMinus, TOUT *pResult, int n)
 			nDiff++;
 	}
 	return nDiff;
+}
+void VectorAbs(float* pResult, int n)
+{
+	for (int i = 0; i < n; i++)
+		pResult[i] = abs(pResult[i]);
+}
+void VectorAbs(double* pResult, int n)
+{
+	for (int i = 0; i < n; i++)
+		pResult[i] = abs(pResult[i]);
+}
+void VectorAbs(int* pResult, int n)
+{
+	for (int i = 0; i < n; i++)
+		pResult[i] = abs(pResult[i]);
 }
 int vector_diff (bool *pPlus, bool *pMinus, bool *pResult, int n)
 {
@@ -134,11 +149,15 @@ CDiffData::CDiffData(CDisplayRectangle *pDRPlus, CDisplayRectangle *pDRMinus, co
 , mTransFactor(1)
 , mTransBias(0)
 , mbLookingForBestFit(false)
+, mbAbs(false)
 {
-    if (msName == "Ratio")
-        mbRatio = true;
-    else if (msName == "Combine")
-        mbCombine = true;
+	if (msName == "Ratio")
+		mbRatio = true;
+	else if (msName == "Combine")
+		mbCombine = true;
+	else if (msName == "AbsDiff")
+		mbAbs = true;
+
     InitOnConstruction();
 	SetCommonZoom(mpDRPlus->GetCommonZoomParams());
 }
@@ -165,6 +184,7 @@ CDiffData::CDiffData(CXMLParseNode *pXmlNode)
 , mTransFactor(1)
 , mTransBias(0)
 , mbLookingForBestFit(false)
+, mbAbs(false)
 {
     if (pXmlNode->GetFirstDeep("b_ratio"))
         mbRatio = true;
@@ -398,6 +418,8 @@ bool CDiffData::DoUpdatePageData()
 			void *pMinusDataLine = pMinus->GetPageDataLine(iLine);
 
 			CompareTypedData(pPlusDataLine, pMinusDataLine, pResultLine, mnColsToCompare);
+			//if (mbAbs)
+			//	AbsTypedData(pResultLine, mnColsToCompare);
 		}
 	}
 
@@ -562,17 +584,25 @@ bool CDiffData::CompareTypedData(void *pPlusData, void *pMinusData, void *pResul
         break;
     case DATA_TYPE_INT:
 		return CompareTypedDataInt((int *)pPlusData, pMinusData, pResult, n);
+		if (mbAbs)
+			VectorAbs((int*)pResult, n);
         break;
     case DATA_TYPE_UINT:
 		return CompareTypedDataInt((unsigned int *)pPlusData, pMinusData, pResult, n);
-        break;
+		if (mbAbs)
+			VectorAbs((int*)pResult, n);
+		break;
     case DATA_TYPE_FLOAT:
 		mnDiff += T_vector_sub ((float *)pPlusData, (float *)pMinusData,
 				(float *)pResult, n);
-        break;
+ 		if (mbAbs)
+			VectorAbs((float*)pResult, n);
+		break;
     case DATA_TYPE_DOUBLE:
 		mnDiff += T_vector_sub ((double *)pPlusData, (double *)pMinusData,
 				(double *)pResult, n);
+		if (mbAbs)
+			VectorAbs((double*)pResult, n);
         break;
     case DATA_TYPE_BOOL:	
         mnDiff += vector_diff ((bool *)pPlusData, (bool *)pMinusData, (bool *)pResult, n);
@@ -589,6 +619,13 @@ bool CDiffData::CompareTypedData(void *pPlusData, void *pMinusData, void *pResul
     }
 	return true;
 }
+/*
+template <typename TINP>
+bool CDiffData::AbsTypedData(TINP* pResult, int n)
+{
+	for (int i = 0; i < n; i++)
+		pResult[i] = abs(pResult[i]);
+}*/
 void CDiffData::SaveState(class CXMLDump & xmlDump)
 {
     CXMLDumpScope graph("DiffData",xmlDump);
