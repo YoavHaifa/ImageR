@@ -65,7 +65,7 @@ CScreens::CScreens(void)
 , mbReplace(false)
 , mWantedSize(0,0)
 , mbShowScanCenter(false)
-, mnMaxRectanglesInRow(0)
+, mnMaxRectanglesInRow(3)
 , mbMaxRectanglesInRowSetByUser(false)
 , mbIgnoreServerTimingProblems(true)
 , mbKeepScreenSizeConstant(false)
@@ -2704,7 +2704,6 @@ void CScreens::SetMaxRectanglesInRow(int maxRIR, bool bSetByUser)
 
 	bool bVertical = (mnMaxRectanglesInRow == 1);
 	mpImageView->CheckMenuItem("&Settings", ID_SETTINGS_VERTICAL, bVertical);
-
 }
 void CScreens::SetMaxRectanglesInRowFlipVertical(void)
 {

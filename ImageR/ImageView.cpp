@@ -2202,7 +2202,7 @@ void CImageView::OnSettingsVertical()
 void CImageView::OnSettingsNcolumns()
 {
 	CNameGetDialog dlg;
-	int n = 1;
+	int n = gScreens.mnMaxRectanglesInRow;
 	if (dlg.GetIntValue("Select number of image columns", n))
 		gScreens.SetMaxRectanglesInRow(n);
 }
