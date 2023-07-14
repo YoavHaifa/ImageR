@@ -29,6 +29,8 @@ public:
 	bool IsValid(void){return ((mpDRPlus != NULL) && (mpDRMinus != NULL));}
 	void SetColor(int iColor);
 
+	void ToggleAbsMode();
+
 protected:
 	class CDisplayRectangle *mpDRPlus;
 	class CDisplayRectangle *mpDRMinus;

@@ -348,5 +348,6 @@ public:
 	afx_msg void OnExportDumpsagittals();
 	afx_msg void OnGraphicFreeze();
 	afx_msg void OnAddAbsdiff();
+	afx_msg void OnDiffToggleabsmode();
 };
 

@@ -1184,8 +1184,8 @@ void CScreens::SetFirstImageSize(bool bLoadingSavedState)
 	{
 		if (firstImageSize.cx >= 1.5f * firstImageSize.cy)
 			SetMaxRectanglesInRow(1,false);
-		else
-			SetMaxRectanglesInRow(0,false);
+		//else
+		//	SetMaxRectanglesInRow(0,false);
 	}
 
 	float zoomX = 1;

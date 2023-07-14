@@ -456,6 +456,23 @@ CMetaData * CFileFactory::AnalyzeDicomOptions(void)
 }
 CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
 {
+    int expectedNCols = 0;
+    int expectedNLines = 0;
+    int expectedMat = 0;
+
+    msFileName = zfName;
+    if (CMyWindows::GetValueFromString(msFileName, "_mat", expectedMat)
+        || CMyWindows::GetValueFromString(msFileName, "_matrix", expectedMat))
+    {
+        expectedNCols = expectedMat;
+        expectedNLines = expectedMat;
+    }
+    else
+    {
+        CMyWindows::GetValueFromString(msFileName, "_width", expectedNCols);
+        CMyWindows::GetValueFromString(msFileName, "_height", expectedNLines);
+    }
+
     if (!CFileName::Exist(zfName))
     {
         CMyWindows::MessBox(zfName, "File doesn't exist");
@@ -553,10 +570,15 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
 		return pDicomBasedData;
 
     // Assuming the file should contain raster - Check for file length
-    if (fileLenBytes < 10000)
+    int expectedLen = 10000;
+    if (expectedNCols > 0 && expectedNLines > 0)
+    {
+        expectedLen = expectedNCols * expectedNLines;
+    }
+    if (fileLenBytes < expectedLen)
     {
         CString s;
-        s.Format("Warning: File %s lingth is only %d bytes", zfName, (int)fileLenBytes);
+        s.Format("Warning: File %s length is only %d bytes", zfName, (int)fileLenBytes);
         CMyWindows::MessBox(s, "File might be too short");
         if (mpfLog)
         {

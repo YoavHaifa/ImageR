@@ -1024,3 +1024,9 @@ bool CDiffData::FindBestTransformation(bool bMessBox)
 	ForceUpdate();
 	return true;
 }
+void CDiffData::ToggleAbsMode()
+{
+	mbAbs = !mbAbs;
+	OnChange();
+	ForceUpdate();
+}

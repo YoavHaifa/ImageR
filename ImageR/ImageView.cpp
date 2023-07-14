@@ -434,6 +434,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_EXPORT_DUMPSAGITTALS, &CImageView::OnExportDumpsagittals)
 		ON_COMMAND(ID_GRAPHIC_FREEZE, &CImageView::OnGraphicFreeze)
 		ON_COMMAND(ID_ADD_ABSDIFF, &CImageView::OnAddAbsdiff)
+		ON_COMMAND(ID_DIFF_TOGGLEABSMODE, &CImageView::OnDiffToggleabsmode)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -2497,4 +2498,12 @@ void CImageView::OnTogglectmodeOnall()
 		CMetaDataBase::ToggleCTGlobal();
 		gScreens.ForceDataUpdate();
 	}
+}
+void CImageView::OnDiffToggleabsmode()
+{
+	CDiffData* pDiff = gScreens.GetCurrentDiffData();
+	if (!pDiff)
+		return;
+	pDiff->ToggleAbsMode();
+	gScreens.Refresh();
 }
