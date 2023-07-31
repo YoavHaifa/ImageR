@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.6.2");
+CString CScreens::umsVersion("V1.6.3");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
@@ -2579,7 +2579,29 @@ void CScreens::SetEbwMode(void)
 	SetMaxRectanglesInRow(2);
 	CArchivesFile::umbNeedDataText = false;
 }
-int CScreens::GetIFreeOrNewDR(void)
+bool CScreens::HasDiffInput()
+{
+	int iTarget = GetIFreeOrNewDR();
+	if (iTarget < 2)
+		return false;
+
+	int i = 0;
+	int nReady = 0;
+	POSITION pos = mRectanglesList.GetHeadPosition();
+	while (pos)
+	{
+		CDisplayRectangle* pRect = mRectanglesList.GetNext(pos);
+		CMetaData* pData = pRect->GetCurrentData();
+		if (pData && i >= iTarget - 2 && i < iTarget)
+		{
+			if (!pData->IsDiff())
+				nReady++;
+		}
+		i++;
+	}
+	return nReady == 2;
+}
+int CScreens::GetIFreeOrNewDR()
 {
 	int i = 0;
 	POSITION pos = mRectanglesList.GetHeadPosition();

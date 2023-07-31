@@ -670,7 +670,7 @@ bool CMultiFile::DoLoadVolume()
 		if (!DoLoadVolumeImage(iLoadRelative, pVolumePage))
 		{
 			CString s;
-			s.Format("%s Failed to load relative page %d", Name(), iLoadRelative);
+			s.Format("%s Failed to load relative page %d", (const char *)Name(), iLoadRelative);
 			CMyWindows::MessBox(s, "Load Volume Error");
 			return false;
 		}

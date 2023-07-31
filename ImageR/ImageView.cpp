@@ -1254,16 +1254,18 @@ void CImageView::OnAddCombine()
 {
     OnAddDiffOrRatio("Combine");
 }
+void CImageView::LoadInputForDiff()
+{
+	CMetaData *pData = gScreens.GetCurrentData();
+	if (pData && pData->IsHybrid())
+		OnFileOpendirectory();
+	else
+		OnAddFile();;
+}
 void CImageView::OnAddDiffOrRatio(const char *zName)
 {
-	if (gScreens.GetNDR() < 2)
-	{
-		CMetaData *pData = gScreens.GetCurrentData();
-		if (pData && pData->IsHybrid())
-			OnFileOpendirectory();
-		else
-			OnAddFile();;
-	}
+	if (!gScreens.HasDiffInput())
+		LoadInputForDiff();
 
 	int iDR = gScreens.GetIFreeOrNewDR();
 	if (iDR < 2)
