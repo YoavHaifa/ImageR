@@ -242,7 +242,10 @@ public:
     CMetaData * FindDataByNameOrIndex(const char * zName, CDisplayRectangle **oppDR = NULL);
 
     virtual bool DisplayGraphic(class CGraphicElement *);
+
+	// Get number of display rectangles
     int GetNDR(void){return (int)mRectanglesList.GetSize();}
+
     bool SetExternalFrame(const char * zDataName);
     void ForceDataUpdate(bool bOnlyShared = false);
 	void AddColorerOnData(CMetaData * pData, CMetaData * pColorer);
@@ -280,12 +283,13 @@ public:
 	bool mbOpenContextMenuOnRButtonUp;
 	void BroadcastWindow(int iRectangle = -1); // Default is current window
 	void SetCursorBroadcast(int iRectangle = -1); // Default is current window
-	void DisablePaint(void){mbDisablePaint = true;}
-	void EnablePaint(void){mbDisablePaint = false;}
+	void DisablePaint() { mbDisablePaint = true; }
+	void EnablePaint() { mbDisablePaint = false; }
 	int miPipeMessageToHandle;
 	int miPipeMessageHandled;
-	void DeleteAllData(void);
-	int GetIFreeOrNewDR(void);
+	void DeleteAllData();
+	int GetIFreeOrNewDR();
+	bool HasDiffInput();
 	void GetListOfDataUsingPosition(class CPosition *pPosition, 
 		CList <CMetaData *, CMetaData *> &list);
 	void SetStatusText(const char * zText, int iField);

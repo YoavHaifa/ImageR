@@ -232,6 +232,8 @@ public:
     afx_msg void OnAddMip();
     //afx_msg void OnAddRatio();
     void OnAddDiffOrRatio(const char *zName);
+	void LoadInputForDiff();
+
     afx_msg void OnGraphicSetcolor();
     afx_msg void OnMipSelectslice();
     afx_msg void OnGraphicAddtext();
