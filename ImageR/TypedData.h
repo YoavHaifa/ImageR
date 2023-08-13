@@ -14,7 +14,8 @@ public:
     virtual void OnReadLines (void *p, int nLines, int nCols, int nLastColsToIgnore) = 0;
     virtual void OnReadBytes (void *p, int nBytes) = 0;
 
-    virtual float Average (void) = 0;
+    virtual float Average(void) = 0;
+    virtual float AverageAbs(void) = 0;
     virtual float NonZeroAverage (void) = 0;
 
     virtual float Center (void) = 0;
@@ -29,7 +30,7 @@ public:
         int nCols, int iLine, int iCol, float slope, float bias) = 0;
 
 	virtual CString GetRangeText(void){return CString(_T(""));}
-	virtual CString GetRangeAndAverageText(void){return CString(_T(""));}
+    virtual CString GetRangeAndAverageText(bool bDiff);
 
     static CTypedData * GetNew (EMyImageDataType eDataType);
 
@@ -39,6 +40,7 @@ public:
     int mnChecked;
     int mnSummed;
     double mSum;
+    double mSumAbs;
     int mnNotZero;
 	int mnNan;
 	FILE *mpfLog;
@@ -68,11 +70,17 @@ public:
         OnRead (p, nBytes / sizeof (T));
     }
 
-    float Average (void)
+    float Average(void)
     {
         if (!mnSummed)
             return 0.0f;
         return (float)(mSum) / mnSummed;
+    }
+    float AverageAbs(void)
+    {
+        if (!mnSummed)
+            return 0.0f;
+        return (float)(mSumAbs) / mnSummed;
     }
     float NonZeroAverage (void)
     {
@@ -111,7 +119,7 @@ public:
 	}
 
 	virtual CString GetRangeText(void);
-	virtual CString GetRangeAndAverageText(void);
+	virtual CString GetRangeAndAverageText(bool bDiff);
 
     T mMin;
     T mMax;

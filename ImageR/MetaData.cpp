@@ -601,7 +601,7 @@ bool CMetaData::UpdatePageData()
         {
             fprintf (mpfLog, "<CMetaData::UpdatePageData> %s\n", 
                 (const char *)msName);
-            fprintf (mpfLog, "%s\n", (const char*)mpTypedData->GetRangeAndAverageText());
+            fprintf (mpfLog, "%s\n", (const char*)mpTypedData->GetRangeAndAverageText(IsDiff()));
             fprintf (mpfLog, "\n");
             fflush (mpfLog);
         }
@@ -2382,7 +2382,7 @@ bool CMetaData::GetDataRangeText(CString &osText)
 	if (!mpTypedData)
 		return false;
 
-	osText = mpTypedData->GetRangeAndAverageText();;
+	osText = mpTypedData->GetRangeAndAverageText(IsDiff());
 	return true;
 }
 void CMetaData::OpenWindowingGUI(void)

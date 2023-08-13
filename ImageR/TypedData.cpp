@@ -10,6 +10,7 @@ CTypedData::CTypedData(void)
 	, mnNan(0)
 	, mnNotZero(0)
 	, mSum(0)
+	, mSumAbs(0)
 	, mpfLog(NULL)
 {
 	//static int count = 0;
@@ -24,7 +25,7 @@ CTypedData::~CTypedData(void)
 		fclose(mpfLog);
 	}
 }
-    
+
 CTypedData * CTypedData::GetNew (EMyImageDataType eDataType)
 {
 	switch (eDataType) 
@@ -58,8 +59,9 @@ void TTypedData<S_RGB>::Init ()
 	mnSummed = 0;
     mnNotZero = 0;
 	mnNan = 0;
-    mSum = 0.0;
-    mMin = 0;
+	mSum = 0.0;
+	mSumAbs = 0.0;
+	mMin = 0;
     mMax = 0;
     InitFormat();
 }
@@ -76,8 +78,9 @@ void TTypedData<T>::Init ()
 	mnSummed = 0;
     mnNotZero = 0;
 	mnNan = 0;
-    mSum = 0.0;
-    mMin = (T)0;
+	mSum = 0.0;
+	mSumAbs = 0.0;
+	mMin = (T)0;
     mMax = (T)0;
     InitFormat();
 }
@@ -118,6 +121,7 @@ void TTypedData<T>::OnRead (void *p, int n)
 					mMax = value;
 			}
 			mSum += value;
+			mSumAbs += abs((double)value);
 			mnSummed++;
 
 			if (value)
@@ -156,6 +160,7 @@ void TTypedData<T>::OnReadLines (void *p, int nLines, int nCols, int nLastColsTo
 				}
 
 				mSum += value;
+				mSumAbs += abs((double)value);
 				mnSummed++;
 
 				if (value)
@@ -230,7 +235,7 @@ CString TTypedData<T>::GetRangeText(void)
 	return CString("No Data");
 }
 template <class T>
-CString TTypedData<T>::GetRangeAndAverageText(void)
+CString TTypedData<T>::GetRangeAndAverageText(bool bDiff)
 {
 	CString sText = GetRangeText();
 	if (mnSummed > 0)
@@ -238,6 +243,12 @@ CString TTypedData<T>::GetRangeAndAverageText(void)
 		char zBuf[256];
 		sprintf_s(zBuf,sizeof(zBuf)," Avg %f", Average());
 		sText += zBuf;
+
+		if (bDiff)
+		{
+			sprintf_s(zBuf,sizeof(zBuf)," AvgAbs %f", AverageAbs());
+			sText += zBuf;
+		}
 	}
 	if (mnNan > 0)
 	{
@@ -249,7 +260,10 @@ CString TTypedData<T>::GetRangeAndAverageText(void)
 	}
 	return sText;
 }
-
+CString CTypedData::GetRangeAndAverageText(bool /*bDiff*/)
+{
+	return CString(_T("")); 
+}
 /*static void func()
 {
     TTypedData<short> TypedDataShort;

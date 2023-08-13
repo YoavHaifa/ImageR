@@ -27,7 +27,7 @@
 #include "DiffData.h"
 
 CString CScreens::umsScreenTitle("ImageR");
-CString CScreens::umsVersion("V1.6.2");
+CString CScreens::umsVersion("V1.6.3");
 
 CScreens gScreens;
 float CScreens::MOUSE_ZOOM_FACTOR = 500.0f;
