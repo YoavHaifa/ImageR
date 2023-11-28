@@ -2388,10 +2388,16 @@ bool CMetaData::GetDataRangeText(CString &osText)
 void CMetaData::OpenWindowingGUI(void)
 {
 	CWindowParams *pWindowParams =GetWindowParams();
-    if (IsCtImage())
-        pWindowParams->SetRange (0, MAX_CT_VALUE);
+	float minValue = Min();
+	if (IsCtImage())
+	{
+		if (minValue < 0)
+	        pWindowParams->SetRange (minValue, MAX_CT_VALUE);
+		else
+	        pWindowParams->SetRange (0, MAX_CT_VALUE);
+	}
     else
-        pWindowParams->SetRange (Min(), Max());
+        pWindowParams->SetRange (minValue, Max());
 
     if (mpfLog)
         fprintf (mpfLog, "\n<OnParametersWindow> Window C%s %s W %s\n", 

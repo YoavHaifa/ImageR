@@ -40,7 +40,7 @@ public:
     void UpdateByMouseMove(int deltaX, int deltaY, class CMetaData* pData);
     float ScaleDelta (int delta, float range, int bInteger);
 
-    void SetCt();
+    void SetCt(float minDataValue);
     void SetInRange(bool bCT, float min, float max);
     void SetRange (float min, float max);
 

@@ -196,8 +196,11 @@ float CWindowParams::ScaleDelta (int delta, float range, int bInteger)
     return fDelta;
 }
 
-void CWindowParams::SetCt()
+void CWindowParams::SetCt(float minDataValue)
 {
+	if (minDataValue > 0)
+		minDataValue = 0;
+
     float fMAX_CT_VALUE = (float)MAX_CT_VALUE;
 
     mWidth = (float)(int)mWidth;
@@ -211,8 +214,8 @@ void CWindowParams::SetCt()
 
 	if (mCenter > fMAX_CT_VALUE)
 		mCenter = fMAX_CT_VALUE;
-	else if (mCenter < 0.0f)
-		mCenter = 0.0f;
+	else if (mCenter < minDataValue)
+		mCenter = minDataValue;
 	DebugPrint("SetCt");
 }
 
@@ -220,7 +223,7 @@ void CWindowParams::SetInRange(bool bCT, float min, float max)
 {
     if (bCT && !mbExternalRangeSet)
 	{
-        SetCt();
+        SetCt(min);
 		return;
 	}
 	if (mbExternalRangeSet)
