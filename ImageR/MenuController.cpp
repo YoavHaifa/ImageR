@@ -40,8 +40,6 @@ int CMenuController::Convert(CString XMLString)
 		return ID_FILE_DELETE;
 	if (XMLString == "file/exit")
 		return ID_FILE_EXIT1;
-	if (XMLString == "view/statistics")
-		return ID_VIEW_STATISTICS;
 	if (XMLString == "view/go to...")
 		return ID_EDIT_GOTO;
 	if (XMLString == "view/zoom")

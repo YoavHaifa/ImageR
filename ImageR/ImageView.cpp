@@ -277,7 +277,6 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
     ON_WM_MOUSEWHEEL()
 	ON_WM_HSCROLL()
 	ON_WM_VSCROLL()
-	ON_COMMAND(ID_VIEW_STATISTICS, OnViewStatistics)
 	ON_WM_DESTROY()
 	ON_COMMAND(ID_EDIT_GOTO, OnViewGotopage)
 	ON_COMMAND(ID_VIEW_ZOOM, OnViewZoom)
@@ -435,6 +434,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_GRAPHIC_FREEZE, &CImageView::OnGraphicFreeze)
 		ON_COMMAND(ID_ADD_ABSDIFF, &CImageView::OnAddAbsdiff)
 		ON_COMMAND(ID_DIFF_TOGGLEABSMODE, &CImageView::OnDiffToggleabsmode)
+		ON_COMMAND(ID_EXPORT_STATISTICSALONGZ, &CImageView::OnExportStatisticsalongz)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -688,7 +688,6 @@ void CImageView::EditMenu(void)
         // File options
         prevState = pMenu->RemoveMenu(ID_FILE_OPENAIR, MF_BYCOMMAND);
         // View
-        prevState = pMenu->RemoveMenu(ID_VIEW_STATISTICS, MF_BYCOMMAND);
         prevState = pMenu->RemoveMenu(ID_VIEW_RESIZETOPAGESIZE, MF_BYCOMMAND);
         prevState = pMenu->RemoveMenu(ID_VIEW_CARDIACDATA, MF_BYCOMMAND);
         // Settings
@@ -1117,32 +1116,15 @@ void CImageView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     }
 	CDialog::OnVScroll(nSBCode, nPos, pScrollBar);
 }
-void CImageView::OnViewStatistics() 
-{
-  //if (!mpDataBuf)
-  //  return;
-  /*
-
-  mpStatistics=new CStatistics(this, &mCommonParams, this);
-
-  mpStatistics->DoModal();
-  */
-}
-
 void CImageView::OnDestroy() 
 {
 	mDataArea.UnsubclassWindow();
 	CDialog::OnDestroy();
 }
-//-------------------------------------------------------------------------------------
-
 void CImageView::OnViewGotopage() 
 {
     gScreens.OnViewGotopage();
 }
-
-//-------------------------------------------------------------------------------------
-
 void CImageView::OnViewZoom() 
 {
     CDisplayRectangle * pDR = gScreens.GetCurrentDisplayRectangle();
@@ -2481,7 +2463,17 @@ void CImageView::OnExportHistogram()
 		pData->ExportHistogram();
 	}
 }
-
+void CImageView::OnExportStatisticsalongz()
+{
+	CMetaData* pData = gScreens.GetCurrentData();
+	if (pData)
+	{
+		CNameGetDialog dlg;
+		int threshold = 0;
+		if (dlg.GetIntValue("Define threshold CT number", threshold))
+			pData->ExportStatisticsAlongZ(threshold);
+	}
+}
 void CImageView::OnTogglectmodeOncurrentimage()
 {
 	CMetaData* pData = gScreens.GetCurrentData();
@@ -2491,7 +2483,6 @@ void CImageView::OnTogglectmodeOncurrentimage()
 		gScreens.Refresh();
 	}
 }
-
 void CImageView::OnTogglectmodeOnall()
 {
 	CMetaData* pData = gScreens.GetCurrentData();

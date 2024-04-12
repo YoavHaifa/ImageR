@@ -156,7 +156,6 @@
 #define ID_FILE_RECENTFILES6            33006
 #define ID_FILE_EXIT1                   33772
 #define ID_PARAMETERS_WINDOW            33775
-#define ID_VIEW_STATISTICS              33779
 #define ID_EDIT_GOTO                    33782
 #define ID_VIEW_GOTOPAGE                33784
 #define ID_VIEW_ZOOM                    33785
@@ -334,13 +333,14 @@
 #define ID_GRAPHIC_FREEZE               34009
 #define ID_ADD_ABSDIFF                  34010
 #define ID_DIFF_TOGGLEABSMODE           34011
+#define ID_EXPORT_STATISTICSALONGZ      34012
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1029
-#define _APS_NEXT_COMMAND_VALUE         34012
+#define _APS_NEXT_COMMAND_VALUE         34013
 #define _APS_NEXT_CONTROL_VALUE         2099
 #define _APS_NEXT_SYMED_VALUE           2200
 #endif

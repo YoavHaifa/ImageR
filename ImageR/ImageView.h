@@ -103,7 +103,6 @@ protected:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint point);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnViewStatistics();
 	afx_msg void OnDestroy();
 	afx_msg void OnViewGotopage();
     afx_msg void OnViewPrevfile();
@@ -351,5 +350,6 @@ public:
 	afx_msg void OnGraphicFreeze();
 	afx_msg void OnAddAbsdiff();
 	afx_msg void OnDiffToggleabsmode();
+	afx_msg void OnExportStatisticsalongz();
 };
 

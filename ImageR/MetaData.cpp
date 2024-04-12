@@ -47,6 +47,7 @@ bool CMetaData::umbDisplayImageOnZeroColor = false;
 bool CMetaData::umbColorTransparency = true;
 float CMetaData::umTransparencyFraction = 0.5f;
 bool CMetaData::umbEnableFastLoadFromVolume = false;
+int CMetaData::umStatThreshold = 0;
 
 void CMetaData::ToggleEnableFastLoadFromVolume()
 {
@@ -1818,7 +1819,7 @@ void CMetaData::DumpAllPageDataCoronalsMultiFile(const char *zUserName)
 	} 
 	for (int i = 0; i < nFiles; i++)
 		fclose(paFiles[i]);
-	delete paFiles;
+	delete[] paFiles;
 	sprintf_s(zBuf, "%d slices saved to %d files <%s>", nSaved, nFiles, (const char*)sName);
 	CMyWindows::MessBox(zBuf, "Dump Finished");
 }
@@ -2059,7 +2060,7 @@ void CMetaData::SaveZoomedRaster(void)
 			fwrite(pShort,sizeof(short),nPixels,pf);
 			fclose (pf);
 		}
-		delete pShort;
+		delete[] pShort;
 	}
 	else
 	{
@@ -2656,6 +2657,66 @@ void CMetaData::DoExportHistogram()
 	hist10.PrintCSV();
 
 	CMyWindows::MessBox(sfName, "Histogram Ready");
+}
+void CMetaData::ExportStatisticsAlongZ(int threshold)
+{
+	umStatThreshold = threshold;
+	CMyWindows::CreateThread(StaticExportStatisticsAlongZ, this);
+}
+DWORD WINAPI CMetaData::StaticExportStatisticsAlongZ(void* p)
+{
+	CMetaData* pData = (CMetaData*)p;
+	pData->DoExportStatisticsAlongZ();
+	return 0;
+}
+void CMetaData::DoExportStatisticsAlongZ()
+{
+	LoadVolume();
+
+	int nPixelsInImage = mnCols * mnLinesInPage;
+	int nPages = GetNPages();
+	if (nPixelsInImage < 1)
+		return;
+
+	CString sName = Name();
+	CString sDir = CFileName::GetLastDirName(sName);
+	CString sPath = CFileName::GetPath(sName);
+	CString sPrevDir = CFileName::GetLastDirName(sPath);
+
+	CString sfName = sPrevDir + "_" + sDir;
+	FILE* pf = CMyWindows::FOpenNewLogFile("StatisticsAlongZ", sfName, "csv");
+	if (!pf)
+		return;
+	sfName = CMyWindows::GetLastLogFileName();
+	fprintf(pf, "i, min, max, average, ratio above threshold\n");
+
+	//unsigned short minVal = 0;
+	for (int iImage = 0; iImage < nPages; iImage++)
+	{
+		float sum = 0;
+		int nAboveThreshold = 0;
+		short* pImage = (short*)mpVolume->GetPageRelativeVP(iImage);
+		short maxVal = pImage[0];
+		short minVal = pImage[0];
+
+		for (int iPixel = 0; iPixel < nPixelsInImage; iPixel++)
+		{
+			short value = pImage[iPixel];
+			sum += value;
+			if (value < minVal)
+				minVal = value;
+			if (value > maxVal)
+				maxVal = value;
+			if (value > umStatThreshold)
+				nAboveThreshold++;
+		}
+		float average = sum / nPixelsInImage;
+		float ratioAboveThreshold = (float)nAboveThreshold / nPixelsInImage;
+		fprintf(pf, "%d, %d, %d, %.2f, %.2f\n", iImage, minVal, maxVal, average, ratioAboveThreshold);
+	}
+
+	fclose(pf);
+	CMyWindows::MessBox(sfName, "Statistics File Ready");
 }
 void CMetaData::ToggleCTMode()
 { 

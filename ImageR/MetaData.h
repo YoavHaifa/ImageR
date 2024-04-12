@@ -373,6 +373,7 @@ public:
 	static bool umbEnableFastLoadFromVolume;
     bool IsLoadingVolume() { return mbLoadingVolume; }
     void ExportHistogram();
+    void ExportStatisticsAlongZ(int threshold);
     void ToggleCTMode();
 
 protected:
@@ -380,6 +381,9 @@ protected:
     virtual bool DoLoadVolume();
     static DWORD WINAPI StaticExportHistogram(void* p);
     void DoExportHistogram();
+    static DWORD WINAPI StaticExportStatisticsAlongZ(void* p);
+    void DoExportStatisticsAlongZ();
+    static int umStatThreshold;
 
 	class CVolume* mpVolume;
 	bool mbVolumeIsShared;

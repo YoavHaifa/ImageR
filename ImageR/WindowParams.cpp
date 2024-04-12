@@ -60,6 +60,7 @@ CWindowParams::CWindowParams(class CXMLParseNode *pWindowXml)
 , mbExternalRangeSet(false)
 , mLastMinUsed(0)
 , mLastMaxUsed(0)
+, mpCurrentData(NULL)
 {
 	if (umDebugWindow && !umpfLog)
 	{
