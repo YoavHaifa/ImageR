@@ -351,5 +351,6 @@ public:
 	afx_msg void OnAddAbsdiff();
 	afx_msg void OnDiffToggleabsmode();
 	afx_msg void OnExportStatisticsalongz();
+	afx_msg void OnFileOpenMultislice();
 };
 

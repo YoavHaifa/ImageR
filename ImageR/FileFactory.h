@@ -18,7 +18,8 @@ public:
     CFileFactory(FILE *pfLog);
     ~CFileFactory(void);
     CMetaData * CreateFileObject(class CXMLParseNode *pMetaDataXml);
-    bool CreateAndDisplayFileObject(const char * zfName, bool bNewDisplay);
+    bool CreateAndDisplayFileObject(const char* zfName, bool bNewDisplay);
+    bool CreateAndDisplayMultisliceFileObject(const char* zfName, bool bNewDisplay);
     CMetaData * CreateFileObject(const char * zfName);
     FILE *mpfLog;
 

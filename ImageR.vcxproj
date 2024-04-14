@@ -326,6 +326,7 @@ copy ..\ImageRLib\Debug\ImageRLib.dll $(OutDir)
     <ClInclude Include="ImageR\MultiDataFile.h" />
     <ClInclude Include="ImageR\MultiFile.h" />
     <ClInclude Include="ImageR\MultiPageLoader.h" />
+    <ClInclude Include="ImageR\MultisliceFile.h" />
     <ClInclude Include="ImageR\MyImage.h" />
     <ClInclude Include="ImageR\ImageRApp.h" />
     <ClInclude Include="ImageR\Oblique.h" />
@@ -411,6 +412,7 @@ copy ..\ImageRLib\Debug\ImageRLib.dll $(OutDir)
     <ClCompile Include="ImageR\MultiFile.cpp" />
     <ClCompile Include="ImageR\MultiPageLoader.cpp" />
     <ClCompile Include="ImageR\ImageRApp.cpp" />
+    <ClCompile Include="ImageR\MultisliceFile.cpp" />
     <ClCompile Include="ImageR\Oblique.cpp" />
     <ClCompile Include="ImageR\ObliquePosition.cpp" />
     <ClCompile Include="ImageR\ObliqueRef.cpp" />

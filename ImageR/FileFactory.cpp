@@ -28,10 +28,7 @@
 #include "PflhDicomFile.h"
 #include "DicomContours.h"
 #include "ObliquePosition.h"
-
-#ifdef __VR__
-#include "VolumeRenderingIF.h"
-#endif
+#include "MultisliceFile.h"
 
 CString CFileFactory::umsReplaceFileName; // = "DLNR_NoSobel";
 CString CFileFactory::umsReplaceFileName2; // = "DLNR_prediction";
@@ -217,6 +214,13 @@ CMetaData * CFileFactory::CreateFileObject(CXMLParseNode *pMetaDataXml)
     }
 
 	return pData;
+}
+bool CFileFactory::CreateAndDisplayMultisliceFileObject(const char* zfName, bool bNewDisplay)
+{
+    CMetaData* pData = new CMultisliceFile(zfName, NULL);
+    gScreens.AddData(pData, bNewDisplay);
+    gScreens.Refresh();
+    return true;
 }
 bool CFileFactory::CreateAndDisplayFileObject(const char * zfName, bool bNewDisplay)
 {

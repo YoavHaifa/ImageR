@@ -1486,7 +1486,7 @@ bool CMetaData::ComputeStatistics(CTImage<bool> &mask, SStatistics &oStat)
     return true;
 }
 
-unsigned int CMetaData::GetUnitSize (void)
+unsigned int CMetaData::GetUnitSize()
 {
 	if (mDataUnitSize > 0)
 		return mDataUnitSize;

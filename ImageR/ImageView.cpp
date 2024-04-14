@@ -435,6 +435,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_ADD_ABSDIFF, &CImageView::OnAddAbsdiff)
 		ON_COMMAND(ID_DIFF_TOGGLEABSMODE, &CImageView::OnDiffToggleabsmode)
 		ON_COMMAND(ID_EXPORT_STATISTICSALONGZ, &CImageView::OnExportStatisticsalongz)
+		ON_COMMAND(ID_FILE_OPENMULTISLICE, &CImageView::OnFileOpenMultislice)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -915,6 +916,15 @@ void CImageView::OnNewColorer(const char *zfName)
 	CDisplayRectangle *pDR = gScreens.GetCurrentDisplayRectangle();
 	pDR->AddColorer(pData);
 	gScreens.Refresh();
+}
+void CImageView::OnFileOpenMultislice()
+{
+	CFileName fName;
+	if (SelectDataFile(fName))
+	{
+		CFileFactory factory(mpfLog);
+		factory.CreateAndDisplayMultisliceFileObject(fName, false);
+	}
 }
 
 //------------------------------------------------------------------------------

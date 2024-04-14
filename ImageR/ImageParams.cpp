@@ -261,9 +261,9 @@ void CImageParams::CreatePattern (T first, T delta, const char *zTypeName)
 void CImageParams::SetNPages(void)
 {
 	int nPages = mpFile->ComputeNPages();
-	unsigned int pageSizeBruto = mpFile->GetPageSizeBruto();
+	unsigned int filePageSizeBruto = mpFile->GetFilePageSizeBruto();
 	ULONGLONG allPagesSize = mpFile->GetLength() - mOffsetBytes;
-	mnPages = (float)((double)allPagesSize / pageSizeBruto);
+	mnPages = (float)((double)allPagesSize / filePageSizeBruto);
 	char zBuf[128];
     if (nPages == (float)mnPages)
         sprintf_s (zBuf, 128, "%d", nPages);

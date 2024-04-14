@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include ".\multidatafile.h"
+#include ".\MultiDataFile.h"
 #include "..\..\yUtils\MyWindows.h"
 #include "Screens.h"
 #include "..\..\ImageRLib\Position.h"
@@ -10,11 +10,15 @@
 #include "ImageParams.h"
 #include "TypedData.h"
 
-CMultiDataFile::CMultiDataFile(const char *zfName, CXMLParseNode *pMetaDataXml, 
-	unsigned int fileHeaderBytes, EMyImageDataType eDefaultDataType)
+CMultiDataFile::CMultiDataFile(const char *zfName, 
+	CXMLParseNode *pMetaDataXml, 
+	unsigned int fileHeaderBytes, 
+	EMyImageDataType eDefaultDataType,
+	bool bComputeNPages)
 : CMultiFile (zfName, pMetaDataXml)
-, mPageLenNeto(0)
-, mPageLenBruto(0)
+, mFilePageLenNeto(0)
+, mDisplayPageLenNeto(0)
+, mFilePageLenBruto(0)
 , mnPages(1)
 , mpPageHeader(NULL)
 {
@@ -40,7 +44,8 @@ CMultiDataFile::CMultiDataFile(const char *zfName, CXMLParseNode *pMetaDataXml,
     if (!mnLinesInPage || !mnCols)
 		GuessMatrix();
 
-	ComputeNPages();
+	if (bComputeNPages)
+		ComputeNPages();
 
     CMetaData *pCurData = gScreens.GetCurrentData();
     if (pCurData)
@@ -53,14 +58,19 @@ CMultiDataFile::~CMultiDataFile(void)
 	if (mpPageHeader)
 		delete mpPageHeader;
 }
+void CMultiDataFile::ComputeFilePageLenNeto()
+{
+	mDisplayPageLenNeto = mnLinesInPage * mnCols * GetUnitSize();
+	mFilePageLenNeto = mDisplayPageLenNeto;
+}
 unsigned int CMultiDataFile::ComputeNPages()
 {
-    mPageLenNeto = mnLinesInPage * mnCols * mDataUnitSize;
-	mPageLenBruto = mPageLenNeto + mPageHeaderLength;
+	ComputeFilePageLenNeto();
+	mFilePageLenBruto = mFilePageLenNeto + mPageHeaderLength;
     ULONGLONG allPagesSize = mLength - mOffsetBytes;
 
-	if (mPageLenBruto > 0)
-	    mnPages = (unsigned int)((allPagesSize + mPageLenBruto - 1) / mPageLenBruto);
+	if (mFilePageLenBruto > 0)
+	    mnPages = (unsigned int)((allPagesSize + mFilePageLenBruto - 1) / mFilePageLenBruto);
 	else
 		mnPages = 0;
 
@@ -75,11 +85,11 @@ unsigned int CMultiDataFile::ComputeNPages()
 }
 void CMultiDataFile::LoadPrologue()
 {
-    mPageLenNeto = mnLinesInPage * mnCols * GetUnitSize();
-	mPageLenBruto = mPageLenNeto + mPageHeaderLength;
+	ComputeFilePageLenNeto();
+	mFilePageLenBruto = mFilePageLenNeto + mPageHeaderLength;
     unsigned long nBytes = mpPageData->GetByteSize();
-    if (mPageLenNeto > nBytes)
-        mPageLenNeto = nBytes;
+    if (mDisplayPageLenNeto > nBytes)
+        mDisplayPageLenNeto = nBytes;
 
     open();
 }
@@ -96,18 +106,18 @@ bool CMultiDataFile::SetOffset(ULONGLONG offset)
 DWORD CMultiDataFile::ReadPage(unsigned char* pDest)
 {
 	DWORD nBytesRead = 0;
-	BOOL bOK = ReadFile(mhFile, pDest, mPageLenNeto, &nBytesRead, NULL);
+	BOOL bOK = ReadFile(mhFile, pDest, mFilePageLenNeto, &nBytesRead, NULL);
 	if (!bOK)
 	{
 		char zBuf[256];
 		sprintf_s(zBuf, 256, "Read File failed: %s", (const char*)msName);
 		CMyWindows::DisplayLastError(GetLastError(), zBuf);
 	}
-	if (nBytesRead < mPageLenNeto)
+	if (nBytesRead < mFilePageLenNeto)
 	{
 		mpPageData->mnRealPixels = nBytesRead / mDataUnitSize;
 		pDest += nBytesRead;
-		memset(pDest, 0, mPageLenNeto - nBytesRead);
+		memset(pDest, 0, mFilePageLenNeto - nBytesRead);
 	}
 	return nBytesRead;
 }
@@ -118,7 +128,7 @@ bool CMultiDataFile::DoUpdatePageData(void)
     ULONGLONG offset = mOffsetBytes;
 	CPosition *pPos = GetPosition();
 	if (mnPages > 1)
-		offset += pPos->GetCurrentRelative() * (ULONGLONG)mPageLenBruto;
+		offset += pPos->GetCurrentRelative() * (ULONGLONG)mFilePageLenBruto;
 
 	if (mPageHeaderLength > 0)
 	{
@@ -132,7 +142,7 @@ bool CMultiDataFile::DoUpdatePageData(void)
     if (SetOffset(offset)) // Set File Offset
 		ReadPage(pDest);
 	else // SetOffset failed!
-		memset(pDest, 0, mPageLenNeto);
+		memset(pDest, 0, mFilePageLenNeto);
 
     close();
 	if (mbZeroNanOnRead)
@@ -183,7 +193,7 @@ bool CMultiDataFile::DoLoadVolume()
 		if (SetOffset(offset)) // Set File Offset
 			ReadPage(pVolumePage);
 		else // SetOffset failed!
-			memset(pVolumePage, 0, mPageLenNeto);
+			memset(pVolumePage, 0, mFilePageLenNeto);
 
 		int ii = iLoadRelative + 1;
 		if ((gScreens.mVolumeRefreshInterval && (ii % gScreens.mVolumeRefreshInterval == 0))
@@ -196,8 +206,8 @@ bool CMultiDataFile::DoLoadVolume()
 		char zBuf[32];
 		sprintf_s(zBuf, 32, "LV%03d", ii);
 		gScreens.PrintStatusInBar(CScreens::SBAR_GENERAL, zBuf);
-		pVolumePage += mPageLenNeto;
-		offset += mPageLenBruto;
+		pVolumePage += mDisplayPageLenNeto;
+		offset += mFilePageLenBruto;
 	}
 	if (mpfLog)
 	{
@@ -436,9 +446,10 @@ void CMultiDataFile::SaveState(class CXMLDump & xmlDump)
     CXMLDumpScope graph("MultiDataFile",xmlDump);
     CMultiFile::SaveState(xmlDump);
 	xmlDump.Write("n_pages",mnPages);
-	xmlDump.Write("page_length_neto",mPageLenNeto);
-	if (mPageLenBruto != mPageLenNeto)
-		xmlDump.Write("page_length_bruto",mPageLenBruto);
+	xmlDump.Write("file_page_length_neto", mFilePageLenNeto);
+	xmlDump.Write("display_page_length_neto", mDisplayPageLenNeto);
+	if (mFilePageLenBruto != mFilePageLenNeto)
+		xmlDump.Write("page_length_bruto",mFilePageLenBruto);
 }
 void CMultiDataFile::EditContextMenu(CMenu *pPopup)
 {

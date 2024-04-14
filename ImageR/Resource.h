@@ -334,13 +334,14 @@
 #define ID_ADD_ABSDIFF                  34010
 #define ID_DIFF_TOGGLEABSMODE           34011
 #define ID_EXPORT_STATISTICSALONGZ      34012
+#define ID_FILE_OPENMULTISLICE          34013
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1029
-#define _APS_NEXT_COMMAND_VALUE         34013
+#define _APS_NEXT_COMMAND_VALUE         34014
 #define _APS_NEXT_CONTROL_VALUE         2099
 #define _APS_NEXT_SYMED_VALUE           2200
 #endif

@@ -1,12 +1,14 @@
 #pragma once
 #include "MultiFile.h"
 
-class CMultiDataFile :
-    public CMultiFile
+class CMultiDataFile : public CMultiFile
 {
 public:
-    CMultiDataFile(const char *zfName, class CXMLParseNode *pMetaDataXml, 
-		unsigned int fileHeaderBytes = 0, EMyImageDataType eDefaultDataType = DATA_TYPE_UNDEF);
+    CMultiDataFile(const char *zfName, 
+		class CXMLParseNode *pMetaDataXml, 
+		unsigned int fileHeaderBytes = 0, 
+		EMyImageDataType eDefaultDataType = DATA_TYPE_UNDEF,
+		bool bComputeNPages = true);
     ~CMultiDataFile(void);
 
     virtual bool DoUpdatePageData(void);
@@ -22,24 +24,25 @@ public:
 
 protected:
 	char *mpPageHeader;
-
-private:
-	unsigned int mnPages;
-    unsigned int mPageLenNeto;
-    unsigned int mPageLenBruto;
-
 	void LoadPrologue();
+	unsigned int mnPages;
+	unsigned int mFilePageLenNeto;
+	unsigned int mDisplayPageLenNeto;
+    unsigned int mFilePageLenBruto;
+	bool ReadPageHeader(void);
 	bool SetOffset(ULONGLONG offset);
 	DWORD ReadPage(unsigned char* pDest);
+
+private:
     bool TryToGetImageSizeFromXml(void);
     bool GuessMatrix(void);
 	void GetInfoFromXMLHeader();
 	unsigned long ReadXMLOffset();
-	bool ReadPageHeader(void);
 
 public:
-	unsigned int ComputeNPages(void);
-	unsigned int GetPageSizeBruto(void){return mPageLenBruto;}
+	virtual void ComputeFilePageLenNeto();
+	unsigned int ComputeNPages();
+	unsigned int GetFilePageSizeBruto(void){return mFilePageLenBruto;}
 
 	virtual bool DesplayXmlHeader(void);
 };
