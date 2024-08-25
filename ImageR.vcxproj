@@ -301,6 +301,8 @@ copy ..\ImageRLib\Debug\ImageRLib.dll $(OutDir)
     <ClInclude Include="ImageR\DRText.h" />
     <ClInclude Include="ImageR\DVResource.h" />
     <ClInclude Include="ImageR\FileFactory.h" />
+    <ClInclude Include="ImageR\FileType.h" />
+    <ClInclude Include="ImageR\FileTypes.h" />
     <ClInclude Include="ImageR\FloatPrep.h" />
     <ClInclude Include="ImageR\GContour.h" />
     <ClInclude Include="ImageR\GCursor.h" />
@@ -387,6 +389,8 @@ copy ..\ImageRLib\Debug\ImageRLib.dll $(OutDir)
     <ClCompile Include="ImageR\DisplayRectangle.cpp" />
     <ClCompile Include="ImageR\DRText.cpp" />
     <ClCompile Include="ImageR\FileFactory.cpp" />
+    <ClCompile Include="ImageR\FileType.cpp" />
+    <ClCompile Include="ImageR\FileTypes.cpp" />
     <ClCompile Include="ImageR\FloatPrep.cpp" />
     <ClCompile Include="ImageR\GContour.cpp" />
     <ClCompile Include="ImageR\GCursor.cpp" />

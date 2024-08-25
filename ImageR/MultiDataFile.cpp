@@ -9,6 +9,7 @@
 #include "..\..\yUtils\XMLDump.h"
 #include "ImageParams.h"
 #include "TypedData.h"
+#include "FileTypes.h"
 
 CMultiDataFile::CMultiDataFile(const char *zfName, 
 	CXMLParseNode *pMetaDataXml, 
@@ -28,8 +29,13 @@ CMultiDataFile::CMultiDataFile(const char *zfName,
 	if (mName.IsOfType("ximg"))
 		GetInfoFromXMLHeader();
 
-    if (!mnCols || !mnLinesInPage)
-        TryToGetImageSizeFromXml();
+	if (!mnCols || !mnLinesInPage)
+	{
+		if (!TryToGetImageSizeFromXml())
+			gFileTypes.SearchForType(zfName, this);
+	}
+
+	
 
     mLength = CMyWindows::GetFileLength(msName);
 

@@ -10,6 +10,7 @@
 #include "..\..\ImageRLib\FileNamePattern.h"
 #include "Screens.h"
 #include "ArchivesFile.h"
+#include "FileTypes.h"
 
 
 #ifdef _DEBUG
@@ -86,6 +87,8 @@ BOOL CImageRApp::InitInstance()
 	
 	m_pMainWnd = &dlg;
 	CMyWindows::SetMainWindow(m_pMainWnd);
+
+	gFileTypes.Init();
 
 	FILE *pfLog = dlg.GetPFLog();
 	if (pfLog)
