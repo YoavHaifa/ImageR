@@ -1616,6 +1616,36 @@ bool CMetaData::GetDumpName(CString &osName, const char *zExtension)
         return false;
 	return true;
 }
+int CMetaData::FindPageWithMaxValue()
+{
+	int iStart = StartLoopI();
+	double maxValue = 0;
+	int iMaxPos = 0;
+	int nChecked = 0;
+	char zBuf[512];
+
+	for (int i = iStart; i >= 0; i = LoopNext())
+	{
+		mbPageUpdated = false;
+		if (!UpdatePageData())
+			break;
+
+		float newMax = mpTypedData->Max();
+		if (i == iStart || newMax > maxValue)
+		{
+			maxValue = newMax;
+			iMaxPos = i;
+		}
+
+		nChecked++;
+		sprintf_s(zBuf, "Checked %3d", nChecked);
+		CMyWindows::PrintStatus(zBuf);
+	}
+
+	sprintf_s(zBuf, "Max %f at %d", maxValue, iMaxPos);
+	CMyWindows::PrintStatus(zBuf);
+	return iMaxPos;
+}
 void CMetaData::DumpAllPageData(const char *zUserName)
 {
 	CString sName(mpPageData->GetDumpName(zUserName));

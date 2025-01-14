@@ -352,5 +352,6 @@ public:
 	afx_msg void OnDiffToggleabsmode();
 	afx_msg void OnExportStatisticsalongz();
 	afx_msg void OnFileOpenMultislice();
+	afx_msg void OnSearchMaxvalue();
 };
 

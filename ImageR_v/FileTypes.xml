@@ -1,0 +1,12 @@
+<file_types>
+	<bArineta> true </bArineta>
+	
+	<type>
+		<name> Reading </name>
+		<extension> bin </extension>
+		<n_lines> 192 </n_lines>
+		<n_cols> 688 </n_cols>
+		<data_type> float </data_type>
+	</type>
+</file_types>
+

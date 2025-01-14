@@ -436,6 +436,7 @@ BEGIN_MESSAGE_MAP(CImageView, CDialog)
 		ON_COMMAND(ID_DIFF_TOGGLEABSMODE, &CImageView::OnDiffToggleabsmode)
 		ON_COMMAND(ID_EXPORT_STATISTICSALONGZ, &CImageView::OnExportStatisticsalongz)
 		ON_COMMAND(ID_FILE_OPENMULTISLICE, &CImageView::OnFileOpenMultislice)
+		ON_COMMAND(ID_SEARCH_MAXVALUE, &CImageView::OnSearchMaxvalue)
 		END_MESSAGE_MAP()
 
 //----------------------------------------------------
@@ -2509,4 +2510,14 @@ void CImageView::OnDiffToggleabsmode()
 		return;
 	pDiff->ToggleAbsMode();
 	gScreens.Refresh();
+}
+void CImageView::OnSearchMaxvalue()
+{
+	CMetaData* pData = gScreens.GetCurrentData();
+	if (pData)
+	{
+		int iMaxPos = pData->FindPageWithMaxValue();
+		pData->SetRelativePosition(iMaxPos);
+		gScreens.ForceDataUpdate();
+	}
 }

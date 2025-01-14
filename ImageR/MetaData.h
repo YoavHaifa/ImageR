@@ -199,6 +199,8 @@ public:
 	friend class CMultiPageLoader;
 	CList<class CDRText*,class CDRText*> *GetTextList(void){return &mDataTextList;}
 
+    int FindPageWithMaxValue();
+
 protected:
     CList<class CDRText*,class CDRText*> mDataTextList;
 	class CXMLParseNode* mpXmlNode;  // In case this data was parsed from saved state
