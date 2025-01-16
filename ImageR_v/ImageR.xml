@@ -3,4 +3,7 @@
 	<FastScrollFactor> 5 </FastScrollFactor>
 	<bCyclicLeafing> true </bCyclicLeafing>
 	<bAllCT_> true </bAllCT_>
+	<FilesArrayMaxDimensions> 2 </FilesArrayMaxDimensions>
+	<FilesArrayMaxStep> 20 </FilesArrayMaxStep>
+	<FilesArrayCrossDir> true </FilesArrayCrossDir>
 </def>
