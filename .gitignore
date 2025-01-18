@@ -6,8 +6,10 @@
 # ImageR specila files
 *.RecentFiles.txt
 */ImageR.exe
+*/ImageR.xml.bak
 */ImageRLib.dll
 */yUtils.dll
+.gitignore.bak
 
 # User-specific files
 *.rsuser
