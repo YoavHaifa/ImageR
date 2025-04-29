@@ -35,9 +35,10 @@ public:
     class CDisplayRectangle * GetRectangleWithData(const char *zDataName);
     class CDisplayRectangle * GetDisplayRectangle(int i);
     class CDisplayRectangle * GetCurrentDisplayRectangle(void);
-    class CMetaData * GetCurrentData(void);
+    class CMetaData* GetCurrentFileData(bool bOrAny = false);
+    class CMetaData* GetCurrentData(void);
     class CVolumetric * GetCurrentVolumetricData(void);
-    class COblique * GetCurrentObliqueData(void);
+    class COblique * GetCurrentObliqueData(bool bOrAny = false);
     class CDiffData * GetCurrentDiffData(void);
     class CMetaData * GetData(int iDR);
     class CMetaData * GetCurrentDataForWindowing(void);

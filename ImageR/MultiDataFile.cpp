@@ -53,9 +53,9 @@ CMultiDataFile::CMultiDataFile(const char *zfName,
 	if (bComputeNPages)
 		ComputeNPages();
 
-    CMetaData *pCurData = gScreens.GetCurrentData();
-    if (pCurData)
-        SetMmPerPixel(*pCurData);
+	CMetaData* pSizeData = gScreens.GetCurrentFileData(true/*bOrAny*/);
+	if (pSizeData)
+        SetMmPerPixel(*pSizeData);
 	Verify("<CMultiDataFile> On Construct");
 }
 

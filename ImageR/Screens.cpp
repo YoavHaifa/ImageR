@@ -403,11 +403,37 @@ CDisplayRectangle * CScreens::GetRectangleWithData(const char *zDataName)
     }
     return NULL;
 }
-CMetaData * CScreens::GetCurrentData(void)
+CMetaData* CScreens::GetCurrentFileData(bool bOrAny)
 {
-    if (!mpCurrentDR)
-        return NULL;
-    return mpCurrentDR->GetCurrentData();
+	if (!mpCurrentDR)
+		return NULL; // Apparently there is nothing displayed yet
+
+	// If current data is file - use it
+	CMetaData* pCurrentData = mpCurrentDR->GetCurrentData();
+	if (pCurrentData->IsFile())
+		return pCurrentData;
+
+	// Look for file data elsewhere
+	if (bOrAny)
+	{
+		POSITION pos = mRectanglesList.GetHeadPosition();
+		while (pos)
+		{
+			CDisplayRectangle *pDR = mRectanglesList.GetNext(pos);
+			CMetaData *pData = pDR->GetCurrentData();
+			if (pData->IsFile())
+				return pData;
+		}
+	}
+
+	// Return non-file data
+	return pCurrentData;
+}
+CMetaData* CScreens::GetCurrentData(void)
+{
+	if (!mpCurrentDR)
+		return NULL;
+	return mpCurrentDR->GetCurrentData();
 }
 CVolumetric * CScreens::GetCurrentVolumetricData(void)
 {
@@ -419,11 +445,26 @@ CVolumetric * CScreens::GetCurrentVolumetricData(void)
 	}
 	return NULL;
 }
-COblique * CScreens::GetCurrentObliqueData(void)
+COblique * CScreens::GetCurrentObliqueData(bool bOrAny)
 {
 	CMetaData *pData = GetCurrentData();
 	if (pData->IsOblique())
 		return dynamic_cast<COblique *>(pData);
+
+
+	// Look for oblique data elsewhere
+	if (bOrAny)
+	{
+		POSITION pos = mRectanglesList.GetHeadPosition();
+		while (pos)
+		{
+			CDisplayRectangle* pDR = mRectanglesList.GetNext(pos);
+			CMetaData* pData = pDR->GetCurrentData();
+			if (pData->IsOblique())
+				return dynamic_cast<COblique*>(pData);
+		}
+	}
+
 	return NULL;
 }
 CDiffData * CScreens::GetCurrentDiffData(void)

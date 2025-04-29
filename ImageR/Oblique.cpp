@@ -115,7 +115,10 @@ void COblique::InitOnConstruction(CXMLParseNode *pXmlPositionNode)
             }
         }
     }
-	mMultiPosition.msType = "Oblique";
+    CMetaData* pSizeData = gScreens.GetCurrentObliqueData(true/*bOrAny*/);
+    if (pSizeData)
+        SetMmPerPixel(*pSizeData);
+    mMultiPosition.msType = "Oblique";
 }
 
 bool COblique::DoUpdatePageData()
