@@ -797,29 +797,79 @@ void CDiffData::PrintStatistics(void)
 	}
 	else if (pPlus->IsDataOfType(DATA_TYPE_USHORT))
 	{
-		CTFileCompare<unsigned short> fComp(pPlus->Name(), pMinus->Name(), "Pixel", "Image", 
+		CTFileCompare<unsigned short> fComp(pPlus->Name(), pMinus->Name(), "Pixel", "Image",
 			pPlus->GetNCols(), pPlus->GetNLinesInPage());
 		fComp.compare_files(true /*bPrint*/);
 		if (mbPrintHistogram)
 			PrintHistogram(fComp);
 	}
-}
-void CTFileCompare<float>::Print (FILE *pf, float value)
-{
-    if (pf)
+	else if (pPlus->IsDataOfType(DATA_TYPE_SHORT))
 	{
-		if (value > 100.0f || value < -100.0f)
-	        fprintf (pf, " %9.3f", value);
-		else if (value > 0.1f || value < -0.1f)
-	        fprintf (pf, " %9.6f", value);
-		else 
-	        fprintf (pf, " %12.9f", value);
+		CTFileCompare<short> fComp(pPlus->Name(), pMinus->Name(), "Pixel", "Image",
+			pPlus->GetNCols(), pPlus->GetNLinesInPage());
+		fComp.compare_files(true /*bPrint*/);
+		if (mbPrintHistogram)
+			PrintHistogram(fComp);
+	}
+	else if (pPlus->IsDataOfType(DATA_TYPE_INT))
+	{
+		CTFileCompare<int> fComp(pPlus->Name(), pMinus->Name(), "Pixel", "Image",
+			pPlus->GetNCols(), pPlus->GetNLinesInPage());
+		fComp.compare_files(true /*bPrint*/);
+		if (mbPrintHistogram)
+			PrintHistogram(fComp);
+	}
+	else if (pPlus->IsDataOfType(DATA_TYPE_DOUBLE))
+	{
+		CTFileCompare<double> fComp(pPlus->Name(), pMinus->Name(), "Pixel", "Image",
+			pPlus->GetNCols(), pPlus->GetNLinesInPage());
+		fComp.compare_files(true /*bPrint*/);
+		if (mbPrintHistogram)
+			PrintHistogram(fComp);
+	}
+	else
+	{
+		CMyWindows::MessBox("<CDiffData::PrintStatistics> this type of data is not supported", "Warning");
 	}
 }
-void CTFileCompare<unsigned short>::Print (FILE *pf, unsigned short value)
+void CTFileCompare<float>::Print(FILE* pf, float value)
 {
-    if (pf)
-        fprintf (pf, " %8u", value);
+	if (pf)
+	{
+		if (value > 100.0f || value < -100.0f)
+			fprintf(pf, " %9.3f", value);
+		else if (value > 0.1f || value < -0.1f)
+			fprintf(pf, " %9.6f", value);
+		else
+			fprintf(pf, " %12.9f", value);
+	}
+}
+void CTFileCompare<double>::Print(FILE* pf, double value)
+{
+	if (pf)
+	{
+		if (value > 100.0f || value < -100.0f)
+			fprintf(pf, " %9.3f", value);
+		else if (value > 0.1f || value < -0.1f)
+			fprintf(pf, " %9.6f", value);
+		else
+			fprintf(pf, " %12.9f", value);
+	}
+}
+void CTFileCompare<unsigned short>::Print(FILE* pf, unsigned short value)
+{
+	if (pf)
+		fprintf(pf, " %8u", value);
+}
+void CTFileCompare<short>::Print(FILE* pf, short value)
+{
+	if (pf)
+		fprintf(pf, " %8d", value);
+}
+void CTFileCompare<int>::Print(FILE* pf, int value)
+{
+	if (pf)
+		fprintf(pf, " %8d", value);
 }
 void CDiffData::GetCombineParams(void)
 {
