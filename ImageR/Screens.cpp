@@ -459,9 +459,9 @@ COblique * CScreens::GetCurrentObliqueData(bool bOrAny)
 		while (pos)
 		{
 			CDisplayRectangle* pDR = mRectanglesList.GetNext(pos);
-			CMetaData* pData = pDR->GetCurrentData();
-			if (pData->IsOblique())
-				return dynamic_cast<COblique*>(pData);
+			CMetaData* pCurrentData = pDR->GetCurrentData();
+			if (pCurrentData->IsOblique())
+				return dynamic_cast<COblique*>(pCurrentData);
 		}
 	}
 
