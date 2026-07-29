@@ -341,7 +341,14 @@ void CPipeIF::ProcessMessage (void)
         if (bOk)
             gScreens.SetExternalFrame(sName);
     }
-	else if (_stricmp(mzRequest, "save_state") == 0)
+    else if (_stricmp(mzRequest, "set_current_dr") == 0)
+    {
+        int iDR = 0;
+        bool bOk = GetFirstInt(iDR);
+        if (bOk)
+            gScreens.SetCurrentDR(iDR);
+    }
+    else if (_stricmp(mzRequest, "save_state") == 0)
 	{
         mLogger.Log("Handling <save_state>");
         CString sName;
