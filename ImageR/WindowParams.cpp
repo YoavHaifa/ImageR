@@ -16,7 +16,7 @@ float CWindowParams::umWindowAccelerationFactor = 1.0f;
 bool CWindowParams::umbUseAllRangeForColorer = true;
 
 CWindowParams::CWindowParams(class CMetaData *pData, bool bSetFocus)
-: CDependant(pData ? pData->GetWindowName() : "WindowParams")
+: CDependant(pData ? (const char*)pData->GetWindowName() : "WindowParams")
 , mIndex (umCreateIndex++)
 , mCenter (1024)
 , mWidth (128)

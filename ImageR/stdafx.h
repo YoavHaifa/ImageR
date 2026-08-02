@@ -4,6 +4,8 @@
 
 #pragma once
 
+#define _HAS_STD_BYTE 0
+
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
 #endif

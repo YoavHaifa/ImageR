@@ -485,7 +485,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
             fprintf (mpfLog, "<CFileFactory::TryCreateFileObject> %s - File doesn't exist!\n", zfName);
             fflush (mpfLog);
         }
-        return false;
+        return nullptr;
     }
     ULONG64 fileLenBytes = CFileName::GetFileLength(zfName);
     if (fileLenBytes == 0)
@@ -496,7 +496,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
             fprintf (mpfLog, "<CFileFactory::TryCreateFileObject> %s - File is empty!\n", zfName);
             fflush (mpfLog);
         }
-        return false;
+        return nullptr;
     }
 
 	// Copy Name to place
@@ -507,7 +507,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
     if (CMyWindows::IsDirectory(msFileName))
     {
 		CCtImages::DisableWarnings();
-        return new CHybridFile(msFileName, NULL);
+        return new CHybridFile(msFileName, nullptr);
     }
 
     FILE *pf = MyFOpen (msFileName, "rb");
@@ -515,7 +515,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
     {
         if (mpfLog)
             fprintf (mpfLog, "<TryCreateFileObject> failed to open %s\n", (const char*)msFileName);
-        return NULL;
+        return nullptr;
     }
     fclose (pf);
 
@@ -523,7 +523,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
 	if (mName.IsOfType("ColorMap"))
 	{
 		gScreens.ReadColorMap(msFileName);
-		return NULL;
+		return nullptr;
 	}
 
     if (mName.IsOfType("xml"))
@@ -540,7 +540,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
             CXMLParse parseFile (mName);
             CXMLParseNode *pRoot = parseFile.GetRoot();
             if (!pRoot)
-                return false;
+                return nullptr;
 
             CString sData = pRoot->GetFirstDeepString("data_name","");
             CDisplayRectangle *pDR = NULL;
@@ -566,7 +566,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
 						fprintf (mpfLog, "Graphic element Added\n");
                 }
         }
-        return NULL;
+        return nullptr;
     }
 
 	CMetaData *pDicomBasedData = AnalyzeDicomOptions();
@@ -589,7 +589,7 @@ CMetaData * CFileFactory::TryCreateFileObject(const char * zfName)
             fprintf(mpfLog, "<CFileFactory::TryCreateFileObject> %s!\n", (const char *)s);
             fflush(mpfLog);
         }
-        return false;
+        return nullptr;
     }
 
 	// Look for file type
