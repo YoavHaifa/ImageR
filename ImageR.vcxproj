@@ -178,6 +178,9 @@ copy ..\ImageRLib\$(Configuration)\ImageRLib.dll $(OutDir)
     <PostBuildEvent>
       <Command>copy ..\yUtils\$(Platform)\$(Configuration)\yUtils.dll $(OutDir)
 copy ..\ImageRLib\$(Platform)\$(Configuration)\ImageRLib.dll $(OutDir)
+if not exist "$(OutDir)DicomDefs" mkdir "$(OutDir)DicomDefs"
+copy /y "..\yUtils\Dicom\*.dic" "$(OutDir)DicomDefs\"
+copy /y "..\yUtils\Dicom\DicomDictionaries.txt" "$(OutDir)DicomDefs\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -226,6 +229,9 @@ copy ..\ImageRLib\$(Configuration)\ImageRLib.dll $(OutDir)
     <PostBuildEvent>
       <Command>copy ..\yUtils\$(Platform)\$(Configuration)\yUtils.dll $(OutDir)
 copy ..\ImageRLib\$(Platform)\$(Configuration)\ImageRLib.dll $(OutDir)
+if not exist "$(OutDir)DicomDefs" mkdir "$(OutDir)DicomDefs"
+copy /y "..\yUtils\Dicom\*.dic" "$(OutDir)DicomDefs\"
+copy /y "..\yUtils\Dicom\DicomDictionaries.txt" "$(OutDir)DicomDefs\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
